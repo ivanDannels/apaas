@@ -1,0 +1,121 @@
+# Ignore Gradle build output directory
+build
+
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+*~$*
+local.properties
+**/.designProject
+**/.settings/
+**/.classpath
+.loadpath
+.recommenders
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific (PHP Development Tools)
+.buildpath
+
+# sbteclipse plugin
+**/target
+
+.target
+# Tern plugin
+.tern-designProject
+
+# TeXlipse plugin
+.texlipse
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Code Recommenders
+.recommenders/
+
+#gradle
+.gradle
+gradle/wrapper
+*bin
+*.settings
+*build
+*.bat
+gradlew
+
+# Scala IDE specific (Scala & Java development for Eclipse)
+.cache-main
+.scala_dependencies
+.worksheet
+
+.idea/
+*.iml
+*.class
+/.DS_Store
+*.jar
+/classes
+/logs
+*.hprof
+*.log
+*.lock
+*.data
+*.meta
+out
+.project
+.settings
+bin
+
+.flattened-pom.xml
+
+**/.flattened-pom.xml
+.vscode/launch.json
+.vscode/settings.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
+pnpm-lock.yaml
+
+/cypress/videos/
+/cypress/screenshots/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
+auto-imports.d.ts

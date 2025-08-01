@@ -1,4 +1,0 @@
-org\apaas\api\common\BasePageRequest.class
-org\apaas\api\common\PageResult.class
-org\apaas\api\common\ApiException.class
-org\apaas\api\common\ApiResponse.class

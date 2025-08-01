@@ -1,0 +1,52 @@
+package org.apaas.form.engine.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import org.apaas.core.domain.BaseEntity;
+
+/**
+ * 表单布局实体
+ */
+@Data
+@TableName("form_layout")
+public class FormLayout extends BaseEntity {
+    /**
+     * 表单定义ID
+     */
+    private Long formId;
+
+    /**
+     * 布局类型（0-响应式布局，1-自由布局，2-栅格布局，3-分组布局）
+     */
+    private Integer type;
+
+    /**
+     * 布局名称
+     */
+    private String name;
+
+    /**
+     * 布局配置JSON
+     */
+    private String configJson;
+
+    /**
+     * 布局状态（0-启用，1-禁用）
+     */
+    private Integer status;
+
+    /**
+     * 是否默认布局（0-否，1-是）
+     */
+    private Integer isDefault;
+
+    /**
+     * 适用终端（0-PC，1-移动，2-全部）
+     */
+    private Integer terminal;
+
+    /**
+     * 排序
+     */
+    private Integer sort;
+}
