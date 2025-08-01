@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  apaas-flow-execution:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/apaas_flow_execution
+      - SPRING_REDIS_HOST=redis
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    networks:
+      - apaas-network
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=apaas_flow_execution
+      - POSTGRES_USER=apaas
+      - POSTGRES_PASSWORD=apaas123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - apaas-network
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+    networks:
+      - apaas-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=apaas
+      - RABBITMQ_DEFAULT_PASS=apaas123
+    networks:
+      - apaas-network
+
+volumes:
+  postgres_data:
+
+networks:
+  apaas-network:
+    driver: bridge

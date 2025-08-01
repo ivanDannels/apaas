@@ -1,0 +1,49 @@
+package org.apaas.system.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import org.apaas.core.domain.BaseEntity;
+
+/**
+ * 参数配置实体类
+ */
+@Data
+@TableName("sys_config")
+public class SysConfig extends BaseEntity {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 参数名称
+     */
+    private String name;
+
+    /**
+     * 参数键
+     */
+    private String configKey;
+
+    /**
+     * 参数编码
+     */
+    private String code;
+
+    /**
+     * 参数值
+     */
+    private String value;
+
+    /**
+     * 参数类型：0-系统参数，1-业务参数
+     */
+    private Integer type;
+
+    /**
+     * 状态：0-正常，1-停用
+     */
+    private Integer status;
+
+    /**
+     * 描述
+     */
+    private String description;
+}

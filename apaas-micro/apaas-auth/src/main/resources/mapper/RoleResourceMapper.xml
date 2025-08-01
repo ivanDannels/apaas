@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.apaas.authorization.mapper.RoleResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.apaas.authorization.entity.RoleResource">
+        <id column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="resource_id" property="resourceId"/>
+        <result column="tenant_id" property="tenantId"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <!-- 批量插入角色资源关联 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO sys_role_resource (
+            role_id,
+            resource_id,
+            tenant_id,
+            create_by,
+            create_time,
+            deleted
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.roleId},
+                #{item.resourceId},
+                #{item.tenantId},
+                #{item.createBy},
+                #{item.createTime},
+                0
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据角色ID删除关联 -->
+    <delete id="deleteByRoleId">
+        DELETE FROM sys_role_resource
+        WHERE
+            role_id = #{roleId}
+            AND tenant_id = #{tenantId}
+    </delete>
+
+    <!-- 根据角色ID和资源ID列表删除关联 -->
+    <delete id="deleteByRoleIdAndResourceIds">
+        DELETE FROM sys_role_resource
+        WHERE
+            role_id = #{roleId}
+            AND resource_id IN
+            <foreach collection="resourceIds" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            AND tenant_id = #{tenantId}
+    </delete>
+
+</mapper>

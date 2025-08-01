@@ -1,0 +1,32 @@
+server:
+  port: 9200
+
+spring:
+  application:
+    name: apaas-integration
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+  main:
+    allow-bean-definition-overriding: true
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+
+# 配置中心相关配置
+apaas:
+  config:
+    # 是否启用配置中心
+    enabled: true
+
+logging:
+  level:
+    org.springframework.data.r2dbc: DEBUG

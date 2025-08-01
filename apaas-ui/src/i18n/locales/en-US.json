@@ -1,0 +1,92 @@
+{
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "rememberMe": "Remember Me",
+    "loginButton": "Login",
+    "forgotPassword": "Forgot Password",
+    "logout": "Logout"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "flowEngine": "Flow Engine",
+    "flowDesign": "Flow Design",
+    "flowExecution": "Flow Execution",
+    "flowMonitoring": "Flow Monitoring",
+    "systemManagement": "System Management",
+    "tenantManagement": "Tenant Management",
+    "userManagement": "User Management",
+    "roleManagement": "Role Management",
+    "dictionaryManagement": "Dictionary Management",
+    "systemMonitoring": "System Monitoring",
+    "operationAudit": "Operation Audit",
+    "logAnalysis": "Log Analysis",
+    "monitoringDashboard": "Monitoring Dashboard"
+  },
+  "common": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "search": "Search",
+    "reset": "Reset",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "operation": "Operation",
+    "createTime": "Create Time",
+    "updateTime": "Update Time",
+    "status": "Status",
+    "profile": "Profile"
+  },
+  "dashboard": {
+    "welcome": "Welcome back,",
+    "description": "This is your dashboard where you can view key system metrics and statistics.",
+    "processCount": "Process Count",
+    "completedTasks": "Completed Tasks",
+    "userCount": "User Count",
+    "processStatistics": "Process Statistics",
+    "systemMonitor": "System Monitor"
+  },
+  "workflow": {
+    "processDefinition": "Process Definition",
+    "processInstance": "Process Instance",
+    "task": "Task",
+    "processName": "Process Name",
+    "processKey": "Process Key",
+    "version": "Version",
+    "deploymentTime": "Deployment Time",
+    "startProcess": "Start Process",
+    "processStatus": "Process Status",
+    "assignee": "Assignee",
+    "taskName": "Task Name",
+    "createTime": "Create Time",
+    "completeTask": "Complete Task"
+  },
+  "system": {
+    "tenant": {
+      "name": "Tenant Name",
+      "code": "Tenant Code",
+      "description": "Description",
+      "status": "Status"
+    },
+    "user": {
+      "username": "Username",
+      "nickname": "Nickname",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "Status"
+    },
+    "role": {
+      "name": "Role Name",
+      "code": "Role Code",
+      "description": "Description"
+    },
+    "dictionary": {
+      "name": "Dictionary Name",
+      "code": "Dictionary Code",
+      "description": "Description"
+    }
+  }
+}

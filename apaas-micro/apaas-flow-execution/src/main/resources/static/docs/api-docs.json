@@ -1,0 +1,465 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "流程执行服务API",
+    "description": "APaaS平台流程执行服务API文档",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "本地开发服务器"
+    }
+  ],
+  "paths": {
+    "/flow-execution/instances/start": {
+      "post": {
+        "summary": "启动流程实例",
+        "description": "根据流程定义ID启动一个新的流程实例",
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "query",
+            "description": "流程定义ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "businessKey",
+            "in": "query",
+            "description": "业务主键",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user-id",
+            "in": "header",
+            "description": "启动人用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功启动流程实例",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowInstance"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flow-execution/instances/{flowInstanceId}/terminate": {
+      "post": {
+        "summary": "终止流程实例",
+        "description": "终止指定的流程实例",
+        "parameters": [
+          {
+            "name": "flowInstanceId",
+            "in": "path",
+            "description": "流程实例ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-id",
+            "in": "header",
+            "description": "操作人用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功终止流程实例",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowInstance"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flow-execution/activities/{activityInstanceId}/complete": {
+      "post": {
+        "summary": "完成活动实例",
+        "description": "完成指定的活动实例",
+        "parameters": [
+          {
+            "name": "activityInstanceId",
+            "in": "path",
+            "description": "活动实例ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-id",
+            "in": "header",
+            "description": "操作人用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功完成活动实例",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlowInstance"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flow-execution/tasks": {
+      "get": {
+        "summary": "查询用户任务",
+        "description": "查询指定用户的所有任务",
+        "parameters": [
+          {
+            "name": "user-id",
+            "in": "header",
+            "description": "用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功查询用户任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkflowTask"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flow-execution/tasks/{taskId}/claim": {
+      "post": {
+        "summary": "领取任务",
+        "description": "用户领取指定的任务",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "任务ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-id",
+            "in": "header",
+            "description": "用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功领取任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowTask"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flow-execution/tasks/{taskId}/complete": {
+      "post": {
+        "summary": "完成任务",
+        "description": "用户完成指定的任务",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "任务ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "user-id",
+            "in": "header",
+            "description": "用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功完成任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowTask"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flow-execution/tasks/{taskId}/transfer": {
+      "post": {
+        "summary": "转办任务",
+        "description": "将任务从一个用户转办给另一个用户",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "任务ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "fromUserId",
+            "in": "query",
+            "description": "原处理人用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "toUserId",
+            "in": "query",
+            "description": "新处理人用户ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功转办任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowTask"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FlowInstance": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "流程实例ID"
+          },
+          "tenantId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "租户ID"
+          },
+          "processId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "流程定义ID"
+          },
+          "businessKey": {
+            "type": "string",
+            "description": "业务主键"
+          },
+          "status": {
+            "type": "string",
+            "description": "流程实例状态"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "开始时间"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "结束时间"
+          },
+          "starter": {
+            "type": "integer",
+            "format": "int64",
+            "description": "启动人"
+          },
+          "creator": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建人"
+          },
+          "updater": {
+            "type": "integer",
+            "format": "int64",
+            "description": "更新人"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间"
+          }
+        }
+      },
+      "WorkflowTask": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "任务ID"
+          },
+          "activityInstanceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "活动实例ID"
+          },
+          "taskName": {
+            "type": "string",
+            "description": "任务名称"
+          },
+          "taskType": {
+            "type": "string",
+            "description": "任务类型"
+          },
+          "assignee": {
+            "type": "integer",
+            "format": "int64",
+            "description": "处理人"
+          },
+          "candidateUsers": {
+            "type": "string",
+            "description": "候选人列表"
+          },
+          "candidateGroups": {
+            "type": "string",
+            "description": "候选组列表"
+          },
+          "status": {
+            "type": "string",
+            "description": "任务状态"
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32",
+            "description": "优先级"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间"
+          },
+          "dueTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "到期时间"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "开始时间"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "结束时间"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "持续时间"
+          },
+          "formDataId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "表单数据ID"
+          },
+          "creator": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建人"
+          },
+          "updater": {
+            "type": "integer",
+            "format": "int64",
+            "description": "更新人"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间"
+          }
+        }
+      }
+    }
+  }
+}

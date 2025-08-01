@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.apaas</groupId>
+        <artifactId>apaas-micro</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>apaas-report</artifactId>
+    <version>1.0.0</version>
+    <name>apaas-report</name>
+    <description>APaaS报表服务</description>
+
+    <dependencies>
+        <!-- Spring Cloud OpenFeign with Reactive support -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-reactive-wrappers</artifactId>
+            <version>11.8</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-reactor-spring-cloud-starter</artifactId>
+            <version>3.2.1</version>
+            <type>pom</type>
+        </dependency>
+
+        <!-- apaas-core -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
+        <!-- 报表生成相关依赖 -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

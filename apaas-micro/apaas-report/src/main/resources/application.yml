@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: apaas-report
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/apaas_report
+    username: postgres
+    password: postgres
+  cloud:
+    openfeign:
+      reactive:
+        enabled: true
+
+logging:
+  level:
+    org.springframework.data.r2dbc: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactivefeign: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

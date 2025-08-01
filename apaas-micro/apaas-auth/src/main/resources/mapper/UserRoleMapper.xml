@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.apaas.authorization.mapper.UserRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.apaas.authorization.entity.UserRole">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
+        <result column="tenant_id" property="tenantId"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <!-- 批量插入用户角色关联 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO sys_user_role (
+            user_id,
+            role_id,
+            tenant_id,
+            create_by,
+            create_time,
+            deleted
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.userId},
+                #{item.roleId},
+                #{item.tenantId},
+                #{item.createBy},
+                #{item.createTime},
+                0
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据用户ID删除关联 -->
+    <delete id="deleteByUserId">
+        DELETE FROM sys_user_role
+        WHERE
+            user_id = #{userId}
+            AND tenant_id = #{tenantId}
+    </delete>
+
+    <!-- 根据用户ID和角色ID列表删除关联 -->
+    <delete id="deleteByUserIdAndRoleIds">
+        DELETE FROM sys_user_role
+        WHERE
+            user_id = #{userId}
+            AND role_id IN
+            <foreach collection="roleIds" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            AND tenant_id = #{tenantId}
+    </delete>
+
+</mapper>

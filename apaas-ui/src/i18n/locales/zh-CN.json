@@ -1,0 +1,92 @@
+{
+  "login": {
+    "title": "登录",
+    "username": "用户名",
+    "password": "密码",
+    "rememberMe": "记住我",
+    "loginButton": "登录",
+    "forgotPassword": "忘记密码",
+    "logout": "退出登录"
+  },
+  "menu": {
+    "dashboard": "仪表盘",
+    "flowEngine": "流程引擎",
+    "flowDesign": "流程设计",
+    "flowExecution": "流程执行",
+    "flowMonitoring": "流程监控",
+    "systemManagement": "系统管理",
+    "tenantManagement": "租户管理",
+    "userManagement": "用户管理",
+    "roleManagement": "角色管理",
+    "dictionaryManagement": "数据字典",
+    "systemMonitoring": "系统监控",
+    "operationAudit": "操作审计",
+    "logAnalysis": "日志分析",
+    "monitoringDashboard": "监控面板"
+  },
+  "common": {
+    "add": "新增",
+    "edit": "编辑",
+    "delete": "删除",
+    "view": "查看",
+    "search": "搜索",
+    "reset": "重置",
+    "submit": "提交",
+    "cancel": "取消",
+    "confirm": "确认",
+    "operation": "操作",
+    "createTime": "创建时间",
+    "updateTime": "更新时间",
+    "status": "状态",
+    "profile": "个人资料"
+  },
+  "dashboard": {
+    "welcome": "欢迎回来，",
+    "description": "这里是您的工作台，您可以查看系统的关键指标和统计数据。",
+    "processCount": "流程数量",
+    "completedTasks": "已完成任务",
+    "userCount": "用户数量",
+    "processStatistics": "流程统计",
+    "systemMonitor": "系统监控"
+  },
+  "workflow": {
+    "processDefinition": "流程定义",
+    "processInstance": "流程实例",
+    "task": "任务",
+    "processName": "流程名称",
+    "processKey": "流程标识",
+    "version": "版本",
+    "deploymentTime": "部署时间",
+    "startProcess": "启动流程",
+    "processStatus": "流程状态",
+    "assignee": "处理人",
+    "taskName": "任务名称",
+    "createTime": "创建时间",
+    "completeTask": "完成任务"
+  },
+  "system": {
+    "tenant": {
+      "name": "租户名称",
+      "code": "租户编码",
+      "description": "描述",
+      "status": "状态"
+    },
+    "user": {
+      "username": "用户名",
+      "nickname": "昵称",
+      "email": "邮箱",
+      "phone": "电话",
+      "status": "状态"
+    },
+    "role": {
+      "name": "角色名称",
+      "code": "角色编码",
+      "description": "描述"
+    },
+    "dictionary": {
+      "name": "字典名称",
+      "code": "字典编码",
+      "description": "描述"
+    }
+  }
+}

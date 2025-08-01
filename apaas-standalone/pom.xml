@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>apaas</artifactId>
+        <groupId>org.apaas</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>apaas-standalone</artifactId>
+    <name>apaas-standalone</name>
+    <description>单体服务</description>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- 引入核心模块 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入系统服务相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-system</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入权限服务相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-auth</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入表单引擎相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-form-engine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入流程引擎相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-flow-engine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入设计平台相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-design-platform</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入流程执行相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-flow-execution</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入集成服务相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-integration</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入任务调度相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-job</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入监控服务相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-monitor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入报表服务相关依赖 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-report</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 引入Spring Boot相关依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,110 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /auth
+
+spring:
+  application:
+    name: apaas-auth
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:public}
+      config:
+        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:public}
+        file-extension: yml
+        shared-configs:
+          - data-id: application-common.yml
+            refresh: true
+  config:
+    import:
+      - optional:nacos:application-common.yml
+      - optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:apaas}?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: 0
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: -1ms
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: org.apaas.auth.domain
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  level:
+    org.apaas: info
+    org.springframework: warn
+
+# 认证配置
+auth:
+  # 令牌有效期（默认30分钟）
+  tokenValiditySeconds: 1800
+  # 刷新令牌有效期（默认7天）
+  refreshTokenValiditySeconds: 604800
+  # 客户端配置
+  clients:
+    - clientId: web
+      clientSecret: 123456
+      redirectUris: http://localhost:8080/login/oauth2/code/web
+      scopes: all
+    - clientId: app
+      clientSecret: 123456
+      redirectUris: http://localhost:8080/login/oauth2/code/app
+      scopes: all
+    - clientId: gateway
+      clientSecret: 123456
+      redirectUris: http://localhost:8080/login/oauth2/code/gateway
+      scopes: all
+
+# SpringDoc配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  packages-to-scan: org.apaas.auth.controller
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

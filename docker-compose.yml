@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  apaas-integration:
+    build:
+      context: ./apaas-micro/apaas-integration
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - nacos
+
+  apaas-job:
+    build:
+      context: ./apaas-micro/apaas-job
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - nacos
+
+  apaas-monitor:
+    build:
+      context: ./apaas-micro/apaas-monitor
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - nacos
+
+  nacos:
+    image: nacos/nacos-server:latest
+    ports:
+      - "8848:8848"
+    environment:
+      - MODE=standalone

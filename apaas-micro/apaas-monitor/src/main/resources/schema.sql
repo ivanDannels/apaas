@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS monitor_entities (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    metrics VARCHAR(255)
+);
