@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.web.domain.BasePageQuery;
 import org.apaas.form.domain.entity.FormData;
 import org.apaas.form.engine.service.reactive.ReactiveFormDataService;
@@ -29,7 +29,7 @@ public class ReactiveFormDataController {
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取表单数据列表", description = "分页查询表单数据信息")
-    public Mono<Page<FormData>> list(BasePageQuery query) {
+    public Mono<PageResult<FormData>> list(BasePageQuery query) {
         return formDataService.selectFormDataPage(query);
     }
 

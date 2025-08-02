@@ -1,6 +1,6 @@
 package org.apaas.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 import org.apaas.core.domain.BaseEntity;
 
@@ -8,7 +8,7 @@ import org.apaas.core.domain.BaseEntity;
  * 数据字典类型实体类
  */
 @Data
-@TableName("data_dictionary")
+
 public class DataDictionary extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

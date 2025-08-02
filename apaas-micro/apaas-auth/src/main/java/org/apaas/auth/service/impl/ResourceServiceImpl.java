@@ -28,7 +28,7 @@ public class ResourceServiceImpl implements ResourceService {
     private ResourceRepository resourceRepository;
 
     @Override
-    public Mono<org.springframework.data.domain.Page<Resource>> selectPage(ResourceDTO query, Pageable pageable) {
+    public Mono<org.springframework.data.domain.PageResult<Resource>> selectPage(ResourceDTO query, Pageable pageable) {
         // 构建动态查询条件
         // 由于R2DBC不支持MyBatis Plus的QueryWrapper，需要使用其他方式实现动态查询
         // 这里简化处理，实际项目中可能需要使用R2dbcEntityTemplate或自定义查询

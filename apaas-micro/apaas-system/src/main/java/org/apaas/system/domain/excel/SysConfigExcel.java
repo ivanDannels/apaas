@@ -1,11 +1,10 @@
 package org.apaas.system.domain.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.converters.Converter;
-import com.alibaba.excel.enums.ExcelPropertyFormatProperty;
-import com.alibaba.excel.read.converter.ReadConverterContext;
-import com.alibaba.excel.write.converter.WriteConverterContext;
-import com.alibaba.excel.write.metadata.WriteCellData;
+ import com.alibaba.excel.converters.Converter;
+import com.alibaba.excel.converters.ReadConverterContext;
+import com.alibaba.excel.converters.WriteConverterContext;
+import com.alibaba.excel.metadata.data.WriteCellData;
 import lombok.Data;
 
 /**
@@ -60,7 +59,7 @@ public class SysConfigExcel {
      */
     public static class ConfigTypeConverter implements Converter<Integer> {
         @Override
-        public WriteCellData<String> convertToExcelData(WriteConverterContext<Integer> context) {
+        public WriteCellData<?> convertToExcelData(WriteConverterContext<Integer> context) {
             Integer type = context.getValue();
             if (type == null) {
                 return new WriteCellData<>("");
@@ -69,7 +68,7 @@ public class SysConfigExcel {
         }
 
         @Override
-        public Integer convertToJavaData(ReadConverterContext<String> context) {
+        public Integer convertToJavaData(ReadConverterContext<?> context) {
             String value = context.getReadCellData().getStringValue();
             if (value == null) {
                 return null;
@@ -83,7 +82,7 @@ public class SysConfigExcel {
      */
     public static class StatusConverter implements Converter<Integer> {
         @Override
-        public WriteCellData<String> convertToExcelData(WriteConverterContext<Integer> context) {
+        public WriteCellData<?> convertToExcelData(WriteConverterContext<Integer> context) {
             Integer status = context.getValue();
             if (status == null) {
                 return new WriteCellData<>("");
@@ -92,7 +91,7 @@ public class SysConfigExcel {
         }
 
         @Override
-        public Integer convertToJavaData(ReadConverterContext<String> context) {
+        public Integer convertToJavaData(ReadConverterContext<?> context) {
             String value = context.getReadCellData().getStringValue();
             if (value == null) {
                 return null;

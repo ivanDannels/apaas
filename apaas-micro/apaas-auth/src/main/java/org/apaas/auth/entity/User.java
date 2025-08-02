@@ -1,24 +1,20 @@
-package org.apaas.authorization.entity;
+package org.apaas.auth.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.time.LocalDateTime;
+import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 /**
  * 用户实体类
  */
 @Data
-@TableName("sys_user")
-public class User {
-    /**
-     * 用户ID
-     */
-    @TableId(type = IdType.AUTO)
-    private Long id;
-
+@EqualsAndHashCode(callSuper = true)
+@Table("sys_user")
+public class User extends BaseEntity {
     /**
      * 用户名
      */
@@ -72,25 +68,25 @@ public class User {
     /**
      * 创建人
      */
-    @TableField("create_by")
+    @Column("create_by")
     private String createBy;
 
     /**
      * 创建时间
      */
-    @TableField("create_time")
+    @Column("create_time")
     private LocalDateTime createTime;
 
     /**
      * 更新人
      */
-    @TableField("update_by")
+    @Column("update_by")
     private String updateBy;
 
     /**
      * 更新时间
      */
-    @TableField("update_time")
+    @Column("update_time")
     private LocalDateTime updateTime;
 
     /**

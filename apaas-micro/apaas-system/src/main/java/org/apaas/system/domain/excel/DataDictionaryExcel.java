@@ -2,10 +2,9 @@ package org.apaas.system.domain.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.converters.Converter;
-import com.alibaba.excel.enums.ExcelPropertyFormatProperty;
-import com.alibaba.excel.read.converter.ReadConverterContext;
-import com.alibaba.excel.write.converter.WriteConverterContext;
-import com.alibaba.excel.write.metadata.WriteCellData;
+import com.alibaba.excel.converters.ReadConverterContext;
+import com.alibaba.excel.converters.WriteConverterContext;
+import com.alibaba.excel.metadata.data.WriteCellData;
 import lombok.Data;
 
 /**
@@ -40,11 +39,6 @@ public class DataDictionaryExcel {
         }
 
         @Override
-        public ExcelPropertyFormatProperty supportExcelTypeKey() {
-            return null;
-        }
-
-        @Override
         public Integer convertToJavaData(ReadConverterContext<?> context) {
             String value = context.getReadCellData().getStringValue();
             if ("系统字典".equals(value)) {
@@ -75,11 +69,6 @@ public class DataDictionaryExcel {
         @Override
         public Class<?> supportJavaTypeKey() {
             return Integer.class;
-        }
-
-        @Override
-        public ExcelPropertyFormatProperty supportExcelTypeKey() {
-            return null;
         }
 
         @Override

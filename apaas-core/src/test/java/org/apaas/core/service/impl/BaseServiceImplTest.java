@@ -4,7 +4,10 @@ import org.apaas.core.domain.TestEntity;
 import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.repository.TestEntityRepository;
 import org.apaas.core.service.TestEntityService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.apaas.core.context.TenantContext;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,6 +20,7 @@ import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class BaseServiceImplTest {
@@ -33,6 +37,14 @@ class BaseServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        // 设置测试租户ID
+        TenantContext.setTenantId(1L);
+    }
+
+    @AfterEach
+    void tearDown() {
+        // 清理租户ID
+        TenantContext.clear();
     }
     
     @Test
@@ -55,7 +67,7 @@ class BaseServiceImplTest {
         testEntityService.save(entity)
                 .as(StepVerifier::create)
                 .expectNextMatches(saved -> {
-                    assertEquals("Test Entity", saved.getName());
+                    Assertions.assertEquals("Test Entity", saved.getName());
                     return true;
                 })
                 .verifyComplete();
@@ -80,8 +92,8 @@ class BaseServiceImplTest {
         testEntityService.findById(1L)
                 .as(StepVerifier::create)
                 .expectNextMatches(found -> {
-                    assertEquals(1L, found.getId());
-                    assertEquals("Test Entity", found.getName());
+                    Assertions.assertEquals(1L, found.getId());
+                    Assertions.assertEquals("Test Entity", found.getName());
                     return true;
                 })
                 .verifyComplete();
@@ -99,25 +111,32 @@ class BaseServiceImplTest {
         entity.setName("Test Entity");
         
         // 设置mock行为
-        when(testEntityRepository.findAllByTenantIdAndDeletedFalse(anyLong())).thenReturn(Flux.just(entity));
-        
+        when(testEntityRepository.findAllByTenantIdAndDeletedFalse(anyLong(), eq(null))).thenReturn(Flux.just(entity));
+
         // 执行测试
         testEntityService.findAll()
                 .as(StepVerifier::create)
                 .expectNextMatches(found -> {
-                    assertEquals(1L, found.getId());
-                    assertEquals("Test Entity", found.getName());
+                    Assertions.assertEquals(1L, found.getId());
+                    Assertions.assertEquals("Test Entity", found.getName());
                     return true;
                 })
                 .verifyComplete();
-        
+
         // 验证方法调用
-        verify(testEntityRepository, times(1)).findAllByTenantIdAndDeletedFalse(1L);
+        verify(testEntityRepository, times(1)).findAllByTenantIdAndDeletedFalse(1L, null);
     }
     
     @Test
     void testDeleteById() {
+        // 创建测试实体
+        TestEntity entity = new TestEntity();
+        entity.setId(1L);
+        entity.setTenantId(1L);
+        entity.setName("Test Entity");
+        
         // 设置mock行为
+        when(testEntityRepository.findByIdAndTenantId(anyLong(), anyLong())).thenReturn(Mono.just(entity));
         when(testEntityRepository.deleteByIdAndTenantId(anyLong(), anyLong())).thenReturn(Mono.empty());
         when(redisDomainEventPublisher.publish(any())).thenReturn(Mono.empty());
         
@@ -127,6 +146,7 @@ class BaseServiceImplTest {
                 .verifyComplete();
         
         // 验证方法调用
+        verify(testEntityRepository, times(1)).findByIdAndTenantId(1L, 1L);
         verify(testEntityRepository, times(1)).deleteByIdAndTenantId(1L, 1L);
         verify(redisDomainEventPublisher, times(1)).publish(any());
     }

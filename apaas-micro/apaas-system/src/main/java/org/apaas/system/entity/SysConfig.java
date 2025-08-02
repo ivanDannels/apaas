@@ -1,6 +1,5 @@
 package org.apaas.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.apaas.core.domain.BaseEntity;
 
@@ -8,7 +7,6 @@ import org.apaas.core.domain.BaseEntity;
  * 参数配置实体类
  */
 @Data
-@TableName("sys_config")
 public class SysConfig extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

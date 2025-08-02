@@ -1,6 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.service.BaseService;
 import org.apaas.form.engine.entity.FormDynamicRule;
 import reactor.core.publisher.Flux;
@@ -18,7 +18,7 @@ public interface ReactiveFormDynamicRuleService extends BaseService<FormDynamicR
      * @param pageSize 每页条数
      * @return 分页结果
      */
-    Mono<Page<FormDynamicRule>> selectPage(Long formId, Integer pageNum, Integer pageSize);
+    Mono<PageResult<FormDynamicRule>> selectPage(Long formId, Integer pageNum, Integer pageSize);
 
     /**
      * 根据表单ID查询动态规则列表

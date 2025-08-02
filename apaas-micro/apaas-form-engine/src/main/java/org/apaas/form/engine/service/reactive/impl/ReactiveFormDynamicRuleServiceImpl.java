@@ -3,7 +3,7 @@ package org.apaas.form.engine.service.reactive.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.domain.EntityChangedEvent;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormDynamicRule;
@@ -28,11 +28,11 @@ public class ReactiveFormDynamicRuleServiceImpl extends BaseServiceImpl<FormDyna
     }
 
     @Override
-    public Mono<Page<FormDynamicRule>> selectPage(Long formId, Integer pageNum, Integer pageSize) {
+    public Mono<PageResult<FormDynamicRule>> selectPage(Long formId, Integer pageNum, Integer pageSize) {
         return repository.findByFormIdAndDeletedFalse(formId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort")))
                 .collectList()
                 .zipWith(repository.countByFormIdAndDeletedFalse(formId))
-                .map(tuple -> new Page<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
+                .map(tuple -> new PageResult<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
     }
 
     @Override

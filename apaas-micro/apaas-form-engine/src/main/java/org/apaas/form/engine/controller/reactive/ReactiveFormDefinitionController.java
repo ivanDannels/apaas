@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.form.engine.domain.dto.FormDefinitionDTO;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
@@ -31,7 +31,7 @@ public class ReactiveFormDefinitionController {
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取表单定义列表", description = "分页查询表单定义信息")
-    public Mono<Page<FormDefinition>> list(FormDefinitionDTO query) {
+    public Mono<PageResult<FormDefinition>> list(FormDefinitionDTO query) {
         return formDefinitionService.selectFormDefinitionPage(query);
     }
 

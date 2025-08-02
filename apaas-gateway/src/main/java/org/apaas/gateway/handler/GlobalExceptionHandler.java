@@ -40,7 +40,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
         if (ex instanceof ResponseStatusException) {
-            response.setStatusCode(((ResponseStatusException) ex).getStatus());
+            response.setStatusCode(((ResponseStatusException) ex).getStatusCode());
         }
 
         return response

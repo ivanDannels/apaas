@@ -791,7 +791,7 @@ flowchart LR
 - **微服务框架**：Spring Cloud 2025.0.0、Spring Cloud Alibaba 2023.0.3.3
 - **服务注册发现**：Nacos 3.2
 - **分布式事务**：Spring Cloud Starter Alibaba Seata 2023.0.3.3
-- **ORM框架**：Spring Boot3 JPA Starter 3.5.4
+- **ORM框架**： spring-boot-starter-data-r2dbc 3.5.4
 - **数据库**：PostgreSQL 16.1
 - **缓存**：Redis 7.2.4
 - **分布式锁**：Redisson 3.24.0

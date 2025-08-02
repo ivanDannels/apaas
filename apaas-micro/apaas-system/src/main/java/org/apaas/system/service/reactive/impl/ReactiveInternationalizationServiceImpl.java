@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 响应式国际化服务实现
@@ -17,6 +19,8 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class ReactiveInternationalizationServiceImpl implements ReactiveInternationalizationService {
+    
+    private static final Logger log = LoggerFactory.getLogger(ReactiveInternationalizationServiceImpl.class);
 
     private final MessageSource messageSource;
 

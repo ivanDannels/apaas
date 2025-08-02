@@ -13,7 +13,7 @@ public interface RoleService extends IService<Role> {
     /**
      * 分页查询角色
      */
-    IPage<Role> selectPage(RoleDTO query);
+    IPageResult<Role> selectPage(RoleDTO query);
 
     /**
      * 创建角色

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.auth.domain.dto.UserDTO;
+import org.apaas.auth.domain.PageResult;
 import org.apaas.auth.entity.User;
 import org.apaas.auth.service.reactive.ReactiveUserService;
 import org.springframework.http.MediaType;
@@ -61,7 +62,22 @@ public class ReactiveUserController {
         @Parameter(name = "status", description = "状态：0-启用，1-禁用"),
         @Parameter(name = "deptId", description = "部门ID")
     })
-    public Mono<PageResult<User>> selectPage(UserDTO query) {
+    public Mono<PageResult<User>> selectPage(
+            @RequestParam Integer pageNum,
+            @RequestParam Integer pageSize,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String nickname,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) Long deptId) {
+        UserDTO query = new UserDTO();
+        query.setPageNum(pageNum);
+        query.setPageSize(pageSize);
+        query.setUsername(username);
+        query.setNickname(nickname);
+        query.setPhone(phone);
+        query.setStatus(status);
+        query.setDeptId(deptId);
         return userService.selectPage(query);
     }
 

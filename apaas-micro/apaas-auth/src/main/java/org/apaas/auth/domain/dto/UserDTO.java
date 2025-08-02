@@ -1,4 +1,4 @@
-package org.apaas.authorization.domain.dto;
+package org.apaas.auth.domain.dto;
 
 import lombok.Data;
 import org.apaas.core.web.domain.BasePageQuery;

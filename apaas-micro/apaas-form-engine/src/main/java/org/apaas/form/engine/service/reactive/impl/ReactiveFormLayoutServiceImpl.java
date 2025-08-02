@@ -3,7 +3,7 @@ package org.apaas.form.engine.service.reactive.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.domain.EntityChangedEvent;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormLayout;
@@ -28,11 +28,11 @@ public class ReactiveFormLayoutServiceImpl extends BaseServiceImpl<FormLayout, L
     }
 
     @Override
-    public Mono<Page<FormLayout>> selectPage(Long formId, Integer pageNum, Integer pageSize) {
+    public Mono<PageResult<FormLayout>> selectPage(Long formId, Integer pageNum, Integer pageSize) {
         return repository.findByFormIdAndDeletedFalse(formId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort")))
                 .collectList()
                 .zipWith(repository.countByFormIdAndDeletedFalse(formId))
-                .map(tuple -> new Page<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
+                .map(tuple -> new PageResult<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
     }
 
     @Override

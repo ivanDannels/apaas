@@ -1,6 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.service.BaseService;
 import org.apaas.core.web.domain.BasePageQuery;
 import org.apaas.form.domain.entity.FormData;
@@ -18,7 +18,7 @@ public interface ReactiveFormDataService extends BaseService<FormData, Long> {
      * @param query 查询参数
      * @return 分页结果
      */
-    Mono<Page<FormData>> selectFormDataPage(BasePageQuery query);
+    Mono<PageResult<FormData>> selectFormDataPage(BasePageQuery query);
 
     /**
      * 根据表单编码查询表单数据

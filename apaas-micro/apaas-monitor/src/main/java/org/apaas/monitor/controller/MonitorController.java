@@ -2,37 +2,40 @@ package org.apaas.monitor.controller;
 
 import org.apaas.monitor.entity.MonitorEntity;
 import org.apaas.monitor.service.MonitorService;
-import org.apaas.monitor.utils.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/monitors")
+@RequestMapping("/api/v1/reactive/monitors")
 public class MonitorController {
 
+    private final MonitorService monitorService;
+
     @Autowired
-    private MonitorService monitorService;
-
-    @GetMapping
-    public Mono<AjaxResult<Flux<MonitorEntity>>> getAllMonitors() {
-        return Mono.just(AjaxResult.success(monitorService.findAll()));
+    public MonitorController(MonitorService monitorService) {
+        this.monitorService = monitorService;
     }
 
-    @GetMapping("/{id}")
-    public Mono<AjaxResult<Mono<MonitorEntity>>> getMonitorById(@PathVariable Long id) {
-        return Mono.just(AjaxResult.success(monitorService.findById(id)));
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<MonitorEntity> getAllMonitors() {
+        return monitorService.findAll();
     }
 
-    @PostMapping
-    public Mono<AjaxResult<Mono<MonitorEntity>>> createMonitor(@RequestBody MonitorEntity monitor) {
-        return Mono.just(AjaxResult.success(monitorService.save(monitor)));
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<MonitorEntity> getMonitorById(@PathVariable Long id) {
+        return monitorService.findById(id);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<MonitorEntity> createMonitor(@RequestBody MonitorEntity monitor) {
+        return monitorService.save(monitor);
     }
 
     @DeleteMapping("/{id}")
-    public Mono<AjaxResult<Void>> deleteMonitor(@PathVariable Long id) {
-        return monitorService.deleteById(id)
-                .then(Mono.just(AjaxResult.success()));
+    public Mono<Void> deleteMonitor(@PathVariable Long id) {
+        return monitorService.deleteById(id);
     }
 }

@@ -1,7 +1,5 @@
 package org.apaas.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,7 +10,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_notification")
 public class Notification extends BaseEntity {
 
     /**
@@ -98,6 +95,22 @@ public class Notification extends BaseEntity {
     /**
      * 租户ID
      */
-    @TableField("tenant_id")
     private Long tenantId;
+    
+    // 手动添加setter方法，以防Lombok不工作
+    public void setReadStatus(Integer readStatus) {
+        this.readStatus = readStatus;
+    }
+    
+    public void setReadTime(LocalDateTime readTime) {
+        this.readTime = readTime;
+    }
+    
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
+    }
+    
+    public void setSendTime(LocalDateTime sendTime) {
+        this.sendTime = sendTime;
+    }
 }

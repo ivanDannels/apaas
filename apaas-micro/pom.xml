@@ -19,6 +19,7 @@
         <module>apaas-monitor</module>
         <module>apaas-flow-engine</module>
         <module>apaas-flow-execution</module>
+        <module>apaas-form-engine</module>
         <module>apaas-job</module>
         <module>apaas-integration</module>
         <module>apaas-report</module>
@@ -172,15 +173,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

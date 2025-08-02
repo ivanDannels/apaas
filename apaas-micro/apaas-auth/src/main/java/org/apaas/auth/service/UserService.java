@@ -33,7 +33,7 @@ public interface UserService extends IService<User> {
     /**
      * 分页查询用户
      */
-    IPage<User> selectPage(UserDTO query);
+    IPageResult<User> selectPage(UserDTO query);
 
     /**
      * 更新用户状态

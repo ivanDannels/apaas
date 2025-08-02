@@ -14,22 +14,16 @@
     <description>APaaS平台流程引擎模块</description>
 
     <dependencies>
-        <!-- 核心模块 -->
-        <dependency>
-            <groupId>org.apaas</groupId>
-            <artifactId>apaas-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        
         <!-- 响应式数据库相关依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>io.r2dbc</groupId>
-            <artifactId>r2dbc-postgresql</artifactId>
-        </dependency>
     </dependencies>
+    
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
 </project>

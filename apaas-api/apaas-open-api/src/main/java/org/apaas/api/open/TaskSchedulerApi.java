@@ -2,6 +2,7 @@ package org.apaas.api.open;
 
 import org.apaas.api.common.ApiResponse;
 import org.apaas.api.common.BasePageRequest;
+import org.apaas.api.common.PageResult;
 import org.apaas.api.open.dto.ScheduleTaskDTO;
 import org.apaas.api.open.dto.TaskExecutionLogDTO;
 import org.springframework.web.bind.annotation.*;

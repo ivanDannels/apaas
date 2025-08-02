@@ -81,3 +81,69 @@ public class ReactiveUserServiceImpl implements ReactiveUserService {
         if (query.getPhone() != null && !query.getPhone().isEmpty()) {
             criteria = criteria.and(Criteria.where("phone").like("%" + query.getPhone() + "%"));
         }
+        
+        if (query.getStatus() != null) {
+            criteria = criteria.and(Criteria.where("status").is(query.getStatus()));
+        }
+        
+        if (query.getDeptId() != null) {
+            criteria = criteria.and(Criteria.where("dept_id").is(query.getDeptId()));
+        }
+        
+        // 构建分页查询
+        PageRequest pageRequest = PageRequest.of(query.getPageNum() - 1, query.getPageSize());
+        Query queryObj = Query.query(criteria).with(pageRequest);
+        
+        // 执行查询并构建分页结果
+        return Mono.zip(
+            r2dbcEntityTemplate.count(queryObj, User.class),
+            r2dbcEntityTemplate.select(queryObj, User.class).collectList()
+        ).map(tuple -> PageResult.build(tuple.getT1(), tuple.getT2()));
+
+    @Override
+    public Mono<User> getById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public Mono<Boolean> updateById(User user) {
+        user.setUpdateTime(LocalDateTime.now());
+        return userRepository.save(user)
+                .map(updatedUser -> true)
+                .onErrorReturn(false);
+    }
+
+    @Override
+    public Mono<Boolean> removeById(Long id) {
+        return userRepository.deleteById(id)
+                .then(Mono.just(true))
+                .onErrorReturn(false);
+    }
+
+    @Override
+    public Mono<Boolean> removeByIds(Long[] ids) {
+        return userRepository.deleteAllById(Arrays.asList(ids))
+                .then(Mono.just(true))
+                .onErrorReturn(false);
+    }
+
+    @Override
+    public Mono<User> getCurrentUser() {
+        return ReactiveSecurityContextHolder.getContext()
+                .map(securityContext -> securityContext.getAuthentication().getName())
+                .flatMap(username -> userRepository.findByUsername(username))
+                .switchIfEmpty(Mono.error(new RuntimeException("未找到当前用户")));
+    }
+
+    @Override
+    public Mono<Boolean> updatePassword(String oldPassword, String newPassword) {
+        return getCurrentUser()
+                .filter(user -> passwordEncoder.matches(oldPassword, user.getPassword()))
+                .flatMap(user -> {
+                    user.setPassword(passwordEncoder.encode(newPassword));
+                    user.setUpdateTime(LocalDateTime.now());
+                    return userRepository.save(user);
+                })
+                .map(updatedUser -> true)
+                .onErrorReturn(false);
+    }

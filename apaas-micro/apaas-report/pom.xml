@@ -20,27 +20,13 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        
+
         <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-reactive-wrappers</artifactId>
-            <version>11.8</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
+            <groupId>com.playtika.reactivefeign</groupId>
             <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-            <version>3.2.1</version>
-            <type>pom</type>
+            <version>4.2.1</version>
         </dependency>
 
-        <!-- apaas-core -->
-        <dependency>
-            <groupId>org.apaas</groupId>
-            <artifactId>apaas-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        
         <!-- 报表生成相关依赖 -->
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
@@ -52,6 +38,8 @@
             <artifactId>poi-ooxml</artifactId>
             <version>5.2.3</version>
         </dependency>
+        
+
     </dependencies>
 
     <build>
@@ -60,6 +48,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
 </project>

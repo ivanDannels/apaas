@@ -1,6 +1,5 @@
 package org.apaas.form.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.apaas.core.domain.BaseEntity;
 
@@ -8,7 +7,6 @@ import org.apaas.core.domain.BaseEntity;
  * 表单字段实体
  */
 @Data
-@TableName("form_field")
 public class FormField extends BaseEntity {
     /**
      * 表单定义ID

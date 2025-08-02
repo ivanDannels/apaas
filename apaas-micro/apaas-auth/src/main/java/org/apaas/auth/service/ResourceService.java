@@ -13,7 +13,7 @@ public interface ResourceService {
     /**
      * 分页查询资源
      */
-    Mono<org.springframework.data.domain.Page<Resource>> selectPage(ResourceDTO query, Pageable pageable);
+    Mono<org.springframework.data.domain.PageResult<Resource>> selectPage(ResourceDTO query, Pageable pageable);
 
     /**
      * 创建资源

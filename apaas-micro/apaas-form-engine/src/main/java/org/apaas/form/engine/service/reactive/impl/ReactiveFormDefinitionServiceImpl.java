@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.context.TenantContext;
 import org.apaas.core.domain.EntityChangedEvent;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.core.utils.SecurityUtils;
@@ -34,7 +34,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
     }
 
     @Override
-    public Mono<Page<FormDefinition>> selectFormDefinitionPage(FormDefinitionDTO query) {
+    public Mono<PageResult<FormDefinition>> selectFormDefinitionPage(FormDefinitionDTO query) {
         PageRequest pageRequest = PageRequest.of(
                 query.getPageNum() - 1,
                 query.getPageSize(),
@@ -59,7 +59,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     return Mono.zip(
                             flux.collectList(),
                             repository.countByTenantId(tenantId).defaultIfEmpty(0L),
-                            (list, count) -> new Page<>(list, query.getPageNum(), query.getPageSize(), count)
+                            (list, count) -> new PageResult<>(list, query.getPageNum(), query.getPageSize(), count)
                     );
                 });
     }

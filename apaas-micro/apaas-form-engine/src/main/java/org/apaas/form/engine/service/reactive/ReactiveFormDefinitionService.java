@@ -1,6 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.service.BaseService;
 import org.apaas.form.engine.domain.dto.FormDefinitionDTO;
 import org.apaas.form.engine.entity.FormDefinition;
@@ -17,7 +17,7 @@ public interface ReactiveFormDefinitionService extends BaseService<FormDefinitio
      * @param query 查询条件
      * @return 分页结果
      */
-    Mono<Page<FormDefinition>> selectFormDefinitionPage(FormDefinitionDTO query);
+    Mono<PageResult<FormDefinition>> selectFormDefinitionPage(FormDefinitionDTO query);
 
     /**
      * 保存表单定义

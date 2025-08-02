@@ -3,7 +3,7 @@ package org.apaas.form.engine.service.reactive.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.domain.EntityChangedEvent;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormValidationRule;
@@ -30,11 +30,11 @@ public class ReactiveFormValidationRuleServiceImpl extends BaseServiceImpl<FormV
     }
 
     @Override
-    public Mono<Page<FormValidationRule>> selectPage(Long fieldId, Integer pageNum, Integer pageSize) {
+    public Mono<PageResult<FormValidationRule>> selectPage(Long fieldId, Integer pageNum, Integer pageSize) {
         return repository.findByFieldIdAndDeletedFalse(fieldId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort")))
                 .collectList()
                 .zipWith(repository.countByFieldIdAndDeletedFalse(fieldId))
-                .map(tuple -> new Page<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
+                .map(tuple -> new PageResult<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
     }
 
     @Override

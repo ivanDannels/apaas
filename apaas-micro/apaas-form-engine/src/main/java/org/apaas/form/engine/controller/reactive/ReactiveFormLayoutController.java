@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.form.engine.entity.FormLayout;
 import org.apaas.form.engine.service.reactive.ReactiveFormLayoutService;
 import org.springframework.http.MediaType;
@@ -34,7 +34,7 @@ public class ReactiveFormLayoutController {
         @Parameter(name = "pageNum", description = "页码", required = true),
         @Parameter(name = "pageSize", description = "每页条数", required = true)
     })
-    public Mono<Page<FormLayout>> selectPage(
+    public Mono<PageResult<FormLayout>> selectPage(
             @RequestParam Long formId,
             @RequestParam Integer pageNum,
             @RequestParam Integer pageSize) {

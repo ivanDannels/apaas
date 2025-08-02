@@ -1,6 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.service.BaseService;
 import org.apaas.form.engine.entity.FormValidationRule;
 import reactor.core.publisher.Flux;
@@ -20,7 +20,7 @@ public interface ReactiveFormValidationRuleService extends BaseService<FormValid
      * @param pageSize 每页条数
      * @return 分页结果
      */
-    Mono<Page<FormValidationRule>> selectPage(Long fieldId, Integer pageNum, Integer pageSize);
+    Mono<PageResult<FormValidationRule>> selectPage(Long fieldId, Integer pageNum, Integer pageSize);
 
     /**
      * 根据字段ID查询验证规则列表

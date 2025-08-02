@@ -1,6 +1,5 @@
 package org.apaas.form.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.apaas.core.domain.BaseEntity;
 import java.time.LocalDateTime;
@@ -9,7 +8,6 @@ import java.time.LocalDateTime;
  * 表单定义实体
  */
 @Data
-@TableName("form_definition")
 public class FormDefinition extends BaseEntity {
     /**
      * 表单名称

@@ -38,8 +38,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private RoleResourceMapper roleResourceMapper;
 
     @Override
-    public IPage<Role> selectPage(RoleDTO query) {
-        Page<Role> page = new Page<>(query.getPageNum(), query.getPageSize());
+    public IPageResult<Role> selectPage(RoleDTO query) {
+        PageResult<Role> page = new PageResult<>(query.getPageNum(), query.getPageSize());
         QueryWrapper<Role> wrapper = new QueryWrapper<>();
         wrapper.eq("deleted", 0);
         wrapper.eq("tenant_id", SecurityUtils.getTenantId());

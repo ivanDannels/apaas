@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.core.event.EntityChangedEvent;
 import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
@@ -40,7 +40,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
     }
 
     @Override
-    public Mono<Page<FormData>> selectFormDataPage(BasePageQuery query) {
+    public Mono<PageResult<FormData>> selectFormDataPage(BasePageQuery query) {
         PageRequest pageRequest = PageRequest.of(query.getPageNum() - 1, query.getPageSize(), Sort.by(Sort.Direction.DESC, "createTime"));
         
         return repository.findByTenantIdAndDeleted(SecurityUtils.getTenantId(), 0, pageRequest)
@@ -49,7 +49,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
                 .map(tuple -> {
                     List<FormData> content = tuple.getT1();
                     long total = tuple.getT2();
-                    return new Page<>(content, total, query.getPageNum(), query.getPageSize());
+                    return new PageResult<>(content, total, query.getPageNum(), query.getPageSize());
                 });
     }
 

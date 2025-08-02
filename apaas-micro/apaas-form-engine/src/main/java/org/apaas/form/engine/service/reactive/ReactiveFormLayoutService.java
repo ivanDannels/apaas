@@ -1,6 +1,7 @@
 package org.apaas.form.engine.service.reactive;
 
 import org.apaas.core.service.BaseService;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.form.engine.entity.FormLayout;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,7 +18,7 @@ public interface ReactiveFormLayoutService extends BaseService<FormLayout, Long>
      * @param pageSize 每页条数
      * @return 分页结果
      */
-    Mono<org.apaas.core.domain.Page<FormLayout>> selectPage(Long formId, Integer pageNum, Integer pageSize);
+    Mono<PageResult<FormLayout>> selectPage(Long formId, Integer pageNum, Integer pageSize);
 
     /**
      * 根据表单ID查询布局列表

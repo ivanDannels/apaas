@@ -2,12 +2,14 @@ package org.apaas.core.web.domain;
 
 import org.springframework.data.domain.Page;
 
+import java.io.Serial;
 import java.util.List;
 
 /**
  * 分页返回结果
  */
 public class PageResult<T> extends AjaxResult {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /** 总记录数 */
@@ -34,8 +36,8 @@ public class PageResult<T> extends AjaxResult {
      * @param page 分页对象
      * @return 分页返回结果
      */
-    public static <T> PageResult<List<T>> build(Page<T> page) {
-        return new PageResult<List<T>>(page.getTotalElements(), page.getContent());
+    public static <T> PageResult<List<T>> build(PageResult<T> page) {
+        return new PageResult<>(page.getTotalElements(), page.getContent());
     }
 
     /** 构建分页返回结果

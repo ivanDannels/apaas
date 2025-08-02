@@ -3,8 +3,8 @@ package org.apaas.system.utils;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -24,13 +24,12 @@ public class ExcelUtils {
      * @param fileName 文件名
      * @throws IOException IO异常
      */
-    public static <T> void exportExcel(HttpServletResponse response, List<T> data, Class<T> clazz, String fileName) throws IOException {
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setCharacterEncoding("utf-8");
-        // 这里URLEncoder.encode可以防止中文乱码
-        String encodedFileName = URLEncoder.encode(fileName, "UTF-8");
-        response.setHeader("Content-disposition", "attachment;filename*=UTF-8''" + encodedFileName + ".xlsx");
-        EasyExcel.write(response.getOutputStream(), clazz)
+    public static <T> void exportExcel(ServerHttpResponse response, List<T> data, Class<T> clazz, String fileName) throws IOException {
+        response.getHeaders().add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.getHeaders().add("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8") + ".xlsx");
+        
+        // 将数据写入响应
+        EasyExcel.write(response.getBody(), clazz)
                 .excelType(ExcelTypeEnum.XLSX)
                 .sheet("数据")
                 .doWrite(data);

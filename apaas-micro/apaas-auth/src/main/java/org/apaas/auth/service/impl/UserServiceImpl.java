@@ -116,8 +116,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public IPage<User> selectPage(UserDTO query) {
-        Page<User> page = new Page<>(query.getPageNum(), query.getPageSize());
+    public IPageResult<User> selectPage(UserDTO query) {
+        PageResult<User> page = new PageResult<>(query.getPageNum(), query.getPageSize());
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("deleted", 0);
         wrapper.eq("tenant_id", SecurityUtils.getTenantId());

@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.constant.SecurityConstants;
 import org.apaas.core.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
+import java.util.Date;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.Ordered;
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AuthGlobalFilter extends AbstractGatewayFilterFactory<Object> implements GlobalFilter, Ordered {
+public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
@@ -60,18 +62,23 @@ public class AuthGlobalFilter extends AbstractGatewayFilterFactory<Object> imple
             }
 
             // 解析token
-            JwtUtils.JwtPayload payload = JwtUtils.parseToken(token);
+            Claims payload = JwtUtils.parseToken(token);
             if (payload == null) {
                 return setUnauthorizedResponse(response, "令牌无效");
             }
 
             // 检查token是否过期
-            if (payload.isExpired()) {
+            Date expiration = payload.getExpiration();
+            if (expiration != null && expiration.before(new Date())) {
                 return setUnauthorizedResponse(response, "令牌已过期");
             }
 
+            // 获取用户信息
+            Long userId = payload.get("userId", Long.class);
+            String username = payload.getSubject();
+
             // 获取用户权限
-            List<String> permissions = (List<String>) redisTemplate.opsForValue().get(SecurityConstants.USER_PERMISSIONS_PREFIX + payload.getUserId());
+            List<String> permissions = (List<String>) redisTemplate.opsForValue().get(SecurityConstants.USER_PERMISSIONS_PREFIX + userId);
             if (permissions == null) {
                 permissions = new ArrayList<>();
             }
@@ -82,7 +89,7 @@ public class AuthGlobalFilter extends AbstractGatewayFilterFactory<Object> imple
                     .collect(Collectors.toList());
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    payload.getUsername(), null, authorities);
+                    username, null, authorities);
 
             return chain.filter(exchange)
                     .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authToken));

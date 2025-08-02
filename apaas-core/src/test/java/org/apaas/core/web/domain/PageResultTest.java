@@ -14,10 +14,10 @@ class PageResultTest {
     void testBuildWithPage() {
         // 创建测试数据
         List<String> content = Arrays.asList("item1", "item2", "item3");
-        Page<String> page = new PageImpl<>(content);
+        PageResult<String> page = new PageImpl<>(content);
         
         // 测试build方法
-        PageResult<String> result = PageResult.build(page);
+        PageResult<List<String>> result = PageResult.build(page);
         
         // 验证结果
         assertNotNull(result);

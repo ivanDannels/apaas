@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apaas.core.domain.Page;
+import org.apaas.core.web.domain.PageResult;
 import org.apaas.form.engine.entity.FormValidationRule;
 import org.apaas.form.engine.service.reactive.ReactiveFormValidationRuleService;
 import org.springframework.http.MediaType;
@@ -36,7 +36,7 @@ public class ReactiveFormValidationRuleController {
         @Parameter(name = "pageNum", description = "页码", required = true),
         @Parameter(name = "pageSize", description = "每页条数", required = true)
     })
-    public Mono<Page<FormValidationRule>> selectPage(
+    public Mono<PageResult<FormValidationRule>> selectPage(
             @RequestParam Long fieldId,
             @RequestParam Integer pageNum,
             @RequestParam Integer pageSize) {
