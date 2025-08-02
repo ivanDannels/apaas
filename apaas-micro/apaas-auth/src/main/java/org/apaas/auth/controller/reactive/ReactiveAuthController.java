@@ -1,0 +1,114 @@
+package org.apaas.auth.controller.reactive;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apaas.auth.domain.LoginUser;
+import org.apaas.auth.feign.reactive.ReactiveSystemFeignClient;
+import org.apaas.auth.service.reactive.ReactiveAuthService;
+import org.apaas.core.utils.IpUtils;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+
+/**
+ * 响应式认证控制器
+ */
+@Slf4j
+@RestController
+@RequestMapping("/api/v1/reactive/auth")
+@RequiredArgsConstructor
+@Tag(name = "响应式认证管理", description = "响应式认证相关接口")
+public class ReactiveAuthController {
+
+    private final ReactiveAuthenticationManager authenticationManager;
+    private final ReactiveSystemFeignClient systemFeignClient;
+    private final ReactiveAuthService authService;
+
+    /**
+     * 登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 结果
+     */
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "登录", description = "用户登录接口")
+    public Mono<LoginUser> login(
+            @Parameter(description = "用户名", required = true)
+            @RequestParam String username,
+            @Parameter(description = "密码", required = true)
+            @RequestParam String password,
+            ServerHttpRequest request) {
+        
+        // 用户认证
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password))
+                .flatMap(authentication -> {
+                    // 获取登录用户信息
+                    LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+                    
+                    // 记录登录信息
+                    String ipAddr = IpUtils.getIpAddr(request);
+                    return systemFeignClient.recordLoginInfo(username, ipAddr)
+                            .thenReturn(loginUser);
+                });
+    }
+
+    /**
+     * 获取当前用户信息
+     *
+     * @return 用户信息
+     */
+    @GetMapping(value = "/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "获取当前用户信息", description = "获取当前登录用户信息")
+    public Mono<LoginUser> getUserInfo(Authentication authentication) {
+        if (authentication instanceof JwtAuthenticationToken) {
+            Jwt jwt = ((JwtAuthenticationToken) authentication).getToken();
+            String username = jwt.getSubject();
+            
+            // 根据用户名获取用户信息
+            return systemFeignClient.getUserByUsername(username)
+                    .flatMap(user -> {
+                        if (user == null) {
+                            return Mono.error(new RuntimeException("用户不存在"));
+                        }
+                        
+                        LoginUser loginUser = new LoginUser();
+                        loginUser.setId(user.getId());
+                        loginUser.setUsername(user.getUsername());
+                        loginUser.setRealName(user.getRealName());
+                        loginUser.setEmail(user.getEmail());
+                        loginUser.setPhone(user.getPhone());
+                        loginUser.setStatus(user.getStatus());
+                        
+                        // 获取用户权限
+                        return systemFeignClient.getUserPermissions(user.getId())
+                                .map(permissions -> {
+                                    loginUser.setPermissions(permissions);
+                                    return loginUser;
+                                });
+                    });
+        }
+        return Mono.error(new RuntimeException("获取用户信息失败"));
+    }
+
+    /**
+     * 登出
+     *
+     * @return 结果
+     */
+    @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "登出", description = "用户登出接口")
+    public Mono<Void> logout() {
+        return authService.logout();
+    }
+}

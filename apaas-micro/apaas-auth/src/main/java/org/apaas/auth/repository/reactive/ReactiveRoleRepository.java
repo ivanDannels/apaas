@@ -1,0 +1,28 @@
+package org.apaas.auth.repository.reactive;
+
+import org.apaas.auth.entity.Role;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+/**
+ * 响应式角色仓库接口
+ */
+public interface ReactiveRoleRepository extends R2dbcRepository<Role, Long> {
+
+    /**
+     * 根据角色编码查询角色
+     *
+     * @param code 角色编码
+     * @return 角色信息
+     */
+    Mono<Role> findByCode(String code);
+
+    /**
+     * 根据状态查询角色
+     *
+     * @param status 状态
+     * @return 角色列表
+     */
+    Flux<Role> findByStatus(Integer status);
+}
