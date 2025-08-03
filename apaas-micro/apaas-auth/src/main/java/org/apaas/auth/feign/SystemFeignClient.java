@@ -1,7 +1,6 @@
 package org.apaas.auth.feign;
 
-import org.apaas.core.web.domain.AjaxResult;
-import org.apaas.system.domain.entity.SysUser;
+import org.apaas.auth.entity.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 系统服务Feign客户端
+ * @author ivan
  */
 @FeignClient(name = "apaas-system", path = "/system")
 public interface SystemFeignClient {
@@ -20,7 +20,7 @@ public interface SystemFeignClient {
      * @return 用户信息
      */
     @GetMapping("/user/info")
-    SysUser getUserByUsername(@RequestParam("username") String username);
+    User getUserByUsername(@RequestParam("username") String username);
 
     /**
      * 获取用户权限
@@ -39,5 +39,5 @@ public interface SystemFeignClient {
      * @return 结果
      */
     @GetMapping("/user/login")
-    AjaxResult<Void> recordLoginInfo(@RequestParam("username") String username, @RequestParam("ip") String ip);
+    void recordLoginInfo(@RequestParam("username") String username, @RequestParam("ip") String ip);
 }

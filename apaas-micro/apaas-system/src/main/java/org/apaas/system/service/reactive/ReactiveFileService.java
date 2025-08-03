@@ -1,17 +1,16 @@
 package org.apaas.system.service.reactive;
 
+import org.apaas.core.service.BaseService;
+import org.apaas.system.entity.Files;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
-import java.io.InputStream;
 
 /**
  * 响应式文件服务接口
+ * @author ivan
  */
-@Service
-public interface ReactiveFileService {
+public interface ReactiveFileService extends BaseService<Files,  Long> {
 
     /**
      * 上传文件
@@ -62,4 +61,6 @@ public interface ReactiveFileService {
      * @return 文件访问URL
      */
     Mono<String> getFileUrl(String fileName);
+
+    Mono<Files> getFilePath(String filePath);
 }

@@ -1,7 +1,9 @@
 package org.apaas.system.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
+import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.SysConfigDTO;
 import org.apaas.system.entity.SysConfig;
 import org.apaas.system.repository.SysConfigRepository;
@@ -22,38 +24,40 @@ import java.util.List;
 
 /**
  * 响应式参数配置服务实现
+ * @author ivan
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class ReactiveSysConfigServiceImpl implements ReactiveSysConfigService {
+public class ReactiveSysConfigServiceImpl extends BaseServiceImpl<SysConfig, Long, SysConfigRepository> implements ReactiveSysConfigService {
 
-    private final SysConfigRepository configRepository;
+    public ReactiveSysConfigServiceImpl(SysConfigRepository repository, RedisDomainEventPublisher<EntityChangedEvent<SysConfig>> eventPublisher) {
+        super(repository, eventPublisher);
+    }
 
     @Override
     public Flux<SysConfig> getConfigPage(Pageable pageable, SysConfigDTO query) {
         // 这里需要根据实际需求实现分页查询逻辑
         // 暂时返回所有配置
-        return configRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Mono<Boolean> addConfig(SysConfig config) {
-        return configRepository.save(config)
+        return repository.save(config)
                 .map(savedConfig -> true)
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> updateConfig(SysConfig config) {
-        return configRepository.save(config)
+        return repository.save(config)
                 .map(updatedConfig -> true)
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> deleteConfig(Long id) {
-        return configRepository.deleteById(id)
+        return repository.deleteById(id)
                 .then(Mono.just(true))
                 .onErrorReturn(false);
     }
@@ -61,18 +65,18 @@ public class ReactiveSysConfigServiceImpl implements ReactiveSysConfigService {
     @Override
     public Mono<Boolean> batchDeleteConfig(List<Long> ids) {
         return Flux.fromIterable(ids)
-                .flatMap(id -> configRepository.deleteById(id))
+                .flatMap(id -> repository.deleteById(id))
                 .then(Mono.just(true))
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> changeStatus(Long id, Integer status) {
-        return configRepository.findById(id)
+        return repository.findById(id)
                 .flatMap(config -> {
                     config.setStatus(status);
                     config.setUpdatedTime(LocalDateTime.now());
-                    return configRepository.save(config);
+                    return repository.save(config);
                 })
                 .map(updatedConfig -> true)
                 .onErrorReturn(false);
@@ -80,7 +84,7 @@ public class ReactiveSysConfigServiceImpl implements ReactiveSysConfigService {
 
     @Override
     public Mono<SysConfig> getConfigByCode(String code) {
-        return configRepository.findByCode(code);
+        return repository.findByCode(code);
     }
 
     @Override

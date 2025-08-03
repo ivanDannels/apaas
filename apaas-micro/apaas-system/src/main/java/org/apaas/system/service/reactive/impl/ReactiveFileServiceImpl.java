@@ -1,7 +1,11 @@
 package org.apaas.system.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
+import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.system.entity.Files;
+import org.apaas.system.repository.FilesRepository;
 import org.apaas.system.service.reactive.ReactiveFileService;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -9,16 +13,19 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.io.InputStream;
 import java.util.UUID;
 
 /**
  * 响应式文件服务实现
+ * @author ivan
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class ReactiveFileServiceImpl implements ReactiveFileService {
+public class ReactiveFileServiceImpl extends BaseServiceImpl<Files, Long, FilesRepository> implements ReactiveFileService {
+
+    public ReactiveFileServiceImpl(FilesRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Files>> eventPublisher) {
+        super(repository, eventPublisher);
+    }
 
     @Override
     public Mono<String> uploadFile(FilePart file) {
@@ -60,5 +67,14 @@ public class ReactiveFileServiceImpl implements ReactiveFileService {
         // 这里需要实现文件URL获取逻辑
         // 暂时返回模拟的文件URL
         return Mono.just("http://localhost:8080/files/" + fileName);
+    }
+
+    /**
+     * @param filePath
+     * @return
+     */
+    @Override
+    public Mono<Files> getFilePath(String filePath) {
+        return null;
     }
 }

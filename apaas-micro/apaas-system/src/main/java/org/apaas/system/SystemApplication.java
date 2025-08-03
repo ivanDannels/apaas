@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 系统服务启动类
+ * @author ivan
  */
 @SpringBootApplication
 @EnableDiscoveryClient

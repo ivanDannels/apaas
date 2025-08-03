@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
+import org.apaas.core.query.Query;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.form.engine.domain.dto.FormDefinitionDTO;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
@@ -22,36 +24,34 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/reactive/form-definitions")
 @Tag(name = "响应式表单定义管理", description = "响应式表单定义相关操作")
 @RequiredArgsConstructor
-public class ReactiveFormDefinitionController {
-
-    private final ReactiveFormDefinitionService formDefinitionService;
+public class ReactiveFormDefinitionController extends ReactiveBaseController<FormDefinition, Long, ReactiveFormDefinitionService> {
 
     /**
      * 获取表单定义列表
      */
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/page", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取表单定义列表", description = "分页查询表单定义信息")
-    public Mono<PageResult<FormDefinition>> list(FormDefinitionDTO query) {
-        return formDefinitionService.selectFormDefinitionPage(query);
+    public Mono<PageResult<FormDefinition>> list(@RequestBody Query query) {
+        return service.selectPage(query);
     }
 
     /**
      * 获取表单定义详情
      */
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     @Operation(summary = "获取表单定义详情", description = "根据ID查询表单定义信息")
     @Parameter(name = "id", description = "表单ID", required = true)
-    public Mono<FormDefinition> getById(@PathVariable Long id) {
-        return formDefinitionService.findById(id);
+    public Mono<FormDefinition> get(@PathVariable Long id) {
+        return super.get(id);
     }
 
     /**
      * 创建表单定义
      */
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     @Operation(summary = "创建表单定义", description = "新增表单定义信息")
-    public Mono<Long> save(@RequestBody FormDefinition formDefinition) {
-        return formDefinitionService.saveFormDefinition(formDefinition);
+    public Mono<FormDefinition> add(@RequestBody FormDefinition formDefinition) {
+        return service.saveFormDefinition(formDefinition).then(super.add(formDefinition));
     }
 
     /**
@@ -60,19 +60,64 @@ public class ReactiveFormDefinitionController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "更新表单定义", description = "修改表单定义信息")
     @Parameter(name = "id", description = "表单ID", required = true)
-    public Mono<Boolean> update(@PathVariable Long id, @RequestBody FormDefinition formDefinition) {
+    public Mono<FormDefinition> update(@PathVariable Long id, @RequestBody FormDefinition formDefinition) {
         formDefinition.setId(id);
-        return formDefinitionService.updateFormDefinition(formDefinition);
+        return service.updateFormDefinition(formDefinition).then(super.update(formDefinition));
     }
 
     /**
      * 删除表单定义
      */
-    @DeleteMapping(value = "/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "删除表单定义", description = "批量删除表单定义")
-    @Parameter(name = "ids", description = "表单ID集合", required = true)
-    public Mono<Boolean> remove(@PathVariable Long[] ids) {
-        return formDefinitionService.deleteFormDefinitions(ids);
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "删除表单定义", description = "删除表单定义")
+    @Parameter(name = "id", description = "表单ID", required = true)
+    public Mono<Void> delete(@PathVariable Long id) {
+        return service.deleteFormDefinitions(new Long[]{id}).then(super.delete(id));
+    }
+    
+    /**
+     * 批量删除表单定义
+     */
+    @DeleteMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量删除表单定义", description = "批量删除表单定义")
+    public Mono<Void> deleteBatch(@RequestBody Long[] ids) {
+        return service.deleteByIds(Flux.fromArray(ids)).then(Mono.empty());
+    }
+    
+    /**
+     * 批量新增表单定义
+     */
+    @PostMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量新增表单定义", description = "批量新增表单定义")
+    public Flux<FormDefinition> addBatch(@RequestBody Flux<FormDefinition> forms) {
+        return service.saveBatch(forms);
+    }
+    
+    /**
+     * 批量更新表单定义
+     */
+    @PutMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量更新表单定义", description = "批量更新表单定义")
+    public Flux<FormDefinition> updateBatch(@RequestBody Flux<FormDefinition> forms) {
+        return service.updateBatch(forms);
+    }
+    
+    /**
+     * 导出表单定义
+     */
+    @PostMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "导出表单定义", description = "导出表单定义")
+    public Mono<byte[]> export(@RequestBody Query query) {
+        return service.export(query);
+    }
+    
+    /**
+     * 导入表单定义
+     */
+    @PostMapping(value = "/import", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "导入表单定义", description = "导入表单定义")
+    public Mono<Void> importData(@RequestBody byte[] data) {
+        return service.importData(data);
     }
 
     /**
@@ -81,8 +126,8 @@ public class ReactiveFormDefinitionController {
     @PostMapping(value = "/publish/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "发布表单定义", description = "发布表单定义为可用状态")
     @Parameter(name = "id", description = "表单ID", required = true)
-    public Mono<Boolean> publish(@PathVariable Long id) {
-        return formDefinitionService.publishFormDefinition(id);
+    public Mono<Void> publish(@PathVariable Long id) {
+        return service.publishFormDefinition(id).then(Mono.empty());
     }
 
     /**
@@ -91,8 +136,8 @@ public class ReactiveFormDefinitionController {
     @PostMapping(value = "/disable/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "停用表单定义", description = "将表单定义设置为停用状态")
     @Parameter(name = "id", description = "表单ID", required = true)
-    public Mono<Boolean> disable(@PathVariable Long id) {
-        return formDefinitionService.disableFormDefinition(id);
+    public Mono<Void> disable(@PathVariable Long id) {
+        return service.disableFormDefinition(id).then(Mono.empty());
     }
 
     /**
@@ -102,7 +147,7 @@ public class ReactiveFormDefinitionController {
     @Operation(summary = "获取表单版本列表", description = "根据表单编码查询所有版本")
     @Parameter(name = "code", description = "表单编码", required = true)
     public Flux<FormDefinition> getVersionsByCode(@PathVariable String code) {
-        return formDefinitionService.getVersionsByCode(code);
+        return service.getVersionsByCode(code);
     }
 
     /**
@@ -112,7 +157,7 @@ public class ReactiveFormDefinitionController {
     @Operation(summary = "复制表单定义", description = "复制现有表单定义创建新表单")
     @Parameter(name = "id", description = "表单ID", required = true)
     public Mono<Long> copy(@PathVariable Long id, @RequestParam String newName) {
-        return formDefinitionService.copyFormDefinition(id, newName);
+        return service.copyFormDefinition(id, newName);
     }
 
     /**
@@ -122,7 +167,7 @@ public class ReactiveFormDefinitionController {
     @Operation(summary = "导出表单定义", description = "导出表单定义为JSON文件")
     @Parameter(name = "id", description = "表单ID", required = true)
     public Mono<ResponseEntity<byte[]>> export(@PathVariable Long id) {
-        return formDefinitionService.exportFormDefinition(id)
+        return service.exportFormDefinition(id)
                 .map(data -> ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=form-" + id + ".json")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,6 +180,6 @@ public class ReactiveFormDefinitionController {
     @PostMapping(value = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "导入表单定义", description = "从JSON数据导入表单定义")
     public Mono<Long> importForm(@RequestBody byte[] data) {
-        return formDefinitionService.importFormDefinition(data);
+        return service.importFormDefinition(data);
     }
 }

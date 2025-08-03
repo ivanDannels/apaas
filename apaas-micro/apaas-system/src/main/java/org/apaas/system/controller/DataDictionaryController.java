@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
 import org.apaas.system.entity.DataDictionary;
 import org.apaas.system.service.reactive.ReactiveDataDictionaryService;
@@ -20,14 +21,16 @@ import java.io.IOException;
 
 /**
  * 响应式数据字典控制器
+ * @author ivan
  */
 @RestController
 @RequestMapping("/api/v1/reactive/data-dictionaries")
 @Tag(name = "响应式数据字典管理", description = "响应式数据字典相关操作")
-@RequiredArgsConstructor
-public class DataDictionaryController {
+public class DataDictionaryController extends ReactiveBaseController<DataDictionary, Long, ReactiveDataDictionaryService> {
 
-    private final ReactiveDataDictionaryService dataDictionaryService;
+    public DataDictionaryController(ReactiveDataDictionaryService service) {
+        super(service);
+    }
 
     /**
      * 分页查询数据字典
@@ -52,7 +55,7 @@ public class DataDictionaryController {
         query.setName(name);
         query.setType(type);
         query.setStatus(status);
-        return dataDictionaryService.selectPage(pageable, query);
+        return service.selectPage(pageable, query);
     }
 
     /**
@@ -68,8 +71,7 @@ public class DataDictionaryController {
         // 临时实现：假设通过分页查询并过滤来获取单个结果
         Pageable pageable = Pageable.ofSize(1);
         DataDictionaryDTO query = new DataDictionaryDTO();
-        query.setId(id);
-        return dataDictionaryService.selectPage(pageable, query)
+        return service.selectPage(pageable, query)
                 .next()
                 .switchIfEmpty(Mono.error(new RuntimeException("数据字典不存在")));
     }
@@ -80,7 +82,7 @@ public class DataDictionaryController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建数据字典", description = "创建新的数据字典")
     public Mono<Boolean> create(@RequestBody DataDictionary dataDictionary) {
-        return dataDictionaryService.create(dataDictionary);
+        return service.create(dataDictionary);
     }
 
     /**
@@ -91,17 +93,7 @@ public class DataDictionaryController {
     @Parameter(name = "id", description = "数据字典ID", required = true)
     public Mono<Boolean> update(@PathVariable Long id, @RequestBody DataDictionary dataDictionary) {
         dataDictionary.setId(id);
-        return dataDictionaryService.update(dataDictionary);
-    }
-
-    /**
-     * 删除数据字典
-     */
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "删除数据字典", description = "删除数据字典")
-    @Parameter(name = "id", description = "数据字典ID", required = true)
-    public Mono<Boolean> delete(@PathVariable Long id) {
-        return dataDictionaryService.delete(id);
+        return service.update(dataDictionary);
     }
 
     /**
@@ -110,7 +102,7 @@ public class DataDictionaryController {
     @GetMapping(value = "/export", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(summary = "导出数据字典", description = "导出数据字典")
     public Mono<Void> exportExcel(ServerWebExchange exchange, DataDictionaryDTO query) {
-        return dataDictionaryService.exportExcel(exchange, query);
+        return service.exportExcel(exchange, query);
     }
 
     /**
@@ -136,6 +128,6 @@ public class DataDictionaryController {
         @Parameter(name = "status", description = "状态：0-正常，1-停用", required = true)
     })
     public Mono<Boolean> changeStatus(@PathVariable Long id, @RequestParam Integer status) {
-        return dataDictionaryService.changeStatus(id, status);
+        return service.changeStatus(id, status);
     }
 }

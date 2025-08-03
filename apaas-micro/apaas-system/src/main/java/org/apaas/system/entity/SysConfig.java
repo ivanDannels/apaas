@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * 参数配置实体类
+ * @author ivan
  */
 @Data
 @SuperBuilder

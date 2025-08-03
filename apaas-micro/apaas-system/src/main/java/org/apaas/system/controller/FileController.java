@@ -1,30 +1,27 @@
-package org.apaas.system.controller.reactive;
+package org.apaas.system.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.system.entity.Files;
 import org.apaas.system.service.reactive.ReactiveFileService;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,12 +31,14 @@ import java.util.concurrent.Executors;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/reactive/files")
-@RequiredArgsConstructor
 @Tag(name = "文件管理", description = "文件上传下载接口")
-public class FileController {
+public class FileController extends ReactiveBaseController<Files, Long, ReactiveFileService> {
 
-    private final ReactiveFileService fileService;
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+    public FileController(ReactiveFileService service) {
+        super(service);
+    }
 
     /**
      * 上传文件
@@ -49,13 +48,11 @@ public class FileController {
      */
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "上传文件", description = "上传文件并返回访问URL")
-    public Mono<String> upload(
-            @Parameter(description = "文件", required = true)
-            @RequestPart("file") FilePart file) {
-        if (file.isEmpty()) {
+    public Mono<String> upload(@Parameter(description = "文件", required = true) @RequestPart("file") FilePart file) {
+        if (Objects.isNull(file)) {
             return Mono.error(new IllegalArgumentException("上传文件不能为空"));
         }
-        return fileService.uploadFile(file);
+        return service.uploadFile(file);
     }
 
     /**
@@ -72,21 +69,21 @@ public class FileController {
             ServerWebExchange exchange) {
         ServerHttpResponse response = exchange.getResponse();
 
-        return fileService.getFilePath(fileUrl)
-                .flatMap(path -> {
+        return service.getFilePath(fileUrl)
+                .flatMap(file -> {
                     try {
+                        Path path = Path.of(fileUrl);
                         // 获取文件名
-                        String fileName = path.getFileName().toString();
+                        String fileName = file.getFileName().toString();
                         // 设置响应头
                         response.getHeaders().setContentType(MediaType.APPLICATION_OCTET_STREAM);
                         response.getHeaders().setContentDispositionFormData("attachment", fileName);
 
                         // 异步读取文件
-                        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(
-                                path, StandardOpenOption.READ);
+                        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ);
 
                         DataBufferFactory bufferFactory = response.bufferFactory();
-                        long fileSize = Files.size(path);
+                        long fileSize = java.nio.file.Files.size(path);
                         ByteBuffer buffer = ByteBuffer.allocate(8192);
 
                         return readFile(fileChannel, buffer, bufferFactory, response, 0, fileSize);
@@ -106,8 +103,7 @@ public class FileController {
     /**
      * 异步读取文件并写入响应
      */
-    private Mono<Void> readFile(AsynchronousFileChannel fileChannel, ByteBuffer buffer, 
-                               DataBufferFactory bufferFactory, ServerHttpResponse response, 
+    private Mono<Void> readFile(AsynchronousFileChannel fileChannel, ByteBuffer buffer, DataBufferFactory bufferFactory, ServerHttpResponse response,
                                long position, long fileSize) {
         if (position >= fileSize) {
             return Mono.empty();
@@ -152,7 +148,7 @@ public class FileController {
     public Mono<Boolean> delete(
             @Parameter(description = "文件URL", required = true)
             @RequestParam("fileUrl") String fileUrl) {
-        return fileService.deleteFile(fileUrl)
+        return service.deleteFile(fileUrl)
                 .onErrorReturn(false);
     }
 
@@ -173,20 +169,19 @@ public class FileController {
         ServerHttpResponse response = exchange.getResponse();
         String filePath = year + "/" + month + "/" + day + "/" + fileName;
 
-        return fileService.getFilePath(filePath)
-                .flatMap(path -> {
+        return service.getFilePath(filePath).flatMap(file -> {
                     try {
+                        Path path = Path.of(file.getFilePath());
                         // 获取文件类型
                         MediaType mediaType = getMediaType(fileName);
                         // 设置响应头
                         response.getHeaders().setContentType(mediaType);
 
                         // 异步读取文件
-                        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(
-                                path, StandardOpenOption.READ);
+                        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ);
 
                         DataBufferFactory bufferFactory = response.bufferFactory();
-                        long fileSize = Files.size(path);
+                        long fileSize = java.nio.file.Files.size(path);
                         ByteBuffer buffer = ByteBuffer.allocate(8192);
 
                         return readFile(fileChannel, buffer, bufferFactory, response, 0, fileSize);
@@ -197,7 +192,7 @@ public class FileController {
                     }
                 })
                 .onErrorResume(e -> {
-                    log.error("获取文件失败", e);
+                    log.error("获取文件失败");
                     response.setStatusCode(org.springframework.http.HttpStatus.NOT_FOUND);
                     return response.setComplete();
                 });

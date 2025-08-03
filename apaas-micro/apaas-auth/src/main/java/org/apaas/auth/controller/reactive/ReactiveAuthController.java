@@ -1,5 +1,6 @@
 package org.apaas.auth.controller.reactive;
 
+import io.reactivex.rxjava3.core.Single;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.auth.domain.LoginUser;
 import org.apaas.auth.feign.reactive.ReactiveSystemFeignClient;
-import org.apaas.auth.service.reactive.ReactiveAuthService;
 import org.apaas.core.utils.IpUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -19,8 +19,11 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 /**
  * 响应式认证控制器
+ * @author ivan
  */
 @Slf4j
 @RestController
@@ -31,7 +34,6 @@ public class ReactiveAuthController {
 
     private final ReactiveAuthenticationManager authenticationManager;
     private final ReactiveSystemFeignClient systemFeignClient;
-    private final ReactiveAuthService authService;
 
     /**
      * 登录
@@ -81,15 +83,8 @@ public class ReactiveAuthController {
                         if (user == null) {
                             return Mono.error(new RuntimeException("用户不存在"));
                         }
-                        
                         LoginUser loginUser = new LoginUser();
-                        loginUser.setId(user.getId());
-                        loginUser.setUsername(user.getUsername());
-                        loginUser.setRealName(user.getRealName());
-                        loginUser.setEmail(user.getEmail());
-                        loginUser.setPhone(user.getPhone());
-                        loginUser.setStatus(user.getStatus());
-                        
+
                         // 获取用户权限
                         return systemFeignClient.getUserPermissions(user.getId())
                                 .map(permissions -> {
@@ -109,6 +104,6 @@ public class ReactiveAuthController {
     @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "登出", description = "用户登出接口")
     public Mono<Void> logout() {
-        return authService.logout();
+        return Mono.empty();
     }
 }

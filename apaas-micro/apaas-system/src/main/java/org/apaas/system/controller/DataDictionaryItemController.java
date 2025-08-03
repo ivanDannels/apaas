@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.system.domain.dto.DataDictionaryItemDTO;
 import org.apaas.system.entity.DataDictionaryItem;
 import org.apaas.system.service.reactive.ReactiveDataDictionaryItemService;
@@ -12,21 +12,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import java.util.List;
 
 /**
  * 响应式数据字典项控制器
+ * @author ivan
  */
 @RestController
 @RequestMapping("/api/v1/reactive/data-dictionary-items")
 @Tag(name = "响应式数据字典项管理", description = "响应式数据字典项相关操作")
-@RequiredArgsConstructor
-public class DataDictionaryItemController {
+public class DataDictionaryItemController extends ReactiveBaseController<DataDictionaryItem, Long, ReactiveDataDictionaryItemService> {
 
-    private final ReactiveDataDictionaryItemService dataDictionaryItemService;
+    public DataDictionaryItemController(ReactiveDataDictionaryItemService service) {
+        super(service);
+    }
 
     /**
      * 分页查询数据字典项
@@ -54,7 +54,7 @@ public class DataDictionaryItemController {
         query.setName(name);
         query.setCode(code);
         query.setStatus(status);
-        return dataDictionaryItemService.selectPage(pageable, query);
+        return service.selectPage(pageable, query);
     }
 
     /**
@@ -64,7 +64,7 @@ public class DataDictionaryItemController {
     @Operation(summary = "获取数据字典项详情", description = "根据ID获取数据字典项详情")
     @Parameter(name = "id", description = "数据字典项ID", required = true)
     public Mono<DataDictionaryItem> getById(@PathVariable Long id) {
-        return dataDictionaryItemService.getById(id)
+        return service.findById(id)
                 .switchIfEmpty(Mono.error(new RuntimeException("数据字典项不存在")));
     }
 
@@ -75,7 +75,7 @@ public class DataDictionaryItemController {
     @Operation(summary = "根据字典ID查询字典项列表", description = "根据字典ID查询有效的字典项列表")
     @Parameter(name = "dictionaryId", description = "字典ID", required = true)
     public Flux<DataDictionaryItem> getByDictionaryId(@PathVariable Long dictionaryId) {
-        return dataDictionaryItemService.selectByDictionaryId(dictionaryId);
+        return service.selectByDictionaryId(dictionaryId);
     }
 
     /**
@@ -84,7 +84,7 @@ public class DataDictionaryItemController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建数据字典项", description = "创建新的数据字典项")
     public Mono<Boolean> create(@RequestBody DataDictionaryItem dataDictionaryItem) {
-        return dataDictionaryItemService.create(dataDictionaryItem);
+        return service.create(dataDictionaryItem);
     }
 
     /**
@@ -95,17 +95,7 @@ public class DataDictionaryItemController {
     @Parameter(name = "id", description = "数据字典项ID", required = true)
     public Mono<Boolean> update(@PathVariable Long id, @RequestBody DataDictionaryItem dataDictionaryItem) {
         dataDictionaryItem.setId(id);
-        return dataDictionaryItemService.update(dataDictionaryItem);
-    }
-
-    /**
-     * 删除数据字典项
-     */
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "删除数据字典项", description = "删除数据字典项")
-    @Parameter(name = "id", description = "数据字典项ID", required = true)
-    public Mono<Boolean> delete(@PathVariable Long id) {
-        return dataDictionaryItemService.delete(id);
+        return service.update(dataDictionaryItem);
     }
 
     /**
@@ -115,20 +105,7 @@ public class DataDictionaryItemController {
     @Operation(summary = "导出数据字典项", description = "导出数据字典项")
     @Parameter(name = "dictionaryId", description = "数据字典ID", required = true)
     public Mono<Void> exportExcel(ServerWebExchange exchange, @PathVariable Long dictionaryId, DataDictionaryItemDTO query) {
-        return dataDictionaryItemService.exportExcel(exchange.getResponse(), dictionaryId, query);
-    }
-
-    /**
-     * 导入数据字典项
-     */
-    @PostMapping(value = "/import/{dictionaryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "导入数据字典项", description = "导入数据字典项")
-    @Parameters({
-        @Parameter(name = "dictionaryId", description = "数据字典ID", required = true),
-        @Parameter(name = "file", description = "Excel文件", required = true)
-    })
-    public Mono<Boolean> importExcel(@PathVariable Long dictionaryId, @RequestPart("file") Mono<FilePart> filePart) {
-        return dataDictionaryItemService.importExcel(dictionaryId, filePart);
+        return service.exportExcel(exchange, query);
     }
 
     /**
@@ -141,6 +118,6 @@ public class DataDictionaryItemController {
         @Parameter(name = "status", description = "状态：0-启用，1-停用", required = true)
     })
     public Mono<Boolean> changeStatus(@PathVariable Long id, @RequestParam Integer status) {
-        return dataDictionaryItemService.changeStatus(id, status);
+        return service.changeStatus(id, status);
     }
 }

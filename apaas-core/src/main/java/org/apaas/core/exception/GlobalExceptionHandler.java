@@ -1,7 +1,6 @@
 package org.apaas.core.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.web.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,7 @@ import java.util.Map;
 
 /**
  * 全局异常处理器
+ * @author ivan
  */
 @Slf4j
 @RestControllerAdvice
@@ -32,100 +32,88 @@ public class GlobalExceptionHandler {
      * 处理业务异常
      */
     @ExceptionHandler(ServiceException.class)
-    public AjaxResult handleServiceException(ServiceException e) {
+    public Mono<ResponseEntity<Map<String, Object>>> handleServiceException(ServiceException e) {
         log.error(e.getMessage(), e);
         Integer code = e.getCode();
-        if ("DEBUG".equalsIgnoreCase(logLevel)) {
-            return code != null ? AjaxResult.detailError(e.getMessage(), e.getDetailMessage()) : AjaxResult.detailError("服务器内部错误，请联系管理员", e.getDetailMessage());
-        }
-        return code != null ? AjaxResult.error(code, e.getMessage()) : AjaxResult.error(e.getMessage());
+        HttpStatus status = code != null && code >= 400 && code < 600 ? 
+                HttpStatus.valueOf(code) : HttpStatus.INTERNAL_SERVER_ERROR;
+
+        String message = code != null ? e.getMessage() : "服务器内部错误，请联系管理员";
+        String detailMessage = e.getDetailMessage();
+
+        return buildErrorResponse(status, "Service Error", message, detailMessage);
     }
 
     /**
      * 处理权限不足异常
      */
     @ExceptionHandler(AccessDeniedException.class)
-    public AjaxResult handleAccessDeniedException(AccessDeniedException e) {
+    public Mono<ResponseEntity<Map<String, Object>>> handleAccessDeniedException(AccessDeniedException e) {
         log.error("权限不足", e);
-        if ("DEBUG".equalsIgnoreCase(logLevel)) {
-            return AjaxResult.detailError("权限不足", e.getMessage());
-        }
-        return AjaxResult.error(403, "权限不足");
+        return buildErrorResponse(HttpStatus.FORBIDDEN, "Access Denied", "权限不足", e.getMessage());
     }
 
     /**
      * 处理参数校验异常
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public AjaxResult handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public Mono<ResponseEntity<Map<String, Object>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        if ("DEBUG".equalsIgnoreCase(logLevel)) {
-            return AjaxResult.detailError(message, e.getMessage());
-        }
-        return AjaxResult.error(message);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation Error", message, e.getMessage());
     }
 
     /**
      * 处理参数绑定异常
      */
     @ExceptionHandler(BindException.class)
-    public AjaxResult handleBindException(BindException e) {
+    public Mono<ResponseEntity<Map<String, Object>>> handleBindException(BindException e) {
         log.error(e.getMessage(), e);
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        if ("DEBUG".equalsIgnoreCase(logLevel)) {
-            return AjaxResult.detailError(message, e.getMessage());
-        }
-        return AjaxResult.error(message);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Binding Error", message, e.getMessage());
     }
 
     /**
      * 处理参数校验异常
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public AjaxResult handleConstraintViolationException(ConstraintViolationException e) {
+    public Mono<ResponseEntity<Map<String, Object>>> handleConstraintViolationException(ConstraintViolationException e) {
         log.error(e.getMessage(), e);
-        if ("DEBUG".equalsIgnoreCase(logLevel)) {
-            return AjaxResult.detailError(e.getMessage(), e.getMessage());
-        }
-        return AjaxResult.error(e.getMessage());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation Error", e.getMessage(), e.getMessage());
     }
 
     /**
      * 处理通用异常
-     *
-     * @param ex 异常对象
-     * @return 错误响应
      */
     @ExceptionHandler(Exception.class)
     public Mono<ResponseEntity<Map<String, Object>>> handleException(Exception ex) {
         log.error("系统异常: ", ex);
-
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("timestamp", LocalDateTime.now());
-        errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        errorResponse.put("error", "Internal Server Error");
-        errorResponse.put("message", "系统内部错误");
-
-        return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse));
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "系统内部错误", ex.getMessage());
     }
 
     /**
      * 处理非法参数异常
-     *
-     * @param ex 异常对象
-     * @return 错误响应
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public Mono<ResponseEntity<Map<String, Object>>> handleIllegalArgumentException(IllegalArgumentException ex) {
         log.warn("非法参数异常: ", ex);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Bad Request", ex.getMessage(), ex.getMessage());
+    }
 
+    /**
+     * 构建错误响应
+     */
+    private Mono<ResponseEntity<Map<String, Object>>> buildErrorResponse(HttpStatus status, String error, String message, String detailMessage) {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("timestamp", LocalDateTime.now());
-        errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
-        errorResponse.put("error", "Bad Request");
-        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("status", status.value());
+        errorResponse.put("error", error);
+        errorResponse.put("message", message);
 
-        return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse));
+        if ("DEBUG".equalsIgnoreCase(logLevel) && detailMessage != null) {
+            errorResponse.put("detail", detailMessage);
+        }
+
+        return Mono.just(ResponseEntity.status(status).body(errorResponse));
     }
 }

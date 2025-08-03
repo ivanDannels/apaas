@@ -1,34 +1,40 @@
 package org.apaas.auth.domain;
 
+import lombok.Builder;
 import lombok.Data;
-import org.apaas.system.domain.entity.SysUser;
+import lombok.RequiredArgsConstructor;
+import org.apaas.auth.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.util.Collection;
 
 /**
  * 登录用户
+ * @author ivan
  */
 @Data
+@Builder
+@RequiredArgsConstructor
 public class LoginUser implements UserDetails {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户信息
      */
-    private SysUser user;
+    private User user;
+
+    private String token;
+
+    private String[] permissions;
 
     /**
      * 权限列表
      */
     private Collection<? extends GrantedAuthority> authorities;
-
-    public LoginUser(SysUser user, Collection<? extends GrantedAuthority> authorities) {
-        this.user = user;
-        this.authorities = authorities;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

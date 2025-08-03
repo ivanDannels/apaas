@@ -7,7 +7,6 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.auth.service.UserDetailsServiceImpl;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -25,7 +23,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyPair;
@@ -47,7 +45,6 @@ import java.util.UUID;
 public class AuthorizationServerConfig {
 
     private final AuthProperties authProperties;
-    private final UserDetailsServiceImpl userDetailsService;
 
     /**
      * 授权服务器安全配置
@@ -55,7 +52,6 @@ public class AuthorizationServerConfig {
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         return http.formLogin(Customizer.withDefaults()).build();
     }
 
@@ -75,14 +71,9 @@ public class AuthorizationServerConfig {
                     .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                     .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                     .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                    .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                     .redirectUri(client.getRedirectUris())
                     .scope(client.getScopes())
                     .scope(OidcScopes.OPENID)
-                    .tokenSettings(tokenSettings -> {
-                        tokenSettings.accessTokenTimeToLive(Duration.ofSeconds(authProperties.getTokenValiditySeconds()));
-                        tokenSettings.refreshTokenTimeToLive(Duration.ofSeconds(authProperties.getRefreshTokenValiditySeconds()));
-                    })
                     .build();
             registeredClients.add(registeredClient);
         });
@@ -135,13 +126,5 @@ public class AuthorizationServerConfig {
     @Bean
     public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
-    }
-
-    /**
-     * 提供者设置
-     */
-    @Bean
-    public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://localhost:8082/auth").build();
     }
 }

@@ -14,6 +14,11 @@
     <description>APaaS平台系统服务</description>
 
     <dependencies>
+        <!-- Spring Boot Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
         <!-- Reactive Feign -->
         <dependency>
             <groupId>com.playtika.reactivefeign</groupId>
@@ -31,21 +36,18 @@
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-postgresql</artifactId>
-            <version>0.8.13.RELEASE</version>
         </dependency>
         
         <!-- MinIO -->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
-            <version>8.5.2</version>
         </dependency>
 
         <!-- EasyExcel -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
-            <version>3.2.1</version>
         </dependency>
 
         <!-- Elasticsearch -->
@@ -60,6 +62,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.32</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- APaaS Core -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

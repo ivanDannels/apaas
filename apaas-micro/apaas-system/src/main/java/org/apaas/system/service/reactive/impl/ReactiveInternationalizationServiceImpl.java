@@ -1,7 +1,11 @@
 package org.apaas.system.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
+import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.system.entity.Internationalization;
+import org.apaas.system.repository.InternationalizationRepository;
 import org.apaas.system.service.reactive.ReactiveInternationalizationService;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -9,20 +13,22 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Locale;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 响应式国际化服务实现
+ * @author ivan
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class ReactiveInternationalizationServiceImpl implements ReactiveInternationalizationService {
+public class ReactiveInternationalizationServiceImpl extends BaseServiceImpl<Internationalization, Long, InternationalizationRepository> implements ReactiveInternationalizationService {
     
-    private static final Logger log = LoggerFactory.getLogger(ReactiveInternationalizationServiceImpl.class);
-
     private final MessageSource messageSource;
+
+    public ReactiveInternationalizationServiceImpl(InternationalizationRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Internationalization>> eventPublisher, MessageSource messageSource) {
+        super(repository, eventPublisher);
+        this.messageSource = messageSource;
+    }
+
 
     @Override
     public Mono<String> getMessage(String code) {

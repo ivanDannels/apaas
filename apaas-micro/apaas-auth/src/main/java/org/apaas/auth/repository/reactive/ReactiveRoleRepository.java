@@ -2,6 +2,8 @@ package org.apaas.auth.repository.reactive;
 
 import org.apaas.auth.entity.Role;
 import org.apaas.core.repository.ReactiveBaseRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -26,4 +28,8 @@ public interface ReactiveRoleRepository extends ReactiveBaseRepository<Role, Lon
      * @return 角色列表
      */
     Flux<Role> findByStatus(Integer status);
+
+    Mono<Role> findByRoleName(String roleName);
+
+    Mono<Role> findByPage(Pageable pageable);
 }

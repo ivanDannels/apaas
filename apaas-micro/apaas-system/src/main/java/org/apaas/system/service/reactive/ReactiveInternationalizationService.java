@@ -1,15 +1,16 @@
 package org.apaas.system.service.reactive;
 
-import org.springframework.stereotype.Service;
+import org.apaas.core.service.BaseService;
+import org.apaas.system.entity.Internationalization;
 import reactor.core.publisher.Mono;
 
 import java.util.Locale;
 
 /**
  * 响应式国际化服务接口
+ * @author ivan
  */
-@Service
-public interface ReactiveInternationalizationService {
+public interface ReactiveInternationalizationService extends BaseService<Internationalization, Long> {
 
     /**
      * 根据消息键获取当前语言的消息

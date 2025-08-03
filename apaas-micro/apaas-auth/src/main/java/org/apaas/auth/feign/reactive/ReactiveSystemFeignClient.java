@@ -1,9 +1,7 @@
 package org.apaas.auth.feign.reactive;
 
-import org.apaas.auth.domain.SysUserDTO;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.apaas.auth.entity.User;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
@@ -12,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 响应式系统服务Feign客户端
+ * @author ivan
  */
 @HttpExchange(url = "/api/v1/reactive/system")
 public interface ReactiveSystemFeignClient {
@@ -23,7 +22,7 @@ public interface ReactiveSystemFeignClient {
      * @return 用户信息
      */
     @GetExchange("/user/username/{username}")
-    Mono<SysUserDTO> getUserByUsername(@PathVariable("username") String username);
+    Mono<User> getUserByUsername(@PathVariable("username") String username);
 
     /**
      * 获取用户权限

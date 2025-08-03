@@ -1,17 +1,23 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.context.TenantContext;
 import org.apaas.core.event.EntityChangedEvent;
 import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.core.utils.SecurityUtils;
 import org.apaas.core.web.domain.BasePageQuery;
 import org.apaas.form.engine.entity.FormData;
 import org.apaas.form.engine.repository.FormDataRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormDataService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
 
 /**
  * 响应式表单数据服务实现类
@@ -32,7 +38,22 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<PageResult<FormData>> selectFormDataPage(BasePageQuery query) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(
+                query.getPageNum() - 1,
+                query.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createTime")
+        );
+
+        return TenantContext.getTenantIdAsync()
+                .flatMap(tenantId -> {
+                    Flux<FormData> flux = repository.findAllByTenantId(tenantId, pageRequest);
+
+                    return Mono.zip(
+                            flux.collectList(),
+                            repository.countByTenantId(tenantId).defaultIfEmpty(0L),
+                            (list, count) -> new PageResult<>(query.getPageNum(), query.getPageSize(), count, list)
+                    );
+                });
     }
 
     /**
@@ -43,7 +64,8 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Flux<FormData> getFormDataByFormCode(String formCode) {
-        return null;
+        return TenantContext.getTenantIdAsync()
+                .flatMapMany(tenantId -> repository.findByFormCodeAndTenantId(formCode, tenantId));
     }
 
     /**
@@ -55,7 +77,8 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Flux<FormData> getFormDataByFormCodeAndVersion(String formCode, String version) {
-        return null;
+        return TenantContext.getTenantIdAsync()
+                .flatMapMany(tenantId -> repository.findByFormCodeAndVersionAndTenantId(formCode, version, tenantId));
     }
 
     /**
@@ -66,7 +89,8 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<FormData> getFormDataByBusinessKey(String businessKey) {
-        return null;
+        return TenantContext.getTenantIdAsync()
+                .flatMap(tenantId -> repository.findByBusinessKeyAndTenantId(businessKey, tenantId));
     }
 
     /**
@@ -77,7 +101,12 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Boolean> deleteFormData(Long[] ids) {
-        return null;
+        return TenantContext.getTenantIdAsync()
+                .flatMap(tenantId -> {
+                    return Flux.fromArray(ids)
+                            .flatMap(repository::deleteById)
+                            .then(Mono.just(true));
+                });
     }
 
     /**
@@ -89,7 +118,9 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Boolean> importFormData(String formCode, String dataJson) {
-        return null;
+        // 这里需要实现具体的导入逻辑
+        // 暂时返回true，实际开发中需要根据dataJson解析数据并保存
+        return Mono.just(true);
     }
 
     /**
@@ -100,7 +131,9 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Object> getFormDataStatistics(String formCode) {
-        return null;
+        // 这里需要实现具体的统计逻辑
+        // 暂时返回空对象，实际开发中需要根据formCode查询统计数据
+        return Mono.just(new Object());
     }
 
     /**
@@ -111,7 +144,9 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Boolean> validateFormData(FormData formData) {
-        return null;
+        // 这里需要实现具体的验证逻辑
+        // 暂时返回true，实际开发中需要根据formData的字段进行验证
+        return Mono.just(true);
     }
 
     /**
@@ -122,7 +157,14 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Boolean> updateFormData(FormData formData) {
-        return null;
+        return TenantContext.getTenantIdAsync()
+                .flatMap(tenantId -> {
+                    // 设置更新人、更新时间
+                    formData.setUpdater(SecurityUtils.getUsername());
+                    formData.setUpdatedTime(LocalDateTime.now());
+
+                    return save(formData).map(saved -> true);
+                });
     }
 
     /**
@@ -133,7 +175,18 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Long> submitFormData(FormData formData) {
-        return null;
+        return TenantContext.getTenantIdAsync()
+                .flatMap(tenantId -> {
+                    // 设置租户ID
+                    formData.setTenantId(tenantId);
+                    // 设置提交人、提交时间
+                    formData.setUpdater(SecurityUtils.getUsername());
+                    formData.setUpdatedTime(LocalDateTime.now());
+                    // 设置状态为已提交
+                    formData.setStatus(1);
+
+                    return save(formData).map(FormData::getId);
+                });
     }
 
     /**
@@ -144,7 +197,23 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Long> saveFormData(FormData formData) {
-        return null;
+        return TenantContext.getTenantIdAsync()
+                .flatMap(tenantId -> {
+                    // 设置租户ID
+                    formData.setTenantId(tenantId);
+                    // 设置创建人、更新人
+                    String username = SecurityUtils.getUsername();
+                    formData.setCreator(username);
+                    formData.setUpdater(username);
+                    // 设置创建时间、更新时间
+                    LocalDateTime now = LocalDateTime.now();
+                    formData.setCreatedTime(now);
+                    formData.setUpdatedTime(now);
+                    // 初始状态为草稿
+                    formData.setStatus(0);
+
+                    return save(formData).map(FormData::getId);
+                });
     }
 
     /**
@@ -155,6 +224,6 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<FormData> save(FormData entity) {
-        return null;
+        return super.save(entity);
     }
 }

@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.auth.domain.dto.RoleDTO;
 import org.apaas.core.query.PageResult;
+import org.apaas.core.query.Query;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.auth.entity.Role;
 import org.apaas.auth.service.reactive.ReactiveRoleService;
 import org.springframework.http.MediaType;
@@ -20,25 +22,10 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/roles")
 @Tag(name = "响应式角色管理", description = "响应式角色相关操作")
-@RequiredArgsConstructor
-public class ReactiveRoleController {
+public class ReactiveRoleController extends ReactiveBaseController<Role, Long, ReactiveRoleService> {
 
-    private final ReactiveRoleService roleService;
-
-    /**
-     * 分页查询角色
-     */
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "分页查询角色", description = "根据条件分页查询角色列表")
-    @Parameters({
-        @Parameter(name = "pageNum", description = "页码", required = true),
-        @Parameter(name = "pageSize", description = "每页条数", required = true),
-        @Parameter(name = "name", description = "角色名称，模糊查询"),
-        @Parameter(name = "code", description = "角色编码，模糊查询"),
-        @Parameter(name = "status", description = "状态：0-启用，1-禁用")
-    })
-    public Mono<PageResult<Role>> selectPage(RoleDTO query) {
-        return roleService.selectPage(query);
+    public ReactiveRoleController(ReactiveRoleService service) {
+        super(service);
     }
 
     /**
@@ -48,7 +35,7 @@ public class ReactiveRoleController {
     @Operation(summary = "获取角色详情", description = "根据ID获取角色详情")
     @Parameter(name = "id", description = "角色ID", required = true)
     public Mono<Role> getById(@PathVariable Long id) {
-        return roleService.getById(id);
+        return super.get(id);
     }
 
     /**
@@ -56,8 +43,8 @@ public class ReactiveRoleController {
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建角色", description = "创建新角色")
-    public Mono<Boolean> create(@RequestBody Role role) {
-        return roleService.create(role);
+    public Mono<Role> create(@RequestBody Role role) {
+        return super.add(role);
     }
 
     /**
@@ -66,9 +53,9 @@ public class ReactiveRoleController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "更新角色", description = "更新角色信息")
     @Parameter(name = "id", description = "角色ID", required = true)
-    public Mono<Boolean> update(@PathVariable Long id, @RequestBody Role role) {
+    public Mono<Role> update(@PathVariable Long id, @RequestBody Role role) {
         role.setId(id);
-        return roleService.update(role);
+        return super.update(role);
     }
 
     /**
@@ -77,8 +64,8 @@ public class ReactiveRoleController {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "删除角色", description = "删除角色")
     @Parameter(name = "id", description = "角色ID", required = true)
-    public Mono<Boolean> delete(@PathVariable Long id) {
-        return roleService.delete(id);
+    public Mono<Void> delete(@PathVariable Long id) {
+        return super.delete(id);
     }
 
     /**
@@ -91,7 +78,7 @@ public class ReactiveRoleController {
         @Parameter(name = "status", description = "状态：0-启用，1-禁用", required = true)
     })
     public Mono<Boolean> changeStatus(@PathVariable Long id, @RequestParam Integer status) {
-        return roleService.changeStatus(id, status);
+        return service.changeStatus(id, status);
     }
 
     /**
@@ -100,7 +87,7 @@ public class ReactiveRoleController {
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取所有角色", description = "获取所有可用角色")
     public Flux<Role> getAllRoles() {
-        return roleService.getAllRoles();
+        return service.getAllRoles();
     }
 
     /**
@@ -110,7 +97,7 @@ public class ReactiveRoleController {
     @Operation(summary = "获取用户角色", description = "获取指定用户的角色列表")
     @Parameter(name = "userId", description = "用户ID", required = true)
     public Flux<Role> getUserRoles(@PathVariable Long userId) {
-        return roleService.getUserRoles(userId);
+        return service.getUserRoles(userId);
     }
 
     /**
@@ -120,6 +107,51 @@ public class ReactiveRoleController {
     @Operation(summary = "分配用户角色", description = "为用户分配角色")
     @Parameter(name = "userId", description = "用户ID", required = true)
     public Mono<Boolean> assignRoles(@PathVariable Long userId, @RequestBody Long[] roleIds) {
-        return roleService.assignRoles(userId, roleIds);
+        return service.assignRoles(userId, roleIds);
+    }
+    
+    /**
+     * 批量删除角色
+     */
+    @DeleteMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量删除角色", description = "批量删除角色")
+    public Mono<Void> deleteBatch(@RequestBody Long[] ids) {
+        return service.deleteByIds(Flux.fromArray(ids)).then(Mono.empty());
+    }
+    
+    /**
+     * 批量新增角色
+     */
+    @PostMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量新增角色", description = "批量新增角色")
+    public Flux<Role> addBatch(@RequestBody Flux<Role> roles) {
+        return service.saveBatch(roles);
+    }
+    
+    /**
+     * 批量更新角色
+     */
+    @PutMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量更新角色", description = "批量更新角色")
+    public Flux<Role> updateBatch(@RequestBody Flux<Role> roles) {
+        return service.updateBatch(roles);
+    }
+    
+    /**
+     * 导出角色
+     */
+    @PostMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "导出角色", description = "导出角色")
+    public Mono<byte[]> export(@RequestBody Query query) {
+        return service.export(query);
+    }
+    
+    /**
+     * 导入角色
+     */
+    @PostMapping(value = "/import", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "导入角色", description = "导入角色")
+    public Mono<Void> importData(@RequestBody byte[] data) {
+        return service.importData(data);
     }
 }

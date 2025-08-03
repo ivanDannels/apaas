@@ -2,6 +2,9 @@ package org.apaas.system.service.reactive.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
+import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
 import org.apaas.system.entity.DataDictionary;
 import org.apaas.system.repository.DataDictionaryRepository;
@@ -22,49 +25,52 @@ import java.util.List;
 
 /**
  * 响应式数据字典服务实现
+ * @author ivan
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class ReactiveDataDictionaryServiceImpl implements ReactiveDataDictionaryService {
+public class ReactiveDataDictionaryServiceImpl extends BaseServiceImpl<DataDictionary, Long, DataDictionaryRepository> implements ReactiveDataDictionaryService {
 
-    private final DataDictionaryRepository dataDictionaryRepository;
+
+    public ReactiveDataDictionaryServiceImpl(DataDictionaryRepository repository, RedisDomainEventPublisher<EntityChangedEvent<DataDictionary>> eventPublisher) {
+        super(repository, eventPublisher);
+    }
 
     @Override
     public Flux<DataDictionary> selectPage(Pageable pageable, DataDictionaryDTO query) {
         // 这里需要根据实际需求实现分页查询逻辑
         // 暂时返回所有数据字典
-        return dataDictionaryRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Mono<Boolean> create(DataDictionary dataDictionary) {
-        return dataDictionaryRepository.save(dataDictionary)
+        return repository.save(dataDictionary)
                 .map(savedDataDictionary -> true)
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> update(DataDictionary dataDictionary) {
-        return dataDictionaryRepository.save(dataDictionary)
+        return repository.save(dataDictionary)
                 .map(updatedDataDictionary -> true)
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> delete(Long id) {
-        return dataDictionaryRepository.deleteById(id)
+        return repository.deleteById(id)
                 .then(Mono.just(true))
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> changeStatus(Long id, Integer status) {
-        return dataDictionaryRepository.findById(id)
+        return repository.findById(id)
                 .flatMap(dataDictionary -> {
                     dataDictionary.setStatus(status);
                     dataDictionary.setUpdatedTime(LocalDateTime.now());
-                    return dataDictionaryRepository.save(dataDictionary);
+                    return repository.save(dataDictionary);
                 })
                 .map(updatedDataDictionary -> true)
                 .onErrorReturn(false);

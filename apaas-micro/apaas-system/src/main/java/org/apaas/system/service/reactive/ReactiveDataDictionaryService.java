@@ -1,22 +1,18 @@
 package org.apaas.system.service.reactive;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apaas.core.service.BaseService;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
 import org.apaas.system.entity.DataDictionary;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 /**
  * 响应式数据字典服务接口
+ * @author ivan
  */
-@Service
-public interface ReactiveDataDictionaryService {
+public interface ReactiveDataDictionaryService extends BaseService<DataDictionary, Long> {
     /**
      * 分页查询数据字典
      */

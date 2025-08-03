@@ -2,11 +2,14 @@ package org.apaas.flow.engine.repository.reactive;
 
 import org.apaas.flow.engine.entity.FlowInstance;
 import org.apaas.core.repository.ReactiveBaseRepository;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * 响应式流程实例仓库接口
  */
+@Repository
 public interface ReactiveFlowInstanceRepository extends ReactiveBaseRepository<FlowInstance, Long> {
 
     /**
@@ -15,7 +18,7 @@ public interface ReactiveFlowInstanceRepository extends ReactiveBaseRepository<F
      * @param businessKey 业务键
      * @return 流程实例列表
      */
-    Flux<FlowInstance> findByBusinessKey(String businessKey);
+    Mono<FlowInstance> findByBusinessKey(String businessKey);
 
     /**
      * 根据流程定义ID查询流程实例

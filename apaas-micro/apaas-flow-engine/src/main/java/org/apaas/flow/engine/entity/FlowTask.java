@@ -1,20 +1,22 @@
 package org.apaas.flow.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.time.LocalDateTime;
 
 /**
  * 流程任务实体
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
+@SuperBuilder
 @Table("flow_task")
-public class FlowTask {
-    /**
-     * 任务ID
-     */
-    @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
+public class FlowTask extends BaseEntity {
 
     /**
      * 流程实例ID
@@ -126,27 +128,4 @@ public class FlowTask {
      */
     private Long tenantId;
 
-    /**
-     * 创建人
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private String createBy;
-
-    /**
-     * 更新人
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private String updateBy;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
-
-    /**
-     * 逻辑删除标识
-     */
-    @TableLogic
-    private Integer deleted;
 }

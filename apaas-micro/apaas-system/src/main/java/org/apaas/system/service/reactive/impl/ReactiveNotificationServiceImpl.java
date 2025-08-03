@@ -2,6 +2,9 @@ package org.apaas.system.service.reactive.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
+import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
 import org.apaas.system.repository.NotificationRepository;
@@ -15,48 +18,50 @@ import java.util.List;
 
 /**
  * 响应式通知服务实现
+ * @author ivan
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class ReactiveNotificationServiceImpl implements ReactiveNotificationService {
+public class ReactiveNotificationServiceImpl extends BaseServiceImpl<Notification, Long, NotificationRepository> implements ReactiveNotificationService {
 
-    private final NotificationRepository notificationRepository;
+    public ReactiveNotificationServiceImpl(NotificationRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Notification>> eventPublisher) {
+        super(repository, eventPublisher);
+    }
 
     @Override
     public Flux<Notification> queryPage(NotificationDTO notificationDTO) {
         // 这里需要根据实际需求实现分页查询逻辑
         // 暂时返回所有通知
-        return notificationRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Mono<Notification> getDetail(Long id) {
-        return notificationRepository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
     public Flux<Notification> getAllByIds(List<Long> ids) {
-        return notificationRepository.findAllById(ids);
+        return repository.findAllById(ids);
     }
 
     @Override
     public Mono<Boolean> create(Notification notification) {
-        return notificationRepository.save(notification)
+        return repository.save(notification)
                 .map(savedNotification -> true)
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> update(Notification notification) {
-        return notificationRepository.save(notification)
+        return repository.save(notification)
                 .map(updatedNotification -> true)
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> delete(Long id) {
-        return notificationRepository.deleteById(id)
+        return repository.deleteById(id)
                 .then(Mono.just(true))
                 .onErrorReturn(false);
     }
@@ -64,18 +69,18 @@ public class ReactiveNotificationServiceImpl implements ReactiveNotificationServ
     @Override
     public Mono<Boolean> batchDelete(List<Long> ids) {
         return Flux.fromIterable(ids)
-                .flatMap(id -> notificationRepository.deleteById(id))
+                .flatMap(id -> repository.deleteById(id))
                 .then(Mono.just(true))
                 .onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> markAsRead(Long id) {
-        return notificationRepository.findById(id)
+        return repository.findById(id)
                 .flatMap(notification -> {
                     notification.setReadStatus(1);
                     notification.setReadTime(LocalDateTime.now());
-                    return notificationRepository.save(notification);
+                    return repository.save(notification);
                 })
                 .map(updatedNotification -> true)
                 .onErrorReturn(false);
@@ -84,11 +89,11 @@ public class ReactiveNotificationServiceImpl implements ReactiveNotificationServ
     @Override
     public Mono<Boolean> batchMarkAsRead(List<Long> ids) {
         return Flux.fromIterable(ids)
-                .flatMap(id -> notificationRepository.findById(id))
+                .flatMap(id -> repository.findById(id))
                 .flatMap(notification -> {
                     notification.setReadStatus(1);
                     notification.setReadTime(LocalDateTime.now());
-                    return notificationRepository.save(notification);
+                    return repository.save(notification);
                 })
                 .then(Mono.just(true))
                 .onErrorReturn(false);
@@ -105,14 +110,14 @@ public class ReactiveNotificationServiceImpl implements ReactiveNotificationServ
     public Flux<Notification> getByUserId(Long userId, Integer pageNum, Integer pageSize) {
         // 这里需要根据实际需求实现分页查询逻辑
         // 暂时返回所有通知
-        return notificationRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Mono<Boolean> send(Notification notification) {
         notification.setSendStatus(1);
         notification.setSendTime(LocalDateTime.now());
-        return notificationRepository.save(notification)
+        return repository.save(notification)
                 .map(savedNotification -> true)
                 .onErrorReturn(false);
     }
@@ -124,7 +129,7 @@ public class ReactiveNotificationServiceImpl implements ReactiveNotificationServ
                     notification.setSendStatus(1);
                     notification.setSendTime(LocalDateTime.now());
                 })
-                .flatMap(notification -> notificationRepository.save(notification))
+                .flatMap(notification -> repository.save(notification))
                 .then(Mono.just(true))
                 .onErrorReturn(false);
     }

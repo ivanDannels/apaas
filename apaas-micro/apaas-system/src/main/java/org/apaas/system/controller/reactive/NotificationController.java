@@ -5,12 +5,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
+import org.apaas.core.query.Query;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
 import org.apaas.system.service.reactive.ReactiveNotificationService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,25 +23,27 @@ import java.util.List;
 
 /**
  * 通知控制器
+ * @author ivan
  */
 @RestController
 @RequestMapping("/api/v1/reactive/notifications")
 @Tag(name = "通知管理", description = "通知管理API")
-@RequiredArgsConstructor
-public class NotificationController {
-
-    private final ReactiveNotificationService notificationService;
+public class NotificationController extends ReactiveBaseController<Notification, Long, ReactiveNotificationService> {
+    
+    public NotificationController(ReactiveNotificationService service) {
+        super(service);
+    }
 
     /**
      * 分页查询通知列表
      *
-     * @param notificationDTO 查询参数
+     * @param query 查询参数
      * @return 通知列表
      */
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/page", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "分页查询通知列表", description = "分页查询通知列表")
-    public Mono<PageResult<Notification>> list(NotificationDTO notificationDTO) {
-        return notificationService.queryPage(notificationDTO).collectList().map(PageResult::of);
+    public Mono<PageResult<Notification>> list(@RequestBody Query query) {
+        return service.selectPage(query);
     }
 
     /**
@@ -51,7 +56,7 @@ public class NotificationController {
     @Operation(summary = "获取通知详情", description = "获取通知详情")
     @Parameter(name = "id", description = "通知ID", required = true)
     public Mono<Notification> detail(@PathVariable Long id) {
-        return notificationService.getDetail(id);
+        return super.get(id);
     }
 
     /**
@@ -62,8 +67,8 @@ public class NotificationController {
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建通知", description = "创建通知")
-    public Mono<Boolean> create(@RequestBody Notification notification) {
-        return notificationService.create(notification);
+    public Mono<Notification> create(@Validated @RequestBody Notification notification) {
+        return super.add(notification);
     }
 
     /**
@@ -72,10 +77,11 @@ public class NotificationController {
      * @param notification 通知实体
      * @return 更新结果
      */
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "更新通知", description = "更新通知")
-    public Mono<Boolean> update(@RequestBody Notification notification) {
-        return notificationService.update(notification);
+    public Mono<Notification> update(@PathVariable Long id, @Validated @RequestBody Notification notification) {
+        notification.setId(id);
+        return super.update(notification);
     }
 
     /**
@@ -84,11 +90,12 @@ public class NotificationController {
      * @param id 通知ID
      * @return 删除结果
      */
+    @Override
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "删除通知", description = "删除通知")
     @Parameter(name = "id", description = "通知ID", required = true)
-    public Mono<Boolean> delete(@PathVariable Long id) {
-        return notificationService.delete(id);
+    public Mono<Void> delete(@PathVariable Long id) {
+        return super.delete(id);
     }
 
     /**
@@ -99,8 +106,8 @@ public class NotificationController {
      */
     @DeleteMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "批量删除通知", description = "批量删除通知")
-    public Mono<Boolean> batchDelete(@RequestBody List<Long> ids) {
-        return notificationService.batchDelete(ids);
+    public Mono<Void> batchDelete(@RequestBody Long[] ids) {
+        return service.deleteByIds(Flux.fromArray(ids)).then(Mono.empty());
     }
 
     /**
@@ -113,7 +120,7 @@ public class NotificationController {
     @Operation(summary = "标记通知为已读", description = "标记通知为已读")
     @Parameter(name = "id", description = "通知ID", required = true)
     public Mono<Boolean> markAsRead(@PathVariable Long id) {
-        return notificationService.markAsRead(id);
+        return service.markAsRead(id);
     }
 
     /**
@@ -125,7 +132,47 @@ public class NotificationController {
     @PutMapping(value = "/batch/read", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "批量标记通知为已读", description = "批量标记通知为已读")
     public Mono<Boolean> batchMarkAsRead(@RequestBody List<Long> ids) {
-        return notificationService.batchMarkAsRead(ids);
+        return service.batchMarkAsRead(ids);
+    }
+    
+    /**
+     * 批量新增通知
+     */
+    @Override
+    @PostMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量新增通知", description = "批量新增通知")
+    public Flux<Notification> addBatch(@RequestBody Flux<Notification> notifications) {
+        return service.saveBatch(notifications);
+    }
+    
+    /**
+     * 批量更新通知
+     */
+    @Override
+    @PutMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "批量更新通知", description = "批量更新通知")
+    public Flux<Notification> updateBatch(@RequestBody Flux<Notification> notifications) {
+        return service.updateBatch(notifications);
+    }
+    
+    /**
+     * 导出通知
+     */
+    @Override
+    @PostMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "导出通知", description = "导出通知")
+    public Mono<byte[]> export(@RequestBody Query query) {
+        return service.export(query);
+    }
+    
+    /**
+     * 导入通知
+     */
+    @Override
+    @PostMapping(value = "/import", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "导入通知", description = "导入通知")
+    public Mono<Void> importData(@RequestBody byte[] data) {
+        return service.importData(data);
     }
 
     /**
@@ -138,7 +185,7 @@ public class NotificationController {
     @Operation(summary = "查询用户未读通知数量", description = "查询用户未读通知数量")
     @Parameter(name = "userId", description = "用户ID", required = true)
     public Mono<Integer> countUnread(@RequestParam Long userId) {
-        return notificationService.countUnreadByUserId(userId);
+        return service.countUnreadByUserId(userId);
     }
 
     /**
@@ -155,7 +202,7 @@ public class NotificationController {
     @Parameter(name = "pageNum", description = "页码", required = true)
     @Parameter(name = "pageSize", description = "每页数量", required = true)
     public Mono<PageResult<Notification>> getUserNotifications(@RequestParam Long userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        return notificationService.getByUserId(userId, pageNum, pageSize).collectList().map(PageResult::of);
+        return service.getByUserId(userId, pageNum, pageSize).collectList().map(PageResult::of);
     }
 
     /**
@@ -168,11 +215,11 @@ public class NotificationController {
     @Operation(summary = "发送通知", description = "发送通知")
     @Parameter(name = "id", description = "通知ID", required = true)
     public Mono<Boolean> send(@PathVariable Long id) {
-        Notification notification = notificationService.getDetail(id).block();
+        Notification notification = service.getDetail(id).block();
         if (notification == null) {
             return Mono.just(false);
         }
-        return notificationService.send(notification);
+        return service.send(notification);
     }
 
     /**
@@ -184,7 +231,7 @@ public class NotificationController {
     @PutMapping(value = "/batch/send", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "批量发送通知", description = "批量发送通知")
     public Mono<Boolean> batchSend(@RequestBody List<Long> ids) {
-        List<Notification> notifications = notificationService.getAllByIds(ids).collectList().block();
-        return notificationService.batchSend(notifications);
+        List<Notification> notifications = service.getAllByIds(ids).collectList().block();
+        return service.batchSend(notifications);
     }
 }

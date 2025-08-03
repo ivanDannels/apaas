@@ -2,16 +2,15 @@ package org.apaas.system.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
 /**
  * 通知DTO类
+ * @author ivan
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class NotificationDTO extends BasePageQuery {
+public class NotificationDTO {
 
     @Schema(description = "通知ID")
     private Long id;
