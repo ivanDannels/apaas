@@ -5,8 +5,6 @@ import org.apaas.auth.form.RegisterBody;
 import org.apaas.auth.service.SysLoginService;
 import org.apaas.core.constant.Constants;
 import org.apaas.core.exception.ServiceException;
-import org.apaas.core.utils.IpUtils;
-import org.apaas.core.utils.JwtUtils;
 import org.apaas.core.utils.RedisUtils;
 import org.apaas.core.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 登录校验方法
@@ -96,17 +91,6 @@ public class SysLoginServiceImpl implements SysLoginService {
     }
 
     /**
-     * 创建令牌
-     */
-    public String createToken(Authentication authentication, String username) {
-        Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put(Constants.JWT_USERNAME, username);
-        claimsMap.put(Constants.JWT_CREATED, System.currentTimeMillis());
-        
-        return JwtUtils.createToken(claimsMap);
-    }
-
-    /**
      * 记录登录信息
      */
     @Override
@@ -121,9 +105,6 @@ public class SysLoginServiceImpl implements SysLoginService {
     @Override
     public void logout(String loginToken) {
         if (StringUtils.isNotEmpty(loginToken)) {
-            String username = JwtUtils.getUserName(loginToken);
-            // 删除用户缓存记录
-            redisUtils.deleteObject(getTokenKey(username));
         }
     }
 
@@ -148,9 +129,7 @@ public class SysLoginServiceImpl implements SysLoginService {
      */
     @Override
     public void refreshToken(String loginToken) {
-        String username = JwtUtils.getUserName(loginToken);
-        String userKey = getTokenKey(username);
-        redisUtils.expire(userKey, expireTime, TimeUnit.MINUTES);
+
     }
 
     /**

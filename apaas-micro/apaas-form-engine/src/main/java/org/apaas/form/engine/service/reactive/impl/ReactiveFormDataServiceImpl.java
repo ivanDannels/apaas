@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.web.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.core.event.EntityChangedEvent;
 import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
@@ -93,11 +93,11 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
         // 设置创建和更新信息
         LocalDateTime now = LocalDateTime.now();
         if (formData.getId() == null) {
-            formData.setCreateBy(SecurityUtils.getUsername());
-            formData.setCreateTime(now);
+            formData.setCreator(SecurityUtils.getUsername());
+            formData.setCreatedTime(now);
         }
-        formData.setUpdateBy(SecurityUtils.getUsername());
-        formData.setUpdateTime(now);
+        formData.setUpdater(SecurityUtils.getUsername());
+        formData.setUpdatedTime(now);
         formData.setDeleted(0);
         
         return save(formData).map(FormData::getId);
@@ -113,8 +113,8 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
                     }
                     
                     // 更新数据
-                    formData.setUpdateBy(SecurityUtils.getUsername());
-                    formData.setUpdateTime(LocalDateTime.now());
+                    formData.setUpdater(SecurityUtils.getUsername());
+                    formData.setUpdatedTime(LocalDateTime.now());
                     return save(formData).thenReturn(true);
                 })
                 .defaultIfEmpty(false);
@@ -126,8 +126,8 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
                 .flatMap(this::findById)
                 .flatMap(formData -> {
                     formData.setDeleted(1);
-                    formData.setUpdateBy(SecurityUtils.getUsername());
-                    formData.setUpdateTime(LocalDateTime.now());
+                    formData.setUpdater(SecurityUtils.getUsername());
+                    formData.setUpdatedTime(LocalDateTime.now());
                     return save(formData);
                 })
                 .then(Mono.just(true))

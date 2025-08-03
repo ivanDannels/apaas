@@ -88,8 +88,8 @@ public class ReactiveFlowDefinitionServiceImpl implements ReactiveFlowDefinition
     public Mono<FlowDefinition> saveFlowDefinition(FlowDefinition flowDefinition) {
         // 设置初始状态和时间
         flowDefinition.setStatus(0); // 草稿状态
-        flowDefinition.setCreateTime(LocalDateTime.now());
-        flowDefinition.setUpdateTime(LocalDateTime.now());
+        flowDefinition.setCreatedTime(LocalDateTime.now());
+        flowDefinition.setUpdatedTime(LocalDateTime.now());
         
         // 如果没有编码，生成一个唯一编码
         if (!StringUtils.hasText(flowDefinition.getCode())) {
@@ -111,7 +111,7 @@ public class ReactiveFlowDefinitionServiceImpl implements ReactiveFlowDefinition
                     existing.setName(flowDefinition.getName());
                     existing.setDescription(flowDefinition.getDescription());
                     existing.setContent(flowDefinition.getContent());
-                    existing.setUpdateTime(LocalDateTime.now());
+                    existing.setUpdatedTime(LocalDateTime.now());
                     
                     return flowDefinitionRepository.save(existing);
                 });
@@ -129,7 +129,7 @@ public class ReactiveFlowDefinitionServiceImpl implements ReactiveFlowDefinition
         return flowDefinitionRepository.findById(id)
                 .flatMap(flowDefinition -> {
                     flowDefinition.setStatus(1); // 已发布状态
-                    flowDefinition.setUpdateTime(LocalDateTime.now());
+                    flowDefinition.setUpdatedTime(LocalDateTime.now());
                     return flowDefinitionRepository.save(flowDefinition);
                 });
     }
@@ -140,7 +140,7 @@ public class ReactiveFlowDefinitionServiceImpl implements ReactiveFlowDefinition
         return flowDefinitionRepository.findById(id)
                 .flatMap(flowDefinition -> {
                     flowDefinition.setStatus(2); // 已停用状态
-                    flowDefinition.setUpdateTime(LocalDateTime.now());
+                    flowDefinition.setUpdatedTime(LocalDateTime.now());
                     return flowDefinitionRepository.save(flowDefinition);
                 });
     }

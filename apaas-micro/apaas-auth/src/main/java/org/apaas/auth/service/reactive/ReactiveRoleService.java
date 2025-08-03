@@ -1,7 +1,7 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.domain.dto.RoleDTO;
-import org.apaas.auth.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.auth.entity.Role;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

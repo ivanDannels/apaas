@@ -147,6 +147,16 @@ public class Constants {
     public static final Integer DELETED_YES = 1;
 
     /**
+     * 分页参数，当前页
+     */
+    public static final String CURRENT = "current";
+
+    /**
+     * 分页参数，每页显示记录数
+     */
+    public static final String SIZE = "size";
+
+    /**
      * 状态：禁用
      */
     public static final Integer STATUS_DISABLED = 0;

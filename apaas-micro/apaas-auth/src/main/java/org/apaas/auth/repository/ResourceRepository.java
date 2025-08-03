@@ -1,14 +1,16 @@
-package org.apaas.authorization.repository;
+package org.apaas.auth.repository;
 
-import org.apaas.authorization.entity.Resource;
+import org.apaas.auth.entity.Resource;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.springframework.data.r2dbc.repository.Query;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+/**
+ * @author ivan
+ */
 @Repository
-public interface ResourceRepository extends ReactiveCrudRepository<Resource, Long> {
+public interface ResourceRepository extends ReactiveBaseRepository<Resource, Long> {
     /**
      * 根据角色ID查询资源列表
      */

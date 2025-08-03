@@ -1,4 +1,4 @@
-package org.apaas.authorization.service.impl;
+package org.apaas.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -61,18 +61,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         role.setStatus(0);
         role.setDeleted(0);
         role.setTenantId(SecurityUtils.getTenantId());
-        role.setCreateBy(SecurityUtils.getUsername());
-        role.setCreateTime(LocalDateTime.now());
-        role.setUpdateBy(SecurityUtils.getUsername());
-        role.setUpdateTime(LocalDateTime.now());
+        role.setCreator(SecurityUtils.getUsername());
+        role.setCreatedTime(LocalDateTime.now());
+        role.setUpdater(SecurityUtils.getUsername());
+        role.setUpdatedTime(LocalDateTime.now());
         return save(role);
     }
 
     @Override
     @Transactional
     public boolean update(Role role) {
-        role.setUpdateBy(SecurityUtils.getUsername());
-        role.setUpdateTime(LocalDateTime.now());
+        role.setUpdater(SecurityUtils.getUsername());
+        role.setUpdatedTime(LocalDateTime.now());
         return updateById(role);
     }
 
@@ -82,8 +82,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Role role = new Role();
         role.setId(id);
         role.setDeleted(1);
-        role.setUpdateBy(SecurityUtils.getUsername());
-        role.setUpdateTime(LocalDateTime.now());
+        role.setUpdater(SecurityUtils.getUsername());
+        role.setUpdatedTime(LocalDateTime.now());
         return updateById(role);
     }
 
@@ -93,8 +93,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Role role = new Role();
         role.setId(id);
         role.setStatus(status);
-        role.setUpdateBy(SecurityUtils.getUsername());
-        role.setUpdateTime(LocalDateTime.now());
+        role.setUpdater(SecurityUtils.getUsername());
+        role.setUpdatedTime(LocalDateTime.now());
         return updateById(role);
     }
 
@@ -151,8 +151,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Role role = new Role();
         role.setId(roleId);
         role.setDataScopeType(dataScopeType);
-        role.setUpdateBy(SecurityUtils.getUsername());
-        role.setUpdateTime(LocalDateTime.now());
+        role.setUpdater(SecurityUtils.getUsername());
+        role.setUpdatedTime(LocalDateTime.now());
 
         // 更新角色信息
         boolean result = updateById(role);

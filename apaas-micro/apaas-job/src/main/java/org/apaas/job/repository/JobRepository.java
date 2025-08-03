@@ -1,9 +1,9 @@
 package org.apaas.job.repository;
 
 import org.apaas.job.entity.JobEntity;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JobRepository extends R2dbcRepository<JobEntity, Long> {
+public interface JobRepository extends ReactiveBaseRepository<JobEntity, Long> {
 }

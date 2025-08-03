@@ -1,19 +1,22 @@
-package org.apaas.authorization.service;
+package org.apaas.auth.service;
 
-import org.apaas.authorization.domain.dto.ResourceDTO;
-import org.apaas.authorization.entity.Resource;
+import org.apaas.auth.domain.dto.ResourceDTO;
+import org.apaas.auth.entity.Resource;
+import org.apaas.core.query.PageResult;
+import org.apaas.core.query.Query;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * 资源服务接口
+ * @author ivan
  */
 public interface ResourceService {
     /**
      * 分页查询资源
      */
-    Mono<org.springframework.data.domain.PageResult<Resource>> selectPage(ResourceDTO query, Pageable pageable);
+    Mono<PageResult<Resource>> selectPage(Query query);
 
     /**
      * 创建资源

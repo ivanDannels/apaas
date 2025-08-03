@@ -1,13 +1,15 @@
 package org.apaas.auth.repository.reactive;
 
 import org.apaas.auth.entity.User;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import reactor.core.publisher.Mono;
 
 /**
  * 响应式用户仓库接口
+ * @author ivan
  */
-public interface ReactiveUserRepository extends R2dbcRepository<User, Long> {
+public interface ReactiveUserRepository extends ReactiveBaseRepository<User, Long> {
 
     /**
      * 根据用户名查询用户

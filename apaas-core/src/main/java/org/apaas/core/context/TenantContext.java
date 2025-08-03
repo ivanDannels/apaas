@@ -2,19 +2,23 @@ package org.apaas.core.context;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * @author ivan
+ */
 public class TenantContext {
-    private static final ThreadLocal<Long> tenantIdContext = new ThreadLocal<>();
+
+    private static final ThreadLocal<Long> TENANT_ID_CONTEXT = new ThreadLocal<>();
     
     public static void setTenantId(Long tenantId) {
-        tenantIdContext.set(tenantId);
+        TENANT_ID_CONTEXT.set(tenantId);
     }
     
     public static Long getTenantId() {
-        return tenantIdContext.get();
+        return TENANT_ID_CONTEXT.get();
     }
     
     public static void clear() {
-        tenantIdContext.remove();
+        TENANT_ID_CONTEXT.remove();
     }
     
     public static Mono<Long> getTenantIdAsync() {

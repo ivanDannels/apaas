@@ -1,8 +1,12 @@
 package org.apaas.core.exception;
 
+import lombok.Data;
+
 /**
  * 业务异常
+ * @author ivan
  */
+@Data
 public class BusinessException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -79,11 +83,14 @@ public class BusinessException extends RuntimeException {
         return message;
     }
 
-    public Integer getCode() {
-        return code;
+    /**
+     * 创建一个业务异常
+     *
+     * @param message 错误提示
+     * @return 业务异常
+     */
+    public static BusinessException of(String message) {
+        return new BusinessException(message);
     }
 
-    public String getDetailMessage() {
-        return detailMessage;
-    }
 }

@@ -1,14 +1,19 @@
 package org.apaas.system.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * 参数配置实体类
  */
 @Data
+@SuperBuilder
+@Table("sys_config")
+@EqualsAndHashCode(callSuper = true)
 public class SysConfig extends BaseEntity {
-    private static final long serialVersionUID = 1L;
 
     /**
      * 参数名称

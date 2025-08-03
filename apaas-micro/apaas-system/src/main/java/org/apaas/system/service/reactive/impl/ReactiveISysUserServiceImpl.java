@@ -37,8 +37,8 @@ public class ReactiveISysUserServiceImpl implements ReactiveISysUserService {
 
     @Override
     public Mono<Boolean> addUser(SysUser user) {
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
+        user.setCreatedTime(LocalDateTime.now());
+        user.setUpdatedTime(LocalDateTime.now());
         return sysUserRepository.save(user)
                 .map(savedUser -> true)
                 .onErrorReturn(false);
@@ -46,7 +46,7 @@ public class ReactiveISysUserServiceImpl implements ReactiveISysUserService {
 
     @Override
     public Mono<Boolean> updateUser(SysUser user) {
-        user.setUpdateTime(LocalDateTime.now());
+        user.setUpdatedTime(LocalDateTime.now());
         return sysUserRepository.save(user)
                 .map(updatedUser -> true)
                 .onErrorReturn(false);
@@ -64,7 +64,7 @@ public class ReactiveISysUserServiceImpl implements ReactiveISysUserService {
         return sysUserRepository.findById(userId)
                 .flatMap(user -> {
                     user.setPassword(password);
-                    user.setUpdateTime(LocalDateTime.now());
+                    user.setUpdatedTime(LocalDateTime.now());
                     return sysUserRepository.save(user);
                 })
                 .map(updatedUser -> true)
@@ -76,7 +76,7 @@ public class ReactiveISysUserServiceImpl implements ReactiveISysUserService {
         return sysUserRepository.findById(userId)
                 .flatMap(user -> {
                     user.setStatus(status);
-                    user.setUpdateTime(LocalDateTime.now());
+                    user.setUpdatedTime(LocalDateTime.now());
                     return sysUserRepository.save(user);
                 })
                 .map(updatedUser -> true)

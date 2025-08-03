@@ -1,9 +1,12 @@
 package org.apaas.monitor.repository;
 
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.monitor.entity.MonitorEntity;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author ivan
+ */
 @Repository
-public interface MonitorRepository extends R2dbcRepository<MonitorEntity, Long> {
+public interface MonitorRepository extends ReactiveBaseRepository<MonitorEntity, Long> {
 }

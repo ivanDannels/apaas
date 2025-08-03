@@ -1,22 +1,20 @@
 package org.apaas.core.utils;
 
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * IP工具类
+ * @author ivan
  */
 @Slf4j
 public class IpUtils {
-    private static final Logger log = LoggerFactory.getLogger(IpUtils.class);
-    
+
     private static final String UNKNOWN = "unknown";
     private static final String LOCALHOST_IPV4 = "127.0.0.1";
     private static final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";

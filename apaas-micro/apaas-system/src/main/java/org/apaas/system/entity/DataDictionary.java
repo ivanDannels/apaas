@@ -2,15 +2,20 @@ package org.apaas.system.entity;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * 数据字典类型实体类
+ * @author ivan
  */
 @Data
-
+@SuperBuilder
+@Table("data_dictionary")
+@EqualsAndHashCode(callSuper = true)
 public class DataDictionary extends BaseEntity {
-    private static final long serialVersionUID = 1L;
 
     /**
      * 字典名称

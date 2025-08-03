@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apaas.core.web.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.form.engine.entity.FormValidationRule;
 import org.apaas.form.engine.service.reactive.ReactiveFormValidationRuleService;
 import org.springframework.http.MediaType;

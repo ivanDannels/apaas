@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * 流程任务实体
  */
 @Data
-@TableName("flow_task")
+@Table("flow_task")
 public class FlowTask {
     /**
      * 任务ID

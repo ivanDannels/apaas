@@ -1,14 +1,15 @@
 package org.apaas.auth.repository.reactive;
 
 import org.apaas.auth.entity.UserRole;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * 响应式用户角色关联仓库接口
+ * @author ivan
  */
-public interface ReactiveUserRoleRepository extends R2dbcRepository<UserRole, Long> {
+public interface ReactiveUserRoleRepository extends ReactiveBaseRepository<UserRole, Long> {
 
     /**
      * 根据用户ID查询用户角色关联

@@ -1,11 +1,15 @@
 package org.apaas.core.service;
 
 import org.apaas.core.domain.BaseEntity;
-import org.apaas.core.repository.BaseEntityRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
+import org.springframework.data.repository.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.io.Serializable;
 
+/**
+ * @author ivan
+ */
 public interface BaseService<T extends BaseEntity, ID extends Serializable> {
     
     /**
@@ -43,5 +47,5 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      *
      * @return Repository对象
      */
-    BaseEntityRepository<T, ID> getRepository();
+    Repository<T, ID> getRepository();
 }

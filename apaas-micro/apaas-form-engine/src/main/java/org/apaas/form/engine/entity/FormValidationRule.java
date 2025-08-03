@@ -1,6 +1,8 @@
 package org.apaas.form.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
 import org.apaas.core.domain.BaseEntity;
 
@@ -8,7 +10,9 @@ import org.apaas.core.domain.BaseEntity;
  * 表单验证规则实体
  */
 @Data
-@TableName("form_validation_rule")
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@Table("form_validation_rule")
 public class FormValidationRule extends BaseEntity {
     /**
      * 表单字段ID

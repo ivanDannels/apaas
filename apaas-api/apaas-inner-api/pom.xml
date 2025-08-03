@@ -17,8 +17,8 @@
         <!-- 依赖公共模块 -->
         <dependency>
             <groupId>org.apaas</groupId>
-            <artifactId>apaas-common</artifactId>
-            <version>${project.version}</version>
+            <artifactId>apaas-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <!-- 引入Spring Cloud相关依赖 -->
         <dependency>

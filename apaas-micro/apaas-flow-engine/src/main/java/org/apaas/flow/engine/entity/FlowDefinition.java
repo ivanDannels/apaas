@@ -1,15 +1,18 @@
 package org.apaas.flow.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
-import java.time.LocalDateTime;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * 流程定义实体
  */
 @Data
-@TableName("flow_definition")
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@Table("flow_definition")
 public class FlowDefinition extends BaseEntity {
     /**
      * 流程名称

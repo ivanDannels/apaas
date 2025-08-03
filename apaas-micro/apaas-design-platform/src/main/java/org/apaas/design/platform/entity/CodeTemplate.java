@@ -1,14 +1,19 @@
 package org.apaas.design.platform.entity;
 
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.relational.core.mapping.Table;
 
+/**
+ * @author ivan
+ */
 @Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("code_template")
-public class CodeTemplate extends BaseEntity<Long> {
+public class CodeTemplate extends BaseEntity {
     private String name;
     private String description;
     private String content;

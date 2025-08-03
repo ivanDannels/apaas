@@ -18,10 +18,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 响应式数据字典项服务实现
+ * @author ivan
  */
 @Slf4j
 @Service
@@ -68,7 +68,7 @@ public class ReactiveDataDictionaryItemServiceImpl implements ReactiveDataDictio
         return dataDictionaryItemRepository.findById(id)
                 .flatMap(dataDictionaryItem -> {
                     dataDictionaryItem.setStatus(status);
-                    dataDictionaryItem.setUpdateTime(LocalDateTime.now());
+                    dataDictionaryItem.setUpdatedTime(LocalDateTime.now());
                     return dataDictionaryItemRepository.save(dataDictionaryItem);
                 })
                 .map(updatedDataDictionaryItem -> true)

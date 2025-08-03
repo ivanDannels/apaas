@@ -1,14 +1,16 @@
-package org.apaas.authorization.service.impl;
+package org.apaas.auth.service.impl;
 
-import org.apaas.authorization.domain.dto.ResourceDTO;
-import org.apaas.authorization.entity.Resource;
-import org.apaas.authorization.repository.ResourceRepository;
-import org.apaas.authorization.service.ResourceService;
+import lombok.RequiredArgsConstructor;
+import org.apaas.auth.domain.dto.ResourceDTO;
+import org.apaas.auth.entity.Resource;
+import org.apaas.auth.repository.ResourceRepository;
+import org.apaas.auth.service.ResourceService;
+import org.apaas.core.domain.TenantContext;
+import org.apaas.core.query.PageResult;
+import org.apaas.core.query.Query;
 import org.apaas.core.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -16,23 +18,25 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * 资源服务实现类
+ * @author ivan
  */
 @Service
+@RequiredArgsConstructor
 public class ResourceServiceImpl implements ResourceService {
 
-    @Autowired
-    private ResourceRepository resourceRepository;
+    private final ResourceRepository resourceRepository;
 
     @Override
-    public Mono<org.springframework.data.domain.PageResult<Resource>> selectPage(ResourceDTO query, Pageable pageable) {
+    public Mono<PageResult<Resource>> selectPage(Query query) {
         // 构建动态查询条件
         // 由于R2DBC不支持MyBatis Plus的QueryWrapper，需要使用其他方式实现动态查询
         // 这里简化处理，实际项目中可能需要使用R2dbcEntityTemplate或自定义查询
-        return resourceRepository.findAll(pageable);
+        return resourceRepository.selectPage(TenantContext.getTenantId(), query);
     }
 
     @Override
@@ -40,19 +44,16 @@ public class ResourceServiceImpl implements ResourceService {
     public Mono<Resource> create(Resource resource) {
         resource.setStatus(0);
         resource.setDeleted(0);
-        resource.setTenantId(SecurityUtils.getTenantId());
-        resource.setCreateBy(SecurityUtils.getUsername());
-        resource.setCreateTime(LocalDateTime.now());
-        resource.setUpdateBy(SecurityUtils.getUsername());
-        resource.setUpdateTime(LocalDateTime.now());
+        // TODO: 添加创建人、创建时间、更新人、更新时间
+        resource.setUpdatedTime(LocalDateTime.now());
         return resourceRepository.save(resource);
     }
 
     @Override
     @Transactional
     public Mono<Resource> update(Resource resource) {
-        resource.setUpdateBy(SecurityUtils.getUsername());
-        resource.setUpdateTime(LocalDateTime.now());
+        resource.setUpdater(SecurityUtils.getUsername());
+        resource.setUpdatedTime(LocalDateTime.now());
         return resourceRepository.save(resource);
     }
 
@@ -64,8 +65,8 @@ public class ResourceServiceImpl implements ResourceService {
                 .then(resourceRepository.findById(id))
                 .flatMap(resource -> {
                     resource.setDeleted(1);
-                    resource.setUpdateBy(SecurityUtils.getUsername());
-                    resource.setUpdateTime(LocalDateTime.now());
+                    resource.setUpdater(SecurityUtils.getUsername());
+                    resource.setUpdatedTime(LocalDateTime.now());
                     return resourceRepository.save(resource);
                 })
                 .thenReturn(true);
@@ -85,8 +86,8 @@ public class ResourceServiceImpl implements ResourceService {
         return resourceRepository.findById(id)
                 .flatMap(resource -> {
                     resource.setStatus(status);
-                    resource.setUpdateBy(SecurityUtils.getUsername());
-                    resource.setUpdateTime(LocalDateTime.now());
+                    resource.setUpdater(SecurityUtils.getUsername());
+                    resource.setUpdatedTime(LocalDateTime.now());
                     return resourceRepository.save(resource);
                 })
                 .thenReturn(true);
@@ -97,7 +98,7 @@ public class ResourceServiceImpl implements ResourceService {
         // 查询所有资源
         return resourceRepository.findAll()
                 .filter(resource -> resource.getDeleted() == 0 && resource.getTenantId().equals(SecurityUtils.getTenantId()))
-                .sort((r1, r2) -> r1.getSort().compareTo(r2.getSort()))
+                .sort(Comparator.comparing(Resource::getSequence))
                 .collectList()
                 .flatMapIterable(resources -> buildTree(resources, 0L));
     }

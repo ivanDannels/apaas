@@ -1,14 +1,16 @@
 package org.apaas.report.entity;
 
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("process_analysis")
-public class ProcessAnalysis extends BaseEntity<Long> {
+public class ProcessAnalysis extends BaseEntity {
     private String processName;
     private Long processId;
     private Double averageDuration;

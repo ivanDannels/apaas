@@ -1,6 +1,8 @@
 package org.apaas.flow.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
 import org.apaas.core.domain.BaseEntity;
 import java.time.LocalDateTime;
@@ -9,7 +11,9 @@ import java.time.LocalDateTime;
  * 流程实例实体
  */
 @Data
-@TableName("flow_instance")
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@Table("flow_instance")
 public class FlowInstance extends BaseEntity {
     /**
      * 流程定义ID

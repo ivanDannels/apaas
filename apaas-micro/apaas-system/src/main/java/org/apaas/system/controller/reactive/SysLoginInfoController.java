@@ -9,7 +9,7 @@ import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.web.domain.AjaxResult;
 import org.apaas.core.web.domain.BasePageQuery;
-import org.apaas.core.web.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.system.domain.entity.SysLoginInfo;
 import org.apaas.system.service.ReactiveSysLoginInfoService;
 import org.springframework.http.MediaType;

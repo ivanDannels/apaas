@@ -3,7 +3,7 @@ package org.apaas.form.engine.service.reactive.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.domain.EntityChangedEvent;
-import org.apaas.core.web.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormDynamicRule;

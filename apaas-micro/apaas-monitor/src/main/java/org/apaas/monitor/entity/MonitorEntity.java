@@ -1,44 +1,19 @@
 package org.apaas.monitor.entity;
 
-import org.springframework.data.annotation.Id;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+import org.apaas.core.domain.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
+/**
+ * @author ivan
+ */
+@Data
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @Table("monitor_entities")
-public class MonitorEntity {
-    @Id
-    private Long id;
+public class MonitorEntity extends BaseEntity {
     private String name;
     private String metrics;
-    
-    public MonitorEntity() {}
-    
-    public MonitorEntity(String name, String metrics) {
-        this.name = name;
-        this.metrics = metrics;
-    }
-    
-    // getters and setters
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getMetrics() {
-        return metrics;
-    }
-    
-    public void setMetrics(String metrics) {
-        this.metrics = metrics;
-    }
 }

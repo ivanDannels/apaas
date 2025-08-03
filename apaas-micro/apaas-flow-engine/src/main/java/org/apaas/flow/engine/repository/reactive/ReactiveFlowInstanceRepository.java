@@ -1,13 +1,13 @@
 package org.apaas.flow.engine.repository.reactive;
 
 import org.apaas.flow.engine.entity.FlowInstance;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import reactor.core.publisher.Flux;
 
 /**
  * 响应式流程实例仓库接口
  */
-public interface ReactiveFlowInstanceRepository extends R2dbcRepository<FlowInstance, Long> {
+public interface ReactiveFlowInstanceRepository extends ReactiveBaseRepository<FlowInstance, Long> {
 
     /**
      * 根据业务键查询流程实例

@@ -1,6 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.web.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.core.service.BaseService;
 import org.apaas.core.web.domain.BasePageQuery;
 import org.apaas.form.domain.entity.FormData;

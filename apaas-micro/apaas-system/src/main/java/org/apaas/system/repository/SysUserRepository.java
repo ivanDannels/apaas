@@ -1,7 +1,7 @@
 package org.apaas.system.repository;
 
 import org.apaas.system.entity.SysUser;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
  * 用户Repository接口
  */
 @Repository
-public interface SysUserRepository extends R2dbcRepository<SysUser, Long> {
+public interface SysUserRepository extends ReactiveBaseRepository<SysUser, Long> {
     /**
      * 根据用户名查询用户
      *

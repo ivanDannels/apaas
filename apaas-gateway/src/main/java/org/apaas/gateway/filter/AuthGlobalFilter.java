@@ -4,11 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.constant.SecurityConstants;
-import org.apaas.core.utils.JwtUtils;
-import io.jsonwebtoken.Claims;
-import java.util.Date;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -23,7 +19,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -61,21 +56,8 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
                 return setUnauthorizedResponse(response, "令牌已失效");
             }
 
-            // 解析token
-            Claims payload = JwtUtils.parseToken(token);
-            if (payload == null) {
-                return setUnauthorizedResponse(response, "令牌无效");
-            }
-
-            // 检查token是否过期
-            Date expiration = payload.getExpiration();
-            if (expiration != null && expiration.before(new Date())) {
-                return setUnauthorizedResponse(response, "令牌已过期");
-            }
-
-            // 获取用户信息
-            Long userId = payload.get("userId", Long.class);
-            String username = payload.getSubject();
+            String username = "";
+            Long userId = 0L;
 
             // 获取用户权限
             List<String> permissions = (List<String>) redisTemplate.opsForValue().get(SecurityConstants.USER_PERMISSIONS_PREFIX + userId);
@@ -88,8 +70,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    username, null, authorities);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
 
             return chain.filter(exchange)
                     .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authToken));

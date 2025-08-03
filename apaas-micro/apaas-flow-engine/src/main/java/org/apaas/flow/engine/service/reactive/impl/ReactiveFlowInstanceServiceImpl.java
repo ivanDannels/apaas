@@ -124,8 +124,8 @@ public class ReactiveFlowInstanceServiceImpl implements ReactiveFlowInstanceServ
                     instance.setBusinessKey(startInstanceDTO.getBusinessKey());
                     instance.setStarterId(startInstanceDTO.getStarterId());
                     instance.setStatus(1); // 运行中状态
-                    instance.setCreateTime(LocalDateTime.now());
-                    instance.setUpdateTime(LocalDateTime.now());
+                    instance.setCreatedTime(LocalDateTime.now());
+                    instance.setUpdatedTime(LocalDateTime.now());
                     
                     return flowInstanceRepository.save(instance);
                 });
@@ -138,7 +138,7 @@ public class ReactiveFlowInstanceServiceImpl implements ReactiveFlowInstanceServ
                 .flatMap(instance -> {
                     instance.setStatus(3); // 已终止状态
                     instance.setEndTime(LocalDateTime.now());
-                    instance.setUpdateTime(LocalDateTime.now());
+                    instance.setUpdatedTime(LocalDateTime.now());
                     return flowInstanceRepository.save(instance);
                 });
     }
@@ -149,7 +149,7 @@ public class ReactiveFlowInstanceServiceImpl implements ReactiveFlowInstanceServ
         return flowInstanceRepository.findById(id)
                 .flatMap(instance -> {
                     instance.setStatus(4); // 已暂停状态
-                    instance.setUpdateTime(LocalDateTime.now());
+                    instance.setUpdatedTime(LocalDateTime.now());
                     return flowInstanceRepository.save(instance);
                 });
     }
@@ -160,7 +160,7 @@ public class ReactiveFlowInstanceServiceImpl implements ReactiveFlowInstanceServ
         return flowInstanceRepository.findById(id)
                 .flatMap(instance -> {
                     instance.setStatus(1); // 运行中状态
-                    instance.setUpdateTime(LocalDateTime.now());
+                    instance.setUpdatedTime(LocalDateTime.now());
                     return flowInstanceRepository.save(instance);
                 });
     }

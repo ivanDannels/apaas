@@ -71,7 +71,7 @@ public class ReactiveSysConfigServiceImpl implements ReactiveSysConfigService {
         return configRepository.findById(id)
                 .flatMap(config -> {
                     config.setStatus(status);
-                    config.setUpdateTime(LocalDateTime.now());
+                    config.setUpdatedTime(LocalDateTime.now());
                     return configRepository.save(config);
                 })
                 .map(updatedConfig -> true)

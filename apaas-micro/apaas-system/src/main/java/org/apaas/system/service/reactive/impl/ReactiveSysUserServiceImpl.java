@@ -120,7 +120,7 @@ public class ReactiveSysUserServiceImpl implements ReactiveSysUserService {
                 .flatMap(user -> {
                     // 更新密码
                     user.setPassword(passwordEncoder.encode(password));
-                    user.setUpdateTime(LocalDateTime.now());
+                    user.setUpdatedTime(LocalDateTime.now());
 
                     return userRepository.save(user)
                             .map(updatedUser -> true)
@@ -141,7 +141,7 @@ public class ReactiveSysUserServiceImpl implements ReactiveSysUserService {
 
                     // 更新状态
                     user.setStatus(status);
-                    user.setUpdateTime(LocalDateTime.now());
+                    user.setUpdatedTime(LocalDateTime.now());
 
                     return userRepository.save(user)
                             .map(updatedUser -> true)
@@ -162,7 +162,7 @@ public class ReactiveSysUserServiceImpl implements ReactiveSysUserService {
                     // 更新登录信息
                     user.setLoginIp(ip);
                     user.setLoginDate(LocalDateTime.now());
-                    user.setUpdateTime(LocalDateTime.now());
+                    user.setUpdatedTime(LocalDateTime.now());
 
                     return userRepository.save(user)
                             .map(updatedUser -> true)

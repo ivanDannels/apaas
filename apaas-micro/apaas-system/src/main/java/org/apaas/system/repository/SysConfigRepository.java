@@ -1,7 +1,7 @@
 package org.apaas.system.repository;
 
 import org.apaas.system.entity.SysConfig;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
  * 参数配置Repository接口
  */
 @Repository
-public interface SysConfigRepository extends R2dbcRepository<SysConfig, Long> {
+public interface SysConfigRepository extends ReactiveBaseRepository<SysConfig, Long> {
     /**
      * 根据参数编码查询参数配置
      *

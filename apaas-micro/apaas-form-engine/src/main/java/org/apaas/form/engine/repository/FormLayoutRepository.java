@@ -1,6 +1,6 @@
 package org.apaas.form.engine.repository;
 
-import org.apaas.core.repository.BaseEntityRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.form.engine.entity.FormLayout;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
  * 表单布局响应式仓库接口
  */
 @Repository
-public interface FormLayoutRepository extends BaseEntityRepository<FormLayout, Long> {
+public interface FormLayoutRepository extends ReactiveBaseRepository<FormLayout, Long> {
     /**
      * 根据表单ID查询布局列表
      *

@@ -1,6 +1,6 @@
 package org.apaas.form.engine.repository;
 
-import org.apaas.core.repository.BaseEntityRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.form.engine.entity.FormFieldPermission;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
  * 表单字段权限仓库接口
  */
 @Repository
-public interface FormFieldPermissionRepository extends BaseEntityRepository<FormFieldPermission, Long> {
+public interface FormFieldPermissionRepository extends ReactiveBaseRepository<FormFieldPermission, Long> {
     
     /**
      * 根据表单ID查询字段权限列表

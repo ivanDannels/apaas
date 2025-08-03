@@ -63,7 +63,7 @@ public class ReactiveDataDictionaryServiceImpl implements ReactiveDataDictionary
         return dataDictionaryRepository.findById(id)
                 .flatMap(dataDictionary -> {
                     dataDictionary.setStatus(status);
-                    dataDictionary.setUpdateTime(LocalDateTime.now());
+                    dataDictionary.setUpdatedTime(LocalDateTime.now());
                     return dataDictionaryRepository.save(dataDictionary);
                 })
                 .map(updatedDataDictionary -> true)

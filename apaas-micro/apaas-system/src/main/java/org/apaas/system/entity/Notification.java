@@ -2,6 +2,9 @@ package org.apaas.system.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +12,8 @@ import java.time.LocalDateTime;
  * 通知实体类
  */
 @Data
+@SuperBuilder
+@Table("notification")
 @EqualsAndHashCode(callSuper = true)
 public class Notification extends BaseEntity {
 
@@ -96,21 +101,4 @@ public class Notification extends BaseEntity {
      * 租户ID
      */
     private Long tenantId;
-    
-    // 手动添加setter方法，以防Lombok不工作
-    public void setReadStatus(Integer readStatus) {
-        this.readStatus = readStatus;
-    }
-    
-    public void setReadTime(LocalDateTime readTime) {
-        this.readTime = readTime;
-    }
-    
-    public void setSendStatus(Integer sendStatus) {
-        this.sendStatus = sendStatus;
-    }
-    
-    public void setSendTime(LocalDateTime sendTime) {
-        this.sendTime = sendTime;
-    }
 }

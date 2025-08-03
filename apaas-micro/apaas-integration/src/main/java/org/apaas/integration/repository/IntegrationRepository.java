@@ -1,9 +1,9 @@
 package org.apaas.integration.repository;
 
 import org.apaas.integration.entity.IntegrationEntity;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IntegrationRepository extends R2dbcRepository<IntegrationEntity, Long> {
+public interface IntegrationRepository extends ReactiveBaseRepository<IntegrationEntity, Long> {
 }

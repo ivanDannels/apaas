@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.auth.domain.dto.UserDTO;
-import org.apaas.auth.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.auth.entity.User;
 import org.apaas.auth.service.reactive.ReactiveUserService;
 import org.springframework.http.MediaType;

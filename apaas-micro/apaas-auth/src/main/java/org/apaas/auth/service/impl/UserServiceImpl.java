@@ -1,20 +1,18 @@
-package org.apaas.authorization.service.impl;
+package org.apaas.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apaas.authorization.domain.dto.UserDTO;
-import org.apaas.authorization.entity.Role;
-import org.apaas.authorization.entity.RoleResource;
-import org.apaas.authorization.entity.User;
-import org.apaas.authorization.entity.UserRole;
-import org.apaas.authorization.mapper.ResourceMapper;
-import org.apaas.authorization.mapper.RoleMapper;
-import org.apaas.authorization.mapper.UserMapper;
-import org.apaas.authorization.mapper.UserRoleMapper;
-import org.apaas.authorization.service.UserService;
-import org.apaas.core.utils.JwtUtils;
+import org.apaas.auth.domain.dto.UserDTO;
+import org.apaas.auth.entity.Role;
+import org.apaas.auth.entity.User;
+import org.apaas.auth.entity.UserRole;
+import org.apaas.auth.mapper.ResourceMapper;
+import org.apaas.auth.mapper.RoleMapper;
+import org.apaas.auth.mapper.UserMapper;
+import org.apaas.auth.mapper.UserRoleMapper;
+import org.apaas.auth.service.UserService;
 import org.apaas.core.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,8 +46,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtUtils jwtUtils;
 
     @Override
     public User getByUsername(String username) {
@@ -96,10 +92,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setStatus(0);
         user.setDeleted(0);
         user.setTenantId(SecurityUtils.getTenantId());
-        user.setCreateBy(SecurityUtils.getUsername());
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateBy(SecurityUtils.getUsername());
-        user.setUpdateTime(LocalDateTime.now());
+        user.setCreator(SecurityUtils.getUsername());
+        user.setCreatedTime(LocalDateTime.now());
+        user.setUpdater(SecurityUtils.getUsername());
+        user.setUpdatedTime(LocalDateTime.now());
 
         return save(user);
     }
@@ -110,8 +106,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = new User();
         user.setId(id);
         user.setPassword(passwordEncoder.encode(newPassword));
-        user.setUpdateBy(SecurityUtils.getUsername());
-        user.setUpdateTime(LocalDateTime.now());
+        user.setUpdater(SecurityUtils.getUsername());
+        user.setUpdatedTime(LocalDateTime.now());
         return updateById(user);
     }
 
@@ -145,8 +141,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = new User();
         user.setId(id);
         user.setStatus(status);
-        user.setUpdateBy(SecurityUtils.getUsername());
-        user.setUpdateTime(LocalDateTime.now());
+        user.setUpdater(SecurityUtils.getUsername());
+        user.setUpdatedTime(LocalDateTime.now());
         return updateById(user);
     }
 

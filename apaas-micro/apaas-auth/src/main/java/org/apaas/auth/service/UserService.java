@@ -1,8 +1,8 @@
-package org.apaas.authorization.service;
+package org.apaas.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apaas.authorization.domain.dto.UserDTO;
-import org.apaas.authorization.entity.User;
+import org.apaas.auth.domain.dto.UserDTO;
+import org.apaas.auth.entity.User;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import java.util.List;
 

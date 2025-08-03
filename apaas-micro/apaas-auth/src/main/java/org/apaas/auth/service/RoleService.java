@@ -1,4 +1,4 @@
-package org.apaas.authorization.service;
+package org.apaas.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apaas.auth.domain.dto.RoleDTO;

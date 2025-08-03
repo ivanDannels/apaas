@@ -1,6 +1,8 @@
 package org.apaas.form.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
 import org.apaas.core.domain.BaseEntity;
 
@@ -8,7 +10,9 @@ import org.apaas.core.domain.BaseEntity;
  * 表单布局实体
  */
 @Data
-@TableName("form_layout")
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@Table("form_layout")
 public class FormLayout extends BaseEntity {
     /**
      * 表单定义ID

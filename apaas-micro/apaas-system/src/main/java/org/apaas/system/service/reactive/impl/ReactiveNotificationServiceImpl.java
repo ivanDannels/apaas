@@ -36,6 +36,11 @@ public class ReactiveNotificationServiceImpl implements ReactiveNotificationServ
     }
 
     @Override
+    public Flux<Notification> getAllByIds(List<Long> ids) {
+        return notificationRepository.findAllById(ids);
+    }
+
+    @Override
     public Mono<Boolean> create(Notification notification) {
         return notificationRepository.save(notification)
                 .map(savedNotification -> true)

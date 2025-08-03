@@ -1,7 +1,7 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.domain.dto.UserDTO;
-import org.apaas.auth.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.auth.entity.User;
 import reactor.core.publisher.Mono;
 

@@ -3,7 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.auth.domain.dto.RoleDTO;
-import org.apaas.auth.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.auth.entity.Role;
 import org.apaas.auth.entity.UserRole;
 import org.apaas.auth.repository.reactive.ReactiveRoleRepository;
@@ -90,7 +90,7 @@ public class ReactiveRoleServiceImpl implements ReactiveRoleService {
                     }
                     
                     // 设置创建时间
-                    role.setCreateTime(LocalDateTime.now());
+                    role.setCreatedTime(LocalDateTime.now());
                     
                     return roleRepository.save(role)
                             .map(savedRole -> true)
@@ -111,14 +111,14 @@ public class ReactiveRoleServiceImpl implements ReactiveRoleService {
                                         return Mono.just(false);
                                     }
                                     
-                                    role.setUpdateTime(LocalDateTime.now());
+                                    role.setUpdatedTime(LocalDateTime.now());
                                     return roleRepository.save(role)
                                             .map(updatedRole -> true)
                                             .onErrorReturn(false);
                                 });
                     }
                     
-                    role.setUpdateTime(LocalDateTime.now());
+                    role.setUpdatedTime(LocalDateTime.now());
                     return roleRepository.save(role)
                             .map(updatedRole -> true)
                             .onErrorReturn(false);
@@ -147,7 +147,7 @@ public class ReactiveRoleServiceImpl implements ReactiveRoleService {
         return roleRepository.findById(id)
                 .flatMap(role -> {
                     role.setStatus(status);
-                    role.setUpdateTime(LocalDateTime.now());
+                    role.setUpdatedTime(LocalDateTime.now());
                     return roleRepository.save(role);
                 })
                 .map(updatedRole -> true)
@@ -180,7 +180,7 @@ public class ReactiveRoleServiceImpl implements ReactiveRoleService {
                         UserRole userRole = new UserRole();
                         userRole.setUserId(userId);
                         userRole.setRoleId(roleId);
-                        userRole.setCreateTime(LocalDateTime.now());
+                        userRole.setCreatedTime(LocalDateTime.now());
                         saveMonos.add(userRoleRepository.save(userRole));
                     }
                     

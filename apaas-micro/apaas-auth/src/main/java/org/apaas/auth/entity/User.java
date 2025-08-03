@@ -1,5 +1,6 @@
 package org.apaas.auth.entity;
 
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -10,10 +11,12 @@ import java.time.LocalDateTime;
 
 /**
  * 用户实体类
+ * @author ivan
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
 @Table("sys_user")
+@EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
     /**
      * 用户名
@@ -55,42 +58,4 @@ public class User extends BaseEntity {
      */
     private Integer status;
 
-    /**
-     * 部门ID
-     */
-    private Long deptId;
-
-    /**
-     * 租户ID
-     */
-    private Long tenantId;
-
-    /**
-     * 创建人
-     */
-    @Column("create_by")
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    @Column("create_time")
-    private LocalDateTime createTime;
-
-    /**
-     * 更新人
-     */
-    @Column("update_by")
-    private String updateBy;
-
-    /**
-     * 更新时间
-     */
-    @Column("update_time")
-    private LocalDateTime updateTime;
-
-    /**
-     * 逻辑删除标志：0-未删除，1-已删除
-     */
-    private Integer deleted;
 }

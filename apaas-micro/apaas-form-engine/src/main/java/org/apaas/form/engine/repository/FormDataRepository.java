@@ -1,16 +1,17 @@
 package org.apaas.form.engine.repository;
 
-import org.apaas.core.repository.BaseEntityRepository;
-import org.apaas.form.domain.entity.FormData;
+import org.apaas.core.repository.ReactiveBaseRepository;
+import org.apaas.form.engine.entity.FormData;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * 表单数据响应式仓库接口
+ * @author ivan
  */
 @Repository
-public interface FormDataRepository extends BaseEntityRepository<FormData, Long> {
+public interface FormDataRepository extends ReactiveBaseRepository<FormData, Long> {
     
     /**
      * 根据表单定义ID查询表单数据列表

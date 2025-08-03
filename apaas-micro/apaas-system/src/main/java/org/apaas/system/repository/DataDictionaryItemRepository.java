@@ -1,15 +1,16 @@
 package org.apaas.system.repository;
 
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.system.entity.DataDictionaryItem;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
 /**
  * 数据字典项Repository接口
+ * @author ivan
  */
 @Repository
-public interface DataDictionaryItemRepository extends R2dbcRepository<DataDictionaryItem, Long> {
+public interface DataDictionaryItemRepository extends ReactiveBaseRepository<DataDictionaryItem, Long> {
     /**
      * 根据字典ID查询字典项列表
      *

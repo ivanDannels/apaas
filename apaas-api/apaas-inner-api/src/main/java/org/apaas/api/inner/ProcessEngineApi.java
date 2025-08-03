@@ -1,8 +1,6 @@
 package org.apaas.api.inner;
 
-import org.apaas.api.common.ApiResponse;
-import org.apaas.api.common.BasePageRequest;
-import org.apaas.api.common.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.api.inner.dto.ProcessDefinitionDTO;
 import org.apaas.api.inner.dto.ProcessInstanceDTO;
 import org.apaas.api.inner.dto.ProcessTaskDTO;

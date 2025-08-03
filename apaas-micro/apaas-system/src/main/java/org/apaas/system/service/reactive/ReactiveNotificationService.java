@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * 响应式通知服务接口
  */
-@Service
 public interface ReactiveNotificationService {
 
     /**
@@ -28,6 +27,8 @@ public interface ReactiveNotificationService {
      * @return 通知详情
      */
     Mono<Notification> getDetail(Long id);
+
+    Flux<Notification> getAllByIds(List<Long> ids);
 
     /**
      * 创建通知

@@ -1,12 +1,18 @@
 package org.apaas.form.engine.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * 表单字段实体
  */
 @Data
+@SuperBuilder
+@Table("form_field")
+@EqualsAndHashCode(callSuper = true)
 public class FormField extends BaseEntity {
     /**
      * 表单定义ID

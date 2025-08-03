@@ -3,9 +3,9 @@ package org.apaas.form.engine.service.reactive.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.context.TenantContext;
-import org.apaas.core.domain.EntityChangedEvent;
-import org.apaas.core.web.domain.PageResult;
-import org.apaas.core.event.RedisDomainEventPublisher;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
+import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.core.utils.SecurityUtils;
 import org.apaas.form.engine.domain.dto.FormDefinitionDTO;
@@ -23,13 +23,13 @@ import java.util.Arrays;
 
 /**
  * 响应式表单定义服务实现类
+ * @author ivan
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefinition, Long, FormDefinitionRepository> implements ReactiveFormDefinitionService {
 
-    public ReactiveFormDefinitionServiceImpl(FormDefinitionRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormDefinition>> eventPublisher) {
+    public ReactiveFormDefinitionServiceImpl(FormDefinitionRepository repository, RedisDomainEventPublisher<org.apaas.core.event.EntityChangedEvent<FormDefinition>> eventPublisher) {
         super(repository, eventPublisher);
     }
 
@@ -43,7 +43,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
 
         return TenantContext.getTenantIdAsync()
                 .flatMap(tenantId -> {
-                    Flux<FormDefinition> flux = repository.findAllByTenantId(tenantId, pageRequest);
+                    Flux<FormDefinition> flux = repository.findAllByTenantIdOrderByCreatedTimeDesc(tenantId, pageRequest);
                     
                     // 应用过滤条件
                     if (query.getName() != null) {
@@ -58,8 +58,8 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     
                     return Mono.zip(
                             flux.collectList(),
-                            repository.countByTenantId(tenantId).defaultIfEmpty(0L),
-                            (list, count) -> new PageResult<>(list, query.getPageNum(), query.getPageSize(), count)
+                            repository.countByTenantIdAndDeletedFalse(tenantId).defaultIfEmpty(0L),
+                            (list, count) -> new PageResult<>(query.getPageNum(), query.getPageSize(), count, list)
                     );
                 });
     }
@@ -72,12 +72,12 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     formDefinition.setTenantId(tenantId);
                     // 设置创建人、更新人
                     String username = SecurityUtils.getUsername();
-                    formDefinition.setCreateBy(username);
-                    formDefinition.setUpdateBy(username);
+                    formDefinition.setCreator(username);
+                    formDefinition.setUpdater(username);
                     // 设置创建时间、更新时间
                     LocalDateTime now = LocalDateTime.now();
-                    formDefinition.setCreateTime(now);
-                    formDefinition.setUpdateTime(now);
+                    formDefinition.setCreatedTime(now);
+                    formDefinition.setUpdatedTime(now);
                     // 初始状态为草稿
                     formDefinition.setStatus(0);
                     // 处理版本号
@@ -92,8 +92,8 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
         return TenantContext.getTenantIdAsync()
                 .flatMap(tenantId -> {
                     // 设置更新人、更新时间
-                    formDefinition.setUpdateBy(SecurityUtils.getUsername());
-                    formDefinition.setUpdateTime(LocalDateTime.now());
+                    formDefinition.setUpdater(SecurityUtils.getUsername());
+                    formDefinition.setUpdatedTime(LocalDateTime.now());
                     
                     // 检查表单状态
                     return findById(formDefinition.getId())
@@ -134,8 +134,8 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                 .flatMap(formDefinition -> {
                     // 设置状态为已发布
                     formDefinition.setStatus(1);
-                    formDefinition.setUpdateBy(SecurityUtils.getUsername());
-                    formDefinition.setUpdateTime(LocalDateTime.now());
+                    formDefinition.setUpdater(SecurityUtils.getUsername());
+                    formDefinition.setUpdatedTime(LocalDateTime.now());
                     
                     // 如果设为默认版本，则更新其他版本为非默认
                     Mono<FormDefinition> updateMono = Mono.just(formDefinition);
@@ -157,8 +157,8 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                 .flatMap(formDefinition -> {
                     // 设置状态为已停用
                     formDefinition.setStatus(2);
-                    formDefinition.setUpdateBy(SecurityUtils.getUsername());
-                    formDefinition.setUpdateTime(LocalDateTime.now());
+                    formDefinition.setUpdater(SecurityUtils.getUsername());
+                    formDefinition.setUpdatedTime(LocalDateTime.now());
                     
                     return save(formDefinition)
                             .map(saved -> true);
@@ -195,10 +195,10 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     return TenantContext.getTenantIdAsync()
                             .flatMap(tenantId -> {
                                 newDefinition.setTenantId(tenantId);
-                                newDefinition.setCreateBy(SecurityUtils.getUsername());
-                                newDefinition.setUpdateBy(SecurityUtils.getUsername());
-                                newDefinition.setCreateTime(LocalDateTime.now());
-                                newDefinition.setUpdateTime(LocalDateTime.now());
+                                newDefinition.setCreator(SecurityUtils.getUsername());
+                                newDefinition.setUpdater(SecurityUtils.getUsername());
+                                newDefinition.setCreatedTime(LocalDateTime.now());
+                                newDefinition.setUpdatedTime(LocalDateTime.now());
                                 
                                 // 处理版本号
                                 return handleVersion(newDefinition)
@@ -228,10 +228,10 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
         return TenantContext.getTenantIdAsync()
                 .flatMap(tenantId -> {
                     formDefinition.setTenantId(tenantId);
-                    formDefinition.setCreateBy(SecurityUtils.getUsername());
-                    formDefinition.setUpdateBy(SecurityUtils.getUsername());
-                    formDefinition.setCreateTime(LocalDateTime.now());
-                    formDefinition.setUpdateTime(LocalDateTime.now());
+                    formDefinition.setCreator(SecurityUtils.getUsername());
+                    formDefinition.setUpdater(SecurityUtils.getUsername());
+                    formDefinition.setCreatedTime(LocalDateTime.now());
+                    formDefinition.setUpdatedTime(LocalDateTime.now());
                     
                     return handleVersion(formDefinition)
                             .flatMap(this::save)

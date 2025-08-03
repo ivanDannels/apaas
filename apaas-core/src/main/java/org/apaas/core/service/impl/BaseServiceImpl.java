@@ -5,15 +5,18 @@ import org.apaas.core.context.TenantContext;
 import org.apaas.core.domain.BaseEntity;
 import org.apaas.core.event.EntityChangedEvent;
 import org.apaas.core.event.impl.RedisDomainEventPublisher;
-import org.apaas.core.repository.BaseEntityRepository;
+import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.core.service.BaseService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 
+/**
+ * @author ivan
+ */
 @RequiredArgsConstructor
-public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializable, R extends BaseEntityRepository<T, ID>> implements BaseService<T, ID> {
+public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializable, R extends ReactiveBaseRepository<T, ID>> implements BaseService<T, ID> {
     
     protected final R repository;
     

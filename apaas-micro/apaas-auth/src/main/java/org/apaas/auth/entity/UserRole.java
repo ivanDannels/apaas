@@ -1,33 +1,24 @@
-package org.apaas.authorization.entity;
+package org.apaas.auth.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * 用户角色关联实体类
+ * @author ivan
  */
 @Data
-@TableName("sys_user_role")
+@Table("sys_user_role")
 public class UserRole {
-    /**
-     * 主键ID
-     */
-    @TableId(type = IdType.AUTO)
-    private Long id;
 
     /**
      * 用户ID
      */
-    @TableField("user_id")
     private Long userId;
 
     /**
      * 角色ID
      */
-    @TableField("role_id")
     private Long roleId;
 
     /**

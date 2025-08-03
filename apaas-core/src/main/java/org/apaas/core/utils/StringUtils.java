@@ -8,6 +8,7 @@ import java.util.Map;
 
 /**
  * 字符串工具类
+ * @author ivan
  */
 public class StringUtils extends StrUtil {
 

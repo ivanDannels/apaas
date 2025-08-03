@@ -1,13 +1,21 @@
 package org.apaas.form.engine.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.time.LocalDateTime;
 
 /**
  * 表单定义实体
+ * @author ivan
  */
 @Data
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@Table("form_definition")
 public class FormDefinition extends BaseEntity {
     /**
      * 表单名称

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apaas.core.query.PageResult;
 import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
 import org.apaas.system.service.reactive.ReactiveNotificationService;
@@ -12,6 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 /**
  * 通知控制器
@@ -33,7 +38,7 @@ public class NotificationController {
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "分页查询通知列表", description = "分页查询通知列表")
     public Mono<PageResult<Notification>> list(NotificationDTO notificationDTO) {
-        return notificationService.queryPage(notificationDTO);
+        return notificationService.queryPage(notificationDTO).collectList().map(PageResult::of);
     }
 
     /**
@@ -57,7 +62,7 @@ public class NotificationController {
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建通知", description = "创建通知")
-    public Mono<Notification> create(@RequestBody Notification notification) {
+    public Mono<Boolean> create(@RequestBody Notification notification) {
         return notificationService.create(notification);
     }
 
@@ -150,7 +155,7 @@ public class NotificationController {
     @Parameter(name = "pageNum", description = "页码", required = true)
     @Parameter(name = "pageSize", description = "每页数量", required = true)
     public Mono<PageResult<Notification>> getUserNotifications(@RequestParam Long userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        return notificationService.getByUserId(userId, pageNum, pageSize);
+        return notificationService.getByUserId(userId, pageNum, pageSize).collectList().map(PageResult::of);
     }
 
     /**
@@ -163,11 +168,11 @@ public class NotificationController {
     @Operation(summary = "发送通知", description = "发送通知")
     @Parameter(name = "id", description = "通知ID", required = true)
     public Mono<Boolean> send(@PathVariable Long id) {
-        Notification notification = notificationService.getDetail(id);
+        Notification notification = notificationService.getDetail(id).block();
         if (notification == null) {
             return Mono.just(false);
         }
-        return Mono.just(notificationService.send(notification));
+        return notificationService.send(notification);
     }
 
     /**
@@ -179,7 +184,7 @@ public class NotificationController {
     @PutMapping(value = "/batch/send", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "批量发送通知", description = "批量发送通知")
     public Mono<Boolean> batchSend(@RequestBody List<Long> ids) {
-        List<Notification> notifications = notificationService.listByIds(ids);
-        return Mono.just(notificationService.batchSend(notifications));
+        List<Notification> notifications = notificationService.getAllByIds(ids).collectList().block();
+        return notificationService.batchSend(notifications);
     }
 }

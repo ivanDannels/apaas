@@ -3,7 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.auth.domain.dto.UserDTO;
-import org.apaas.auth.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.auth.entity.User;
 import org.apaas.auth.repository.reactive.ReactiveUserRepository;
 import org.apaas.auth.service.reactive.ReactiveUserService;
@@ -56,7 +56,7 @@ public class ReactiveUserServiceImpl implements ReactiveUserService {
                     }
                     
                     // 设置创建时间和密码加密
-                    user.setCreateTime(LocalDateTime.now());
+                    user.setCreatedTime(LocalDateTime.now());
                     user.setPassword(passwordEncoder.encode(user.getPassword()));
                     
                     return userRepository.save(user)
@@ -107,7 +107,7 @@ public class ReactiveUserServiceImpl implements ReactiveUserService {
 
     @Override
     public Mono<Boolean> updateById(User user) {
-        user.setUpdateTime(LocalDateTime.now());
+        user.setUpdatedTime(LocalDateTime.now());
         return userRepository.save(user)
                 .map(updatedUser -> true)
                 .onErrorReturn(false);
@@ -141,7 +141,7 @@ public class ReactiveUserServiceImpl implements ReactiveUserService {
                 .filter(user -> passwordEncoder.matches(oldPassword, user.getPassword()))
                 .flatMap(user -> {
                     user.setPassword(passwordEncoder.encode(newPassword));
-                    user.setUpdateTime(LocalDateTime.now());
+                    user.setUpdatedTime(LocalDateTime.now());
                     return userRepository.save(user);
                 })
                 .map(updatedUser -> true)

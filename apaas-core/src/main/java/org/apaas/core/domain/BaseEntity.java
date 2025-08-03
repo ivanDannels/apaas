@@ -2,29 +2,31 @@ package org.apaas.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * 基础实体类，所有实体都需要继承
+ * @author ivan
  */
 @Data
 @Table
+@SuperBuilder
 public class BaseEntity implements Serializable, HasDeleted, HasTenantId {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键ID
      */
-    @org.springframework.data.annotation.Id
+    @Id
     private Long id;
 
     /**

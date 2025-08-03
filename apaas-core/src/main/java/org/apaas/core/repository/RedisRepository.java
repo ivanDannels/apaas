@@ -1,17 +1,20 @@
 package org.apaas.core.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * @author ivan
+ */
 @Repository
+@RequiredArgsConstructor
 public class RedisRepository {
-    @Autowired
-    private ReactiveRedisTemplate<String, Object> redisTemplate;
+
+    private final ReactiveRedisTemplate<String, Object> redisTemplate;
 
     public Mono<Boolean> set(String key, Object value, long timeout) {
         return redisTemplate.opsForValue().set(key, value, Duration.ofMillis(timeout));
