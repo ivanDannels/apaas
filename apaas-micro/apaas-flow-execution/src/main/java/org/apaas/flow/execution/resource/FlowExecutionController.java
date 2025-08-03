@@ -34,7 +34,6 @@ public class FlowExecutionController {
             @RequestParam String businessKey,
             @RequestHeader("user-id") Long starter) {
         return flowRuntimeService.startProcessInstance(processId, businessKey, starter)
-                .map(Result::success)
                 .onErrorReturn(Result.error("启动流程实例失败"));
     }
     
@@ -50,7 +49,6 @@ public class FlowExecutionController {
             @PathVariable Long activityInstanceId,
             @RequestHeader("user-id") Long userId) {
         return flowRuntimeService.completeActivityInstance(activityInstanceId, userId)
-                .map(Result::success)
                 .onErrorReturn(Result.error("完成活动实例失败"));
     }
     
@@ -66,7 +64,6 @@ public class FlowExecutionController {
             @PathVariable Long flowInstanceId,
             @RequestHeader("user-id") Long userId) {
         return flowRuntimeService.terminateFlowInstance(flowInstanceId, userId)
-                .map(Result::success)
                 .onErrorReturn(Result.error("终止流程实例失败"));
     }
     
@@ -78,7 +75,7 @@ public class FlowExecutionController {
      */
     @GetMapping("/tasks")
     public Mono<Result<Flux<WorkflowTask>>> getUserTasks(@RequestHeader("user-id") Long userId) {
-        return Mono.just(Result.success(taskManagementService.getUserTasks(userId)));
+        return taskManagementService.getUserTasks(userId);
     }
     
     /**
@@ -93,7 +90,6 @@ public class FlowExecutionController {
             @PathVariable Long taskId,
             @RequestHeader("user-id") Long userId) {
         return taskManagementService.claimTask(taskId, userId)
-                .map(Result::success)
                 .onErrorReturn(Result.error("领取任务失败"));
     }
     
@@ -109,7 +105,6 @@ public class FlowExecutionController {
             @PathVariable Long taskId,
             @RequestHeader("user-id") Long userId) {
         return taskManagementService.completeTask(taskId, userId)
-                .map(Result::success)
                 .onErrorReturn(Result.error("完成任务失败"));
     }
     
@@ -127,7 +122,6 @@ public class FlowExecutionController {
             @RequestParam Long fromUserId,
             @RequestParam Long toUserId) {
         return taskManagementService.transferTask(taskId, fromUserId, toUserId)
-                .map(Result::success)
                 .onErrorReturn(Result.error("转办任务失败"));
     }
 }

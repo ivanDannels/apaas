@@ -1,6 +1,5 @@
 package org.apaas.core.event.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apaas.core.event.DomainEventPublisher;
@@ -13,23 +12,14 @@ import reactor.core.publisher.Mono;
  * @param <T> 事件类型
  */
 @Component
+@RequiredArgsConstructor
 public class RedisDomainEventPublisher<T> implements DomainEventPublisher<T> {
     
     private final RedisRepository redisRepository;
     
     private final ObjectMapper objectMapper;
     
-    private final String eventChannel;
-    
-    public RedisDomainEventPublisher(RedisRepository redisRepository, ObjectMapper objectMapper) {
-        this(redisRepository, objectMapper, "domain_events");
-    }
-    
-    public RedisDomainEventPublisher(RedisRepository redisRepository, ObjectMapper objectMapper, String eventChannel) {
-        this.redisRepository = redisRepository;
-        this.objectMapper = objectMapper;
-        this.eventChannel = eventChannel;
-    }
+    private String eventChannel;
     
     @Override
     public Mono<Void> publish(T event) {

@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ReactiveFormFieldServiceImpl extends BaseServiceImpl<FormField, Long, FormFieldRepository> implements ReactiveFormFieldService {
 
     public ReactiveFormFieldServiceImpl(FormFieldRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormField>> eventPublisher) {

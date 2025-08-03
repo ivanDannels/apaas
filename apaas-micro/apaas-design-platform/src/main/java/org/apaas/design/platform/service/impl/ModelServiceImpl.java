@@ -1,6 +1,8 @@
 package org.apaas.design.platform.service.impl;
 
 import org.apaas.core.context.TenantContext;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.design.platform.entity.Model;
 import org.apaas.design.platform.repository.ModelRepository;
@@ -11,7 +13,11 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class ModelServiceImpl extends BaseServiceImpl<Model, Long, ModelRepository> implements ModelService {
-    
+
+    public ModelServiceImpl(ModelRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Model>> eventPublisher) {
+        super(repository, eventPublisher);
+    }
+
     @Override
     public Mono<Model> findByName(String name) {
         return TenantContext.getTenantIdAsync()

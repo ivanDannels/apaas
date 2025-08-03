@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.web.domain.BasePageQuery;
-import org.apaas.form.domain.entity.FormData;
+import org.apaas.form.engine.entity.FormData;
 import org.apaas.form.engine.service.reactive.ReactiveFormDataService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

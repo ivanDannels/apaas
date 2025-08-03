@@ -1,6 +1,5 @@
 package org.apaas.core.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.apaas.core.domain.TestEntity;
 import org.apaas.core.event.EntityChangedEvent;
 import org.apaas.core.event.impl.RedisDomainEventPublisher;

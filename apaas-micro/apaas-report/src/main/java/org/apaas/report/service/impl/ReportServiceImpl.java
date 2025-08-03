@@ -1,5 +1,7 @@
 package org.apaas.report.service.impl;
 
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.report.entity.Report;
 import org.apaas.report.repository.ReportRepository;
@@ -10,20 +12,18 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class ReportServiceImpl extends BaseServiceImpl<Report, Long, ReportRepository> implements ReportService {
-    private final ReportRepository reportRepository;
 
-    public ReportServiceImpl(ReportRepository reportRepository) {
-        super(reportRepository);
-        this.reportRepository = reportRepository;
+    public ReportServiceImpl(ReportRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Report>> eventPublisher) {
+        super(repository, eventPublisher);
     }
 
     @Override
     public Mono<Report> findByName(String name) {
-        return reportRepository.findByName(name);
+        return repository.findByName(name);
     }
 
     @Override
     public Flux<Report> findByType(String type) {
-        return reportRepository.findByType(type);
+        return repository.findByType(type);
     }
 }

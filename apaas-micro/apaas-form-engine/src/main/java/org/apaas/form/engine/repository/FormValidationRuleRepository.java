@@ -2,8 +2,10 @@ package org.apaas.form.engine.repository;
 
 import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.form.engine.entity.FormValidationRule;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -36,4 +38,8 @@ public interface FormValidationRuleRepository extends ReactiveBaseRepository<For
      * @return 验证规则列表
      */
     Flux<FormValidationRule> findByFieldIdIn(List<Long> fieldIds);
+
+    Flux<FormValidationRule> findByFieldIdAndDeletedFalse(Long fieldId, PageRequest sort);
+
+    Mono<Integer> countByFieldIdAndDeletedFalse(Long fieldId);
 }

@@ -2,7 +2,7 @@ package org.apaas.design.platform.service.impl;
 
 import org.apaas.design.platform.entity.DataSource;
 import org.apaas.design.platform.repository.DataSourceRepository;
-import org.apaas.design.platform.service.BaseServiceImpl;
+import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.design.platform.service.DataSourceService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

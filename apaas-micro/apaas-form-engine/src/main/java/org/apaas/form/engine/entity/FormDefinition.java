@@ -6,8 +6,6 @@ import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
-
 /**
  * 表单定义实体
  * @author ivan

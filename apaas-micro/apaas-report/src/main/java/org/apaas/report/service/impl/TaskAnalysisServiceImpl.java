@@ -1,5 +1,7 @@
 package org.apaas.report.service.impl;
 
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.report.entity.TaskAnalysis;
 import org.apaas.report.repository.TaskAnalysisRepository;
@@ -10,20 +12,18 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class TaskAnalysisServiceImpl extends BaseServiceImpl<TaskAnalysis, Long, TaskAnalysisRepository> implements TaskAnalysisService {
-    private final TaskAnalysisRepository taskAnalysisRepository;
 
-    public TaskAnalysisServiceImpl(TaskAnalysisRepository taskAnalysisRepository) {
-        super(taskAnalysisRepository);
-        this.taskAnalysisRepository = taskAnalysisRepository;
+    public TaskAnalysisServiceImpl(TaskAnalysisRepository repository, RedisDomainEventPublisher<EntityChangedEvent<TaskAnalysis>> eventPublisher) {
+        super(repository, eventPublisher);
     }
 
     @Override
     public Mono<TaskAnalysis> findByTaskName(String taskName) {
-        return taskAnalysisRepository.findByTaskName(taskName);
+        return repository.findByTaskName(taskName);
     }
 
     @Override
     public Flux<TaskAnalysis> findByTaskId(Long taskId) {
-        return taskAnalysisRepository.findByTaskId(taskId);
+        return repository.findByTaskId(taskId);
     }
 }

@@ -1,10 +1,8 @@
 package org.apaas.form.engine.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.domain.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
-import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormValidationRule;
 import org.apaas.form.engine.repository.FormValidationRuleRepository;
@@ -22,10 +20,9 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ReactiveFormValidationRuleServiceImpl extends BaseServiceImpl<FormValidationRule, Long, FormValidationRuleRepository> implements ReactiveFormValidationRuleService {
 
-    public ReactiveFormValidationRuleServiceImpl(FormValidationRuleRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormValidationRule>> eventPublisher) {
+    public ReactiveFormValidationRuleServiceImpl(FormValidationRuleRepository repository, RedisDomainEventPublisher<org.apaas.core.event.EntityChangedEvent<FormValidationRule>> eventPublisher) {
         super(repository, eventPublisher);
     }
 
@@ -34,7 +31,7 @@ public class ReactiveFormValidationRuleServiceImpl extends BaseServiceImpl<FormV
         return repository.findByFieldIdAndDeletedFalse(fieldId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort")))
                 .collectList()
                 .zipWith(repository.countByFieldIdAndDeletedFalse(fieldId))
-                .map(tuple -> new PageResult<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
+                .map(tuple -> new PageResult<>(pageNum, pageSize, tuple.getT2(), tuple.getT1()));
     }
 
     @Override

@@ -1,9 +1,7 @@
 package org.apaas.form.engine.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.context.TenantContext;
-import org.apaas.core.event.EntityChangedEvent;
 import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
@@ -19,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 /**
  * 响应式表单定义服务实现类
@@ -181,7 +178,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                 .switchIfEmpty(Mono.error(new RuntimeException("表单定义不存在")))
                 .flatMap(source -> {
                     // 创建新的表单定义
-                    FormDefinition newDefinition = new FormDefinition();
+                    FormDefinition newDefinition = FormDefinition.builder().build();
                     newDefinition.setName(newName);
                     newDefinition.setCode(source.getCode());
                     newDefinition.setType(source.getType());
@@ -219,7 +216,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
     public Mono<Long> importFormDefinition(byte[] data) {
         String itemsJson = new String(data);
         // 实际项目中应解析JSON并创建表单定义
-        FormDefinition formDefinition = new FormDefinition();
+        FormDefinition formDefinition = FormDefinition.builder().build();
         formDefinition.setName("导入的表单");
         formDefinition.setCode("IMPORT_" + System.currentTimeMillis());
         formDefinition.setItemsJson(itemsJson);

@@ -2,7 +2,7 @@ package org.apaas.core.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.constant.Constants;
-import org.apaas.core.domain.TenantContext;
+import org.apaas.core.context.TenantContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;

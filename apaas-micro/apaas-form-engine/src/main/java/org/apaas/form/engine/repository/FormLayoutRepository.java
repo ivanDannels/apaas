@@ -2,6 +2,7 @@ package org.apaas.form.engine.repository;
 
 import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.form.engine.entity.FormLayout;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -44,4 +45,8 @@ public interface FormLayoutRepository extends ReactiveBaseRepository<FormLayout,
      * @return 默认布局
      */
     Mono<FormLayout> findByFormIdAndIsDefault(Long formId, Integer isDefault);
+
+    Flux<FormLayout> findByFormIdAndDeletedFalse(Long formId, PageRequest sort);
+
+    Mono<Integer> countByFormIdAndDeletedFalse(Long formId);
 }

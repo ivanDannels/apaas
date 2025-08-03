@@ -1,5 +1,7 @@
 package org.apaas.report.service.impl;
 
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.report.entity.UserAnalysis;
 import org.apaas.report.repository.UserAnalysisRepository;
@@ -10,20 +12,18 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class UserAnalysisServiceImpl extends BaseServiceImpl<UserAnalysis, Long, UserAnalysisRepository> implements UserAnalysisService {
-    private final UserAnalysisRepository userAnalysisRepository;
 
-    public UserAnalysisServiceImpl(UserAnalysisRepository userAnalysisRepository) {
-        super(userAnalysisRepository);
-        this.userAnalysisRepository = userAnalysisRepository;
+    public UserAnalysisServiceImpl(UserAnalysisRepository repository, RedisDomainEventPublisher<EntityChangedEvent<UserAnalysis>> eventPublisher) {
+        super(repository, eventPublisher);
     }
 
     @Override
     public Mono<UserAnalysis> findByUserId(Long userId) {
-        return userAnalysisRepository.findByUserId(userId);
+        return repository.findByUserId(userId);
     }
 
     @Override
     public Flux<UserAnalysis> findByUserName(String userName) {
-        return userAnalysisRepository.findByUserName(userName);
+        return repository.findByUserName(userName);
     }
 }

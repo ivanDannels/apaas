@@ -1,7 +1,8 @@
 package org.apaas.flow.execution.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.WorkflowTask;
@@ -13,32 +14,57 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class TaskManagementServiceImpl extends BaseServiceImpl<WorkflowTask, Long> implements TaskManagementService {
-    
-    private final WorkflowTaskRepository workflowTaskRepository;
-    
+public class TaskManagementServiceImpl extends BaseServiceImpl<WorkflowTask, Long, WorkflowTaskRepository> implements TaskManagementService {
+
+    public TaskManagementServiceImpl(WorkflowTaskRepository repository, RedisDomainEventPublisher<EntityChangedEvent<WorkflowTask>> eventPublisher) {
+        super(repository, eventPublisher);
+    }
+
+    /**
+     * 查询用户任务列表
+     *
+     * @param userId 用户ID
+     * @return 任务列表
+     */
     @Override
     public Mono<Result<Flux<WorkflowTask>>> getUserTasks(Long userId) {
-        // 实现查询用户任务逻辑
-        return Mono.just(Result.success(Flux.empty()));
+        return null;
     }
-    
+
+    /**
+     * 领取任务
+     *
+     * @param taskId 任务ID
+     * @param userId 用户ID
+     * @return 任务
+     */
     @Override
     public Mono<Result<WorkflowTask>> claimTask(Long taskId, Long userId) {
-        // 实现领取任务逻辑
-        return Mono.empty().map(Result::success);
+        return null;
     }
-    
+
+    /**
+     * 完成任务
+     *
+     * @param taskId 任务ID
+     * @param userId 用户ID
+     * @return 任务
+     */
     @Override
     public Mono<Result<WorkflowTask>> completeTask(Long taskId, Long userId) {
-        // 实现完成任务逻辑
-        return Mono.empty().map(Result::success);
+        return null;
     }
-    
+
+    /**
+     * 转办任务
+     *
+     * @param taskId     任务ID
+     * @param fromUserId 原处理人
+     * @param toUserId   新处理人
+     * @return 任务
+     */
     @Override
     public Mono<Result<WorkflowTask>> transferTask(Long taskId, Long fromUserId, Long toUserId) {
-        // 实现转办任务逻辑
-        return Mono.empty().map(Result::success);
+        return null;
     }
 }

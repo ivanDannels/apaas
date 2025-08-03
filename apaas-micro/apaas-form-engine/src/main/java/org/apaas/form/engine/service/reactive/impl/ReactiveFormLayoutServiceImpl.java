@@ -1,10 +1,8 @@
 package org.apaas.form.engine.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.domain.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
-import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormLayout;
 import org.apaas.form.engine.repository.FormLayoutRepository;
@@ -20,10 +18,10 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ReactiveFormLayoutServiceImpl extends BaseServiceImpl<FormLayout, Long, FormLayoutRepository> implements ReactiveFormLayoutService {
 
-    public ReactiveFormLayoutServiceImpl(FormLayoutRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormLayout>> eventPublisher) {
+
+    public ReactiveFormLayoutServiceImpl(FormLayoutRepository repository, RedisDomainEventPublisher<org.apaas.core.event.EntityChangedEvent<FormLayout>> eventPublisher) {
         super(repository, eventPublisher);
     }
 
@@ -32,7 +30,7 @@ public class ReactiveFormLayoutServiceImpl extends BaseServiceImpl<FormLayout, L
         return repository.findByFormIdAndDeletedFalse(formId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort")))
                 .collectList()
                 .zipWith(repository.countByFormIdAndDeletedFalse(formId))
-                .map(tuple -> new PageResult<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
+                .map(tuple -> new PageResult<>(pageNum, pageSize, tuple.getT2(), tuple.getT1()));
     }
 
     @Override

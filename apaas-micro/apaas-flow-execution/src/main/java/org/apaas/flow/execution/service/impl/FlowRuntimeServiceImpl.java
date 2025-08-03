@@ -1,7 +1,7 @@
 package org.apaas.flow.execution.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.FlowInstance;
@@ -12,11 +12,12 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class FlowRuntimeServiceImpl extends BaseServiceImpl<FlowInstance, Long> implements FlowRuntimeService {
+public class FlowRuntimeServiceImpl extends BaseServiceImpl<FlowInstance, Long, FlowInstanceRepository> implements FlowRuntimeService {
     
-    private final FlowInstanceRepository flowInstanceRepository;
-    
+    public FlowRuntimeServiceImpl(FlowInstanceRepository repository, RedisDomainEventPublisher eventPublisher) {
+        super(repository, eventPublisher);
+    }
+
     @Override
     public Mono<Result<FlowInstance>> startProcessInstance(Long processId, String businessKey, Long starter) {
         // 实现流程启动逻辑

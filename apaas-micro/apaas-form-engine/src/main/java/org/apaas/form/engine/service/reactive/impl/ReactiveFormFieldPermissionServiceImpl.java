@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ReactiveFormFieldPermissionServiceImpl extends BaseServiceImpl<FormFieldPermission, Long, FormFieldPermissionRepository> implements ReactiveFormFieldPermissionService {
 
     public ReactiveFormFieldPermissionServiceImpl(FormFieldPermissionRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormFieldPermission>> eventPublisher) {

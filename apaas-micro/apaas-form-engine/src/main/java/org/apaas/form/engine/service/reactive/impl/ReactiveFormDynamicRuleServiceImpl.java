@@ -2,9 +2,9 @@ package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.domain.EntityChangedEvent;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
-import org.apaas.core.event.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormDynamicRule;
 import org.apaas.form.engine.repository.FormDynamicRuleRepository;
@@ -20,7 +20,6 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ReactiveFormDynamicRuleServiceImpl extends BaseServiceImpl<FormDynamicRule, Long, FormDynamicRuleRepository> implements ReactiveFormDynamicRuleService {
 
     public ReactiveFormDynamicRuleServiceImpl(FormDynamicRuleRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormDynamicRule>> eventPublisher) {
@@ -32,7 +31,7 @@ public class ReactiveFormDynamicRuleServiceImpl extends BaseServiceImpl<FormDyna
         return repository.findByFormIdAndDeletedFalse(formId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort")))
                 .collectList()
                 .zipWith(repository.countByFormIdAndDeletedFalse(formId))
-                .map(tuple -> new PageResult<>(tuple.getT1(), pageNum, pageSize, tuple.getT2()));
+                .map(tuple -> new PageResult<>(pageNum, pageSize, tuple.getT2(), tuple.getT1()));
     }
 
     @Override

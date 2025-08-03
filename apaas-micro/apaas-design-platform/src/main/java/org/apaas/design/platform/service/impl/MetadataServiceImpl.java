@@ -1,6 +1,8 @@
 package org.apaas.design.platform.service.impl;
 
 import org.apaas.core.context.TenantContext;
+import org.apaas.core.event.EntityChangedEvent;
+import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.design.platform.entity.Metadata;
 import org.apaas.design.platform.repository.MetadataRepository;
@@ -11,7 +13,11 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class MetadataServiceImpl extends BaseServiceImpl<Metadata, Long, MetadataRepository> implements MetadataService {
-    
+
+    public MetadataServiceImpl(MetadataRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Metadata>> eventPublisher) {
+        super(repository, eventPublisher);
+    }
+
     @Override
     public Mono<Metadata> findByName(String name) {
         return TenantContext.getTenantIdAsync()

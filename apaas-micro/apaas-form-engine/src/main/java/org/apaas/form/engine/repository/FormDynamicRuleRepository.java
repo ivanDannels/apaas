@@ -2,8 +2,10 @@ package org.apaas.form.engine.repository;
 
 import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.form.engine.entity.FormDynamicRule;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * 表单动态规则响应式仓库接口
@@ -43,4 +45,8 @@ public interface FormDynamicRuleRepository extends ReactiveBaseRepository<FormDy
      * @return 动态规则列表
      */
     Flux<FormDynamicRule> findByTargetFieldIdAndType(Long targetFieldId, Integer type);
+
+    Flux<FormDynamicRule> findByFormIdAndDeletedFalse(Long formId, PageRequest sort);
+
+    Mono<Integer> countByFormIdAndDeletedFalse(Long formId);
 }
