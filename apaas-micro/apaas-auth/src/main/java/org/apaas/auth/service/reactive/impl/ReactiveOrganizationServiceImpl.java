@@ -3,10 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Organization;
 import org.apaas.auth.repository.reactive.ReactiveOrganizationRepository;
 import org.apaas.auth.service.reactive.ReactiveOrganizationService;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,8 +12,8 @@ import reactor.core.publisher.Mono;
 public class ReactiveOrganizationServiceImpl extends BaseServiceImpl<Organization, Long, ReactiveOrganizationRepository> implements ReactiveOrganizationService {
 
 
-    public ReactiveOrganizationServiceImpl(ReactiveOrganizationRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Organization>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveOrganizationServiceImpl(ReactiveOrganizationRepository repository) {
+        super(repository);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package org.apaas.form.engine.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormField;
 import org.apaas.form.engine.repository.FormFieldRepository;
@@ -20,8 +17,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveFormFieldServiceImpl extends BaseServiceImpl<FormField, Long, FormFieldRepository> implements ReactiveFormFieldService {
 
-    public ReactiveFormFieldServiceImpl(FormFieldRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormField>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFormFieldServiceImpl(FormFieldRepository repository) {
+        super(repository);
     }
 
     @Override

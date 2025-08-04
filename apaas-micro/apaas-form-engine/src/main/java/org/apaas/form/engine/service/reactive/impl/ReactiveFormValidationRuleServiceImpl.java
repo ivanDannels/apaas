@@ -1,7 +1,6 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormValidationRule;
@@ -22,8 +21,8 @@ import java.util.List;
 @Service
 public class ReactiveFormValidationRuleServiceImpl extends BaseServiceImpl<FormValidationRule, Long, FormValidationRuleRepository> implements ReactiveFormValidationRuleService {
 
-    public ReactiveFormValidationRuleServiceImpl(FormValidationRuleRepository repository, RedisDomainEventPublisher<org.apaas.core.event.EntityChangedEvent<FormValidationRule>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFormValidationRuleServiceImpl(FormValidationRuleRepository repository) {
+        super(repository);
     }
 
     @Override

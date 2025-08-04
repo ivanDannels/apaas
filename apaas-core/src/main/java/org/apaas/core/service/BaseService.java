@@ -3,7 +3,6 @@ package org.apaas.core.service;
 import org.apaas.core.domain.BaseEntity;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.core.repository.ReactiveBaseRepository;
 import org.springframework.data.repository.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -75,15 +74,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @return 删除结果
      */
     Mono<Void> deleteAllById(Iterable<ID> ids);
-    
-    /**
-     * 批量删除实体(响应式)
-     *
-     * @param ids 实体ID流
-     * @return 删除结果
-     */
-    Mono<Void> deleteByIds(Flux<ID> ids);
-    
+
     /**
      * 分页查询
      *

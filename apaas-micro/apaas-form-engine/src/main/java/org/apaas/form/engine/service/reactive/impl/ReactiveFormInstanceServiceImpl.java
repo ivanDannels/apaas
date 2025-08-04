@@ -3,7 +3,6 @@ package org.apaas.form.engine.service.reactive.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.common.utils.SecurityUtils;
 import org.apaas.core.context.TenantContext;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormInstance;
 import org.apaas.form.engine.repository.FormInstanceRepository;
@@ -22,8 +21,8 @@ import java.time.LocalDateTime;
 @Service
 public class ReactiveFormInstanceServiceImpl extends BaseServiceImpl<FormInstance, Long, FormInstanceRepository> implements ReactiveFormInstanceService {
 
-    public ReactiveFormInstanceServiceImpl(FormInstanceRepository repository, RedisDomainEventPublisher<org.apaas.core.event.EntityChangedEvent<FormInstance>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFormInstanceServiceImpl(FormInstanceRepository repository) {
+        super(repository);
     }
 
     @Override

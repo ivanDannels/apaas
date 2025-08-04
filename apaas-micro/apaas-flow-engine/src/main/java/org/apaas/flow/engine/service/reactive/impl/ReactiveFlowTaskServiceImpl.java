@@ -1,15 +1,9 @@
 package org.apaas.flow.engine.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.flow.engine.entity.FlowTask;
 import org.apaas.flow.engine.repository.reactive.ReactiveFlowTaskRepository;
 import org.apaas.flow.engine.service.reactive.ReactiveFlowTaskService;
 import org.apaas.core.service.impl.BaseServiceImpl;
-import org.apaas.core.web.domain.BasePageQuery;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
@@ -20,8 +14,8 @@ import reactor.core.publisher.Flux;
 @Service
 public class ReactiveFlowTaskServiceImpl extends BaseServiceImpl<FlowTask, Long, ReactiveFlowTaskRepository> implements ReactiveFlowTaskService {
 
-    public ReactiveFlowTaskServiceImpl(ReactiveFlowTaskRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FlowTask>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFlowTaskServiceImpl(ReactiveFlowTaskRepository repository) {
+        super(repository);
     }
 
     /**

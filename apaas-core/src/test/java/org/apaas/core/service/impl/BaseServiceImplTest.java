@@ -1,9 +1,8 @@
 package org.apaas.core.service.impl;
 
+import org.apaas.core.config.TestConfig;
 import org.apaas.core.domain.TestEntity;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.repository.TestEntityRepository;
-import org.apaas.core.service.TestEntityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -23,14 +23,12 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest(classes = TestConfig.class)
 class BaseServiceImplTest {
     
     @Mock
     private TestEntityRepository testEntityRepository;
-    
-    @Mock
-    private RedisDomainEventPublisher redisDomainEventPublisher;
-    
+
     @InjectMocks
     private TestEntityServiceImpl testEntityService;
     
@@ -61,8 +59,7 @@ class BaseServiceImplTest {
         
         // 设置mock行为
         when(testEntityRepository.save(any(TestEntity.class))).thenReturn(Mono.just(entity));
-        when(redisDomainEventPublisher.publish(any())).thenReturn(Mono.empty());
-        
+
         // 执行测试
         testEntityService.save(entity)
                 .as(StepVerifier::create)
@@ -74,7 +71,6 @@ class BaseServiceImplTest {
         
         // 验证方法调用
         verify(testEntityRepository, times(1)).save(any(TestEntity.class));
-        verify(redisDomainEventPublisher, times(1)).publish(any());
     }
     
     @Test
@@ -138,8 +134,7 @@ class BaseServiceImplTest {
         // 设置mock行为
         when(testEntityRepository.findByIdAndTenantId(anyLong(), anyLong())).thenReturn(Mono.just(entity));
         when(testEntityRepository.deleteByIdAndTenantId(anyLong(), anyLong())).thenReturn(Mono.empty());
-        when(redisDomainEventPublisher.publish(any())).thenReturn(Mono.empty());
-        
+
         // 执行测试
         testEntityService.deleteById(1L)
                 .as(StepVerifier::create)
@@ -148,6 +143,5 @@ class BaseServiceImplTest {
         // 验证方法调用
         verify(testEntityRepository, times(1)).findByIdAndTenantId(1L, 1L);
         verify(testEntityRepository, times(1)).deleteByIdAndTenantId(1L, 1L);
-        verify(redisDomainEventPublisher, times(1)).publish(any());
     }
 }

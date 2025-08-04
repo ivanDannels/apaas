@@ -1,7 +1,5 @@
 package org.apaas.design.platform.service.reactive.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.design.platform.entity.CodeTemplate;
 import org.apaas.design.platform.repository.CodeTemplateRepository;
 import org.apaas.design.platform.service.reactive.ReactiveCodeTemplateService;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReactiveCodeTemplateServiceImpl extends BaseServiceImpl<CodeTemplate, Long, CodeTemplateRepository> implements ReactiveCodeTemplateService {
 
-    public ReactiveCodeTemplateServiceImpl(CodeTemplateRepository repository, RedisDomainEventPublisher<EntityChangedEvent<CodeTemplate>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveCodeTemplateServiceImpl(CodeTemplateRepository repository) {
+        super(repository);
     }
 }

@@ -5,7 +5,6 @@ import org.apaas.core.config.TestConfig;
 import org.apaas.core.service.TestEntityService;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
@@ -21,11 +20,6 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest(TestEntityController.class)
 @ContextConfiguration(classes = TestConfig.class)
-@TestPropertySource(properties = {
-    "spring.cloud.config.enabled=false",
-    "spring.config.import=optional:configserver:",
-    "spring.main.web-application-type=reactive"
-})
 class TestEntityControllerTest {
 
     @Autowired

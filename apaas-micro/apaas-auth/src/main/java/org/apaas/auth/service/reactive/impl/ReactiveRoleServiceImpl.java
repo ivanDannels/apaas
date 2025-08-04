@@ -3,11 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Role;
 import org.apaas.auth.repository.reactive.ReactiveRoleRepository;
 import org.apaas.auth.service.reactive.ReactiveRoleService;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
-import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,8 +14,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveRoleServiceImpl extends BaseServiceImpl<Role, Long, ReactiveRoleRepository> implements ReactiveRoleService {
 
-    public ReactiveRoleServiceImpl(ReactiveRoleRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Role>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveRoleServiceImpl(ReactiveRoleRepository repository) {
+        super(repository);
     }
 
     @Override

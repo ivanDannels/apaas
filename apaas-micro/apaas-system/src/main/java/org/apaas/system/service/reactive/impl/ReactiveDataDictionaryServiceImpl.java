@@ -1,9 +1,6 @@
 package org.apaas.system.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
 import org.apaas.system.entity.DataDictionary;
@@ -21,7 +18,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 响应式数据字典服务实现
@@ -32,8 +28,8 @@ import java.util.List;
 public class ReactiveDataDictionaryServiceImpl extends BaseServiceImpl<DataDictionary, Long, DataDictionaryRepository> implements ReactiveDataDictionaryService {
 
 
-    public ReactiveDataDictionaryServiceImpl(DataDictionaryRepository repository, RedisDomainEventPublisher<EntityChangedEvent<DataDictionary>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveDataDictionaryServiceImpl(DataDictionaryRepository repository) {
+        super(repository);
     }
 
     @Override

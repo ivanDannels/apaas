@@ -1,8 +1,6 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormData;
 import org.apaas.form.engine.repository.FormDataRepository;
@@ -18,8 +16,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long, FormDataRepository> implements ReactiveFormDataService {
 
-    public ReactiveFormDataServiceImpl(FormDataRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormData>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFormDataServiceImpl(FormDataRepository repository) {
+        super(repository);
     }
 
     /**

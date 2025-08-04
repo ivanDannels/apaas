@@ -1,5 +1,6 @@
 package org.apaas.core.config;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
@@ -11,6 +12,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
  */
 @Configuration
 @EnableWebFlux
+@EnableAutoConfiguration
 public class WebConfig implements WebFluxConfigurer {
     /**
      * 配置跨域

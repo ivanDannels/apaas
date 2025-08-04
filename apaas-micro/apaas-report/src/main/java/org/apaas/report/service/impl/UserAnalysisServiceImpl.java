@@ -1,7 +1,5 @@
 package org.apaas.report.service.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.report.entity.UserAnalysis;
 import org.apaas.report.repository.UserAnalysisRepository;
@@ -13,8 +11,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class UserAnalysisServiceImpl extends BaseServiceImpl<UserAnalysis, Long, UserAnalysisRepository> implements UserAnalysisService {
 
-    public UserAnalysisServiceImpl(UserAnalysisRepository repository, RedisDomainEventPublisher<EntityChangedEvent<UserAnalysis>> eventPublisher) {
-        super(repository, eventPublisher);
+    public UserAnalysisServiceImpl(UserAnalysisRepository repository) {
+        super(repository);
     }
 
     @Override

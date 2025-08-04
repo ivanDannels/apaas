@@ -1,7 +1,5 @@
 package org.apaas.design.platform.service.reactive.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.design.platform.entity.APIEntity;
 import org.apaas.design.platform.repository.APIEntityRepository;
 import org.apaas.design.platform.service.reactive.ReactiveAPIEntityService;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReactiveAPIEntityServiceImpl extends BaseServiceImpl<APIEntity, Long, APIEntityRepository> implements ReactiveAPIEntityService {
 
-    public ReactiveAPIEntityServiceImpl(APIEntityRepository repository, RedisDomainEventPublisher<EntityChangedEvent<APIEntity>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveAPIEntityServiceImpl(APIEntityRepository repository) {
+        super(repository);
     }
 }

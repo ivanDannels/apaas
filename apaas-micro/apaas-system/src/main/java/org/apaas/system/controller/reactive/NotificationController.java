@@ -3,22 +3,17 @@ package org.apaas.system.controller.reactive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import org.apaas.core.web.controller.ReactiveBaseController;
-import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
 import org.apaas.system.service.reactive.ReactiveNotificationService;
-import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -96,18 +91,6 @@ public class NotificationController extends ReactiveBaseController<Notification,
     @Parameter(name = "id", description = "通知ID", required = true)
     public Mono<Void> delete(@PathVariable Long id) {
         return super.delete(id);
-    }
-
-    /**
-     * 批量删除通知
-     *
-     * @param ids 通知ID列表
-     * @return 删除结果
-     */
-    @DeleteMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "批量删除通知", description = "批量删除通知")
-    public Mono<Void> batchDelete(@RequestBody Long[] ids) {
-        return service.deleteByIds(Flux.fromArray(ids)).then(Mono.empty());
     }
 
     /**

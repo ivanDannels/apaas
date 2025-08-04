@@ -1,7 +1,5 @@
 package org.apaas.integration.service.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.integration.entity.IntegrationEntity;
 import org.apaas.integration.repository.IntegrationRepository;
@@ -13,8 +11,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class IntegrationServiceImpl extends BaseServiceImpl<IntegrationEntity, Long, IntegrationRepository> implements IntegrationService {
 
-    public IntegrationServiceImpl(IntegrationRepository repository, RedisDomainEventPublisher<EntityChangedEvent<IntegrationEntity>> eventPublisher) {
-        super(repository, eventPublisher);
+    public IntegrationServiceImpl(IntegrationRepository repository) {
+        super(repository);
     }
 
     @Override

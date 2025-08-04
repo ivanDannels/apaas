@@ -3,8 +3,6 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.User;
 import org.apaas.auth.repository.reactive.ReactiveUserRepository;
 import org.apaas.auth.service.reactive.ReactiveUserService;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -16,8 +14,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveUserServiceImpl extends BaseServiceImpl<User, Long, ReactiveUserRepository> implements ReactiveUserService {
 
-    public ReactiveUserServiceImpl(ReactiveUserRepository repository, RedisDomainEventPublisher<EntityChangedEvent<User>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveUserServiceImpl(ReactiveUserRepository repository) {
+        super(repository);
     }
 
     @Override

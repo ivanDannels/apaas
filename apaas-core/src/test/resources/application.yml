@@ -5,8 +5,15 @@ spring:
   main:
     web-application-type: reactive
   r2dbc:
-    pool:
-      enabled: true
+#    url: r2dbc:postgresql://10.100.20.61:5432/apaas
+#    username: postgres
+#    password: Postgresql@9527$
+    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+  sql:
+    init:
+      mode: always
   datasource:
     url: jdbc:postgresql://10.100.20.61:5432/apaas
     username: postgres

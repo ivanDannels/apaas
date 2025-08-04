@@ -1,9 +1,6 @@
 package org.apaas.form.engine.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormFieldPermission;
 import org.apaas.form.engine.repository.FormFieldPermissionRepository;
@@ -20,8 +17,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveFormFieldPermissionServiceImpl extends BaseServiceImpl<FormFieldPermission, Long, FormFieldPermissionRepository> implements ReactiveFormFieldPermissionService {
 
-    public ReactiveFormFieldPermissionServiceImpl(FormFieldPermissionRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormFieldPermission>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFormFieldPermissionServiceImpl(FormFieldPermissionRepository repository) {
+        super(repository);
     }
 
     @Override

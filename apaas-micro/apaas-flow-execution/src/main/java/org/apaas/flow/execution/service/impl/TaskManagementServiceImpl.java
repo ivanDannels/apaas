@@ -1,8 +1,6 @@
 package org.apaas.flow.execution.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.WorkflowTask;
@@ -16,8 +14,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class TaskManagementServiceImpl extends BaseServiceImpl<WorkflowTask, Long, WorkflowTaskRepository> implements TaskManagementService {
 
-    public TaskManagementServiceImpl(WorkflowTaskRepository repository, RedisDomainEventPublisher<EntityChangedEvent<WorkflowTask>> eventPublisher) {
-        super(repository, eventPublisher);
+    public TaskManagementServiceImpl(WorkflowTaskRepository repository) {
+        super(repository);
     }
 
     /**

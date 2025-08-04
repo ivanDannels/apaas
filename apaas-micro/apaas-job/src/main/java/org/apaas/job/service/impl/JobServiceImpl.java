@@ -1,7 +1,5 @@
 package org.apaas.job.service.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.job.entity.JobEntity;
 import org.apaas.job.repository.JobRepository;
@@ -13,8 +11,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class JobServiceImpl extends BaseServiceImpl<JobEntity, Long, JobRepository> implements JobService {
 
-    public JobServiceImpl(JobRepository repository, RedisDomainEventPublisher<EntityChangedEvent<JobEntity>> eventPublisher) {
-        super(repository, eventPublisher);
+    public JobServiceImpl(JobRepository repository) {
+        super(repository);
     }
 
     @Override

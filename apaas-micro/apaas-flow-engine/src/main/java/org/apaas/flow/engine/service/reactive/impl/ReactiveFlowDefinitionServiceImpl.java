@@ -1,7 +1,5 @@
 package org.apaas.flow.engine.service.reactive.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
 import org.apaas.flow.engine.entity.FlowDefinition;
 import org.apaas.flow.engine.repository.reactive.ReactiveFlowDefinitionRepository;
@@ -19,8 +17,8 @@ import reactor.core.publisher.Mono;
 public class ReactiveFlowDefinitionServiceImpl extends BaseServiceImpl<FlowDefinition, Long, ReactiveFlowDefinitionRepository> implements ReactiveFlowDefinitionService {
 
 
-    public ReactiveFlowDefinitionServiceImpl(ReactiveFlowDefinitionRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FlowDefinition>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFlowDefinitionServiceImpl(ReactiveFlowDefinitionRepository repository) {
+        super(repository);
     }
 
     /**

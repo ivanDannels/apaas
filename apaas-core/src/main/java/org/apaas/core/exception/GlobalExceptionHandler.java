@@ -4,13 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
+//import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import jakarta.validation.ConstraintViolationException;
+//import jakarta.validation.ConstraintViolationException;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -47,11 +47,11 @@ public class GlobalExceptionHandler {
     /**
      * 处理权限不足异常
      */
-    @ExceptionHandler(AccessDeniedException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleAccessDeniedException(AccessDeniedException e) {
-        log.error("权限不足", e);
-        return buildErrorResponse(HttpStatus.FORBIDDEN, "Access Denied", "权限不足", e.getMessage());
-    }
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public Mono<ResponseEntity<Map<String, Object>>> handleAccessDeniedException(AccessDeniedException e) {
+//        log.error("权限不足", e);
+//        return buildErrorResponse(HttpStatus.FORBIDDEN, "Access Denied", "权限不足", e.getMessage());
+//    }
 
     /**
      * 处理参数校验异常
@@ -76,11 +76,11 @@ public class GlobalExceptionHandler {
     /**
      * 处理参数校验异常
      */
-    @ExceptionHandler(ConstraintViolationException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleConstraintViolationException(ConstraintViolationException e) {
-        log.error(e.getMessage(), e);
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation Error", e.getMessage(), e.getMessage());
-    }
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public Mono<ResponseEntity<Map<String, Object>>> handleConstraintViolationException(ConstraintViolationException e) {
+//        log.error(e.getMessage(), e);
+//        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation Error", e.getMessage(), e.getMessage());
+//    }
 
     /**
      * 处理通用异常

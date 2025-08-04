@@ -32,10 +32,12 @@
         <spring-cloud.version>2025.0.0</spring-cloud.version>
         <spring-cloud-alibaba.version>2023.0.3.3</spring-cloud-alibaba.version>
         <postgresql.version>42.7.2</postgresql.version>
-        <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
+        <r2dbc-postgresql.version>1.0.7.RELEASE</r2dbc-postgresql.version>
         <redisson.version>3.27.1</redisson.version>
         <rabbitmq.version>5.20.0</rabbitmq.version>
         <springdoc.version>2.8.9</springdoc.version>
+        <hutool.version>5.8.39</hutool.version>
+        <minio.version>8.5.17</minio.version>
         <seata.version>2.0.0</seata.version>
         <skywalking.version>9.1.0</skywalking.version>
         <xxl-job.version>3.1.1</xxl-job.version>
@@ -104,23 +106,15 @@
 
             <!-- R2DBC PostgreSQL -->
             <dependency>
-                <groupId>io.r2dbc</groupId>
+                <groupId>org.postgresql</groupId>
                 <artifactId>r2dbc-postgresql</artifactId>
                 <version>${r2dbc-postgresql.version}</version>
-            </dependency>
-
-            <!-- Reactive Feign -->
-            <dependency>
-                <groupId>com.playtika.reactivefeign</groupId>
-                <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-                <version>${reactive-feign.version}</version>
-                <type>pom</type>
             </dependency>
 
             <!-- SpringDoc OpenAPI -->
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
 
@@ -130,6 +124,7 @@
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
@@ -157,57 +152,25 @@
                 <version>${xxl-job.version}</version>
             </dependency>
 
-            <!-- Apache Commons -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.18.0</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.20.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-collections4</artifactId>
-                <version>4.5.0</version>
-            </dependency>
-
-            <!-- Hutool -->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>5.8.26</version>
+                <version>${hutool.version}</version>
             </dependency>
 
             <!-- MinIO -->
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
-                <version>8.5.17</version>
-            </dependency>
-
-            <!-- EasyExcel -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>easyexcel</artifactId>
-                <version>3.2.1</version>
+                <version>${minio.version}</version>
             </dependency>
 
             <!-- Lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.38</version>
+                <version>${lombok.version}</version>
                 <scope>provided</scope>
-            </dependency>
-
-            <!-- SpringDoc OpenAPI -->
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-                <version>2.5.0</version>
             </dependency>
 
             <!-- Logback -->

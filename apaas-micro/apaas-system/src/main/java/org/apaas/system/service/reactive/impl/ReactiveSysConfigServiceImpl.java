@@ -1,8 +1,6 @@
 package org.apaas.system.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.SysConfigDTO;
 import org.apaas.system.entity.SysConfig;
@@ -30,8 +28,8 @@ import java.util.List;
 @Service
 public class ReactiveSysConfigServiceImpl extends BaseServiceImpl<SysConfig, Long, SysConfigRepository> implements ReactiveSysConfigService {
 
-    public ReactiveSysConfigServiceImpl(SysConfigRepository repository, RedisDomainEventPublisher<EntityChangedEvent<SysConfig>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveSysConfigServiceImpl(SysConfigRepository repository) {
+        super(repository);
     }
 
     @Override

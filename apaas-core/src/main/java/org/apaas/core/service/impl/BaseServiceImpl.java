@@ -3,8 +3,6 @@ package org.apaas.core.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.apaas.core.context.TenantContext;
 import org.apaas.core.domain.BaseEntity;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import org.apaas.core.repository.ReactiveBaseRepository;
@@ -21,18 +19,14 @@ import java.io.Serializable;
 public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializable, R extends ReactiveBaseRepository<T, ID>> implements BaseService<T, ID> {
     
     protected final R repository;
-    
-    protected final RedisDomainEventPublisher<EntityChangedEvent<T>> eventPublisher;
-    
+
     @Override
     public Mono<T> save(T entity) {
         Long tenantId = TenantContext.getTenantId();
         if (tenantId != null) {
             entity.setTenantId(tenantId);
         }
-        return repository.save(entity)
-                .flatMap(savedEntity -> eventPublisher.publish(new EntityChangedEvent<T>(EntityChangedEvent.OperationType.CREATE, savedEntity))
-                        .thenReturn(savedEntity));
+        return repository.save(entity);
     }
     
     @Override
@@ -45,9 +39,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
             }
         });
         
-        return repository.saveAll(entities)
-                .flatMap(savedEntity -> eventPublisher.publish(new EntityChangedEvent<T>(EntityChangedEvent.OperationType.CREATE, savedEntity))
-                        .thenReturn(savedEntity));
+        return repository.saveAll(entities);
     }
     
     @Override
@@ -58,11 +50,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
         }
         final Long finalTenantId = tenantId;
         
-        return entities
-                .doOnNext(entity -> entity.setTenantId(finalTenantId))
-                .flatMap(entity -> repository.save(entity)
-                        .flatMap(savedEntity -> eventPublisher.publish(new EntityChangedEvent<T>(EntityChangedEvent.OperationType.CREATE, savedEntity))
-                                .thenReturn(savedEntity)));
+        return entities.doOnNext(entity -> entity.setTenantId(finalTenantId)).flatMap(repository::save);
     }
     
     @Override
@@ -73,11 +61,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
         }
         final Long finalTenantId = tenantId;
         
-        return entities
-                .doOnNext(entity -> entity.setTenantId(finalTenantId))
-                .flatMap(entity -> repository.save(entity)
-                        .flatMap(savedEntity -> eventPublisher.publish(new EntityChangedEvent<T>(EntityChangedEvent.OperationType.UPDATE, savedEntity))
-                                .thenReturn(savedEntity)));
+        return entities.doOnNext(entity -> entity.setTenantId(finalTenantId)).flatMap(repository::save);
     }
     
     @Override
@@ -104,25 +88,12 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
         if (tenantId == null) {
             tenantId = 0L;
         }
-        final Long finalTenantId = tenantId;
-        return repository.findByIdAndTenantId(id, tenantId)
-                .flatMap(entity -> repository.deleteByIdAndTenantId(id, finalTenantId)
-                        .then(eventPublisher.publish(new EntityChangedEvent<T>(EntityChangedEvent.OperationType.DELETE, entity))))
-                .then();
+        return repository.findByIdAndTenantId(id, tenantId).flatMap(repository::delete);
     }
     
     @Override
     public Mono<Void> deleteAllById(Iterable<ID> ids) {
-        return Flux.fromIterable(ids)
-                .flatMap(this::deleteById)
-                .then();
-    }
-    
-    @Override
-    public Mono<Void> deleteByIds(Flux<ID> ids) {
-        return ids
-                .flatMap(this::deleteById)
-                .then();
+        return repository.deleteAllById(ids);
     }
     
     @Override

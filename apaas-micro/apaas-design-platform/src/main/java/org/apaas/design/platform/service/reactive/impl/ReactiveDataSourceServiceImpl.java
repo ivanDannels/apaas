@@ -1,7 +1,5 @@
 package org.apaas.design.platform.service.reactive.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.design.platform.entity.DataSource;
 import org.apaas.design.platform.repository.DataSourceRepository;
 import org.apaas.design.platform.service.reactive.ReactiveDataSourceService;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReactiveDataSourceServiceImpl extends BaseServiceImpl<DataSource, Long, DataSourceRepository> implements ReactiveDataSourceService {
 
-    public ReactiveDataSourceServiceImpl(DataSourceRepository repository, RedisDomainEventPublisher<EntityChangedEvent<DataSource>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveDataSourceServiceImpl(DataSourceRepository repository) {
+        super(repository);
     }
 }

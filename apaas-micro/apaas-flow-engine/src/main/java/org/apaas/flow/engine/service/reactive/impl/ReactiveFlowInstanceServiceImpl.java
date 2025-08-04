@@ -1,7 +1,5 @@
 package org.apaas.flow.engine.service.reactive.impl;
 
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
 import org.apaas.flow.engine.entity.FlowInstance;
 import org.apaas.flow.engine.repository.reactive.ReactiveFlowInstanceRepository;
@@ -17,8 +15,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveFlowInstanceServiceImpl extends BaseServiceImpl<FlowInstance, Long, ReactiveFlowInstanceRepository> implements ReactiveFlowInstanceService {
 
-    public ReactiveFlowInstanceServiceImpl(ReactiveFlowInstanceRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FlowInstance>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFlowInstanceServiceImpl(ReactiveFlowInstanceRepository repository) {
+        super(repository);
     }
 
     @Override
