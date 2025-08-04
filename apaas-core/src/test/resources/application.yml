@@ -4,7 +4,9 @@ spring:
       enabled: false
   main:
     web-application-type: reactive
-  # JPA配置
+  r2dbc:
+    pool:
+      enabled: true
   datasource:
     url: jdbc:postgresql://10.100.20.61:5432/apaas
     username: postgres
