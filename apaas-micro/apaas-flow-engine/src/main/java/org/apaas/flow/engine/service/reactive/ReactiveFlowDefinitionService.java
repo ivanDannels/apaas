@@ -1,9 +1,10 @@
 package org.apaas.flow.engine.service.reactive;
 
-import org.apaas.flow.engine.domain.entity.FlowDefinition;
-import org.apaas.common.web.domain.PageResult;
+import org.apaas.core.query.PageResult;
 import org.apaas.core.service.BaseService;
+import org.apaas.flow.engine.entity.FlowDefinition;
 import org.springframework.data.domain.Pageable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -57,7 +58,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @param id 流程定义ID
      * @return 部署结果
      */
-    Mono<Void> deployFlowDefinition(Long id);
+    Mono<FlowDefinition> deployFlowDefinition(Long id);
 
     /**
      * 挂起流程定义
@@ -74,4 +75,8 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 激活结果
      */
     Mono<Void> activateFlowDefinition(Long id);
+
+    Mono<FlowDefinition> disableFlowDefinition(Long id);
+
+    Flux<FlowDefinition> getVersionsByCode(String code);
 }

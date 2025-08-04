@@ -1,7 +1,9 @@
 package org.apaas.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Column;
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 @Data
 @Table
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseEntity implements Serializable, HasDeleted, HasTenantId {
 
     @Serial

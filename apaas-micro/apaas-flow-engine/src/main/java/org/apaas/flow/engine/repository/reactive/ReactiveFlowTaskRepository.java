@@ -3,6 +3,7 @@ package org.apaas.flow.engine.repository.reactive;
 import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.flow.engine.entity.FlowTask;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -12,4 +13,8 @@ public interface ReactiveFlowTaskRepository extends ReactiveBaseRepository<FlowT
     Mono<Void> deleteByInstanceId(Long id);
 
     Mono<Boolean> deleteAllByCandidateIdsIn(List<Long> ids);
+
+    Flux<FlowTask> findByFlowInstanceId(Long flowInstanceId);
+
+    Flux<FlowTask> findByTaskDefinitionKey(String taskDefinitionKey);
 }

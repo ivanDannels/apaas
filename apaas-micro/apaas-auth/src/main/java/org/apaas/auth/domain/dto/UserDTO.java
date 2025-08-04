@@ -1,13 +1,12 @@
 package org.apaas.auth.domain.dto;
 
 import lombok.Data;
-import org.apaas.core.web.domain.BasePageQuery;
 
 /**
  * 用户查询DTO
  */
 @Data
-public class UserDTO extends BasePageQuery {
+public class UserDTO {
     /**
      * 用户名
      */

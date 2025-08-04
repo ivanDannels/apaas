@@ -14,8 +14,7 @@
     <name>apaas-api</name>
     <description>API模块</description>
 
-    <modules>
-        <module>apaas-common</module>
+    <modules>        
         <module>apaas-inner-api</module>
         <module>apaas-open-api</module>
     </modules>

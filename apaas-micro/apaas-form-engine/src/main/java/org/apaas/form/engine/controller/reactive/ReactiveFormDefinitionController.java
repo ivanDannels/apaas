@@ -3,11 +3,9 @@ package org.apaas.form.engine.controller.reactive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import org.apaas.core.web.controller.ReactiveBaseController;
-import org.apaas.form.engine.domain.dto.FormDefinitionDTO;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
 import org.springframework.http.HttpHeaders;
@@ -23,8 +21,11 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/form-definitions")
 @Tag(name = "响应式表单定义管理", description = "响应式表单定义相关操作")
-@RequiredArgsConstructor
 public class ReactiveFormDefinitionController extends ReactiveBaseController<FormDefinition, Long, ReactiveFormDefinitionService> {
+
+    public ReactiveFormDefinitionController(ReactiveFormDefinitionService service) {
+        super(service);
+    }
 
     /**
      * 获取表单定义列表

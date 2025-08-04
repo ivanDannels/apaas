@@ -1,13 +1,12 @@
 package org.apaas.form.engine.domain.dto;
 
 import lombok.Data;
-import org.apaas.core.web.domain.BasePageQuery;
 
 /**
  * 表单定义查询DTO
  */
 @Data
-public class FormDefinitionDTO extends BasePageQuery {
+public class FormDefinitionDTO {
     /**
      * 表单名称
      */

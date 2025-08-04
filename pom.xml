@@ -19,6 +19,7 @@
 
     <modules>
         <module>apaas-core</module>
+		<module>apaas-common</module>
         <module>apaas-gateway</module>
         <module>apaas-micro</module>
         <module>apaas-api</module>
@@ -215,6 +216,79 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+            <!-- 引入核心模块 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入通用模块 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入系统服务相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入权限服务相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-auth</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入表单引擎相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-form-engine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入流程引擎相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-flow-engine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入设计平台相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-design-platform</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入流程执行相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-flow-execution</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入集成服务相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-integration</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入任务调度相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-job</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入监控服务相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-monitor</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- 引入报表服务相关依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-report</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

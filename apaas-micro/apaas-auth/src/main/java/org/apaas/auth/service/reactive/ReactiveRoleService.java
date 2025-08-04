@@ -1,9 +1,7 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Role;
-import org.apaas.core.query.PageResult;
 import org.apaas.core.service.BaseService;
-import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,14 +17,6 @@ public interface ReactiveRoleService extends BaseService<Role, Long> {
      * @return 角色信息
      */
     Mono<Role> getRoleByRoleName(String roleName);
-
-    /**
-     * 分页获取角色列表
-     *
-     * @param pageable 分页参数
-     * @return 角色分页结果
-     */
-    Mono<PageResult<Role>> getRolePage(Pageable pageable);
 
     /**
      * 添加角色

@@ -8,7 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -28,11 +27,11 @@ import static org.mockito.Mockito.when;
     "spring.main.web-application-type=reactive"
 })
 class TestEntityControllerTest {
-    
+
     @Autowired
     private WebTestClient webTestClient;
-    
-    @MockBean
+
+    @Autowired
     private TestEntityService testEntityService;
     
     @Test

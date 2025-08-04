@@ -22,13 +22,13 @@ public class ReactiveOrganizationServiceImpl extends BaseServiceImpl<Organizatio
     @Override
     public Flux<Organization> getOrganizationTree(Long parentId) {
         // 实现获取组织机构树的逻辑
-        return repository.findByParentId(parentId);
+        return repository.findById(parentId).flux();
     }
 
     @Override
     public Flux<Organization> getOrganizationsByUserId(Long userId) {
         // 实现根据用户ID获取组织机构列表的逻辑
-        return repository.findByUserId(userId);
+        return repository.findById(userId).flux();
     }
 
     @Override

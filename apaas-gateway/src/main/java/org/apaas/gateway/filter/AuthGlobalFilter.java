@@ -3,7 +3,7 @@ package org.apaas.gateway.filter;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.constant.SecurityConstants;
+import org.apaas.common.constant.SecurityConstants;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormDynamicRule;
 import org.apaas.form.engine.service.reactive.ReactiveFormDynamicRuleService;
 import org.springframework.http.MediaType;
@@ -21,10 +22,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/reactive/form-dynamic-rules")
 @Tag(name = "响应式表单动态规则管理", description = "响应式表单动态规则相关操作")
-@RequiredArgsConstructor
-public class ReactiveFormDynamicRuleController {
+public class ReactiveFormDynamicRuleController extends ReactiveBaseController<FormDynamicRule, Long, ReactiveFormDynamicRuleService> {
 
-    private final ReactiveFormDynamicRuleService dynamicRuleService;
+    public ReactiveFormDynamicRuleController(ReactiveFormDynamicRuleService service) {
+        super(service);
+    }
 
     /**
      * 分页查询表单动态规则
@@ -40,7 +42,7 @@ public class ReactiveFormDynamicRuleController {
             @RequestParam Long formId,
             @RequestParam Integer pageNum,
             @RequestParam Integer pageSize) {
-        return dynamicRuleService.selectPage(formId, pageNum, pageSize);
+        return service.selectPage(formId, pageNum, pageSize);
     }
 
     /**
@@ -50,7 +52,7 @@ public class ReactiveFormDynamicRuleController {
     @Operation(summary = "根据表单ID查询动态规则列表", description = "根据表单ID查询所有动态规则列表")
     @Parameter(name = "formId", description = "表单ID", required = true)
     public Flux<FormDynamicRule> selectByFormId(@PathVariable Long formId) {
-        return dynamicRuleService.selectByFormId(formId);
+        return service.selectByFormId(formId);
     }
 
     /**
@@ -65,7 +67,7 @@ public class ReactiveFormDynamicRuleController {
     public Flux<FormDynamicRule> selectByFormIdAndType(
             @PathVariable Long formId,
             @PathVariable Integer type) {
-        return dynamicRuleService.selectByFormIdAndType(formId, type);
+        return service.selectByFormIdAndType(formId, type);
     }
 
     /**
@@ -75,7 +77,7 @@ public class ReactiveFormDynamicRuleController {
     @Operation(summary = "根据目标字段ID查询动态规则列表", description = "根据目标字段ID查询动态规则列表")
     @Parameter(name = "targetFieldId", description = "目标字段ID", required = true)
     public Flux<FormDynamicRule> selectByTargetFieldId(@PathVariable Long targetFieldId) {
-        return dynamicRuleService.selectByTargetFieldId(targetFieldId);
+        return service.selectByTargetFieldId(targetFieldId);
     }
 
     /**
@@ -90,7 +92,7 @@ public class ReactiveFormDynamicRuleController {
     public Flux<FormDynamicRule> selectByTargetFieldIdAndType(
             @PathVariable Long targetFieldId,
             @PathVariable Integer type) {
-        return dynamicRuleService.selectByTargetFieldIdAndType(targetFieldId, type);
+        return service.selectByTargetFieldIdAndType(targetFieldId, type);
     }
 
     /**
@@ -100,7 +102,7 @@ public class ReactiveFormDynamicRuleController {
     @Operation(summary = "获取表单动态规则详情", description = "根据ID获取表单动态规则详情")
     @Parameter(name = "id", description = "规则ID", required = true)
     public Mono<FormDynamicRule> getById(@PathVariable Long id) {
-        return dynamicRuleService.findById(id);
+        return service.findById(id);
     }
 
     /**
@@ -109,7 +111,7 @@ public class ReactiveFormDynamicRuleController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建表单动态规则", description = "创建新的表单动态规则")
     public Mono<FormDynamicRule> create(@RequestBody FormDynamicRule dynamicRule) {
-        return dynamicRuleService.create(dynamicRule);
+        return service.create(dynamicRule);
     }
 
     /**
@@ -120,7 +122,7 @@ public class ReactiveFormDynamicRuleController {
     @Parameter(name = "id", description = "规则ID", required = true)
     public Mono<FormDynamicRule> update(@PathVariable Long id, @RequestBody FormDynamicRule dynamicRule) {
         dynamicRule.setId(id);
-        return dynamicRuleService.update(dynamicRule);
+        return service.update(dynamicRule);
     }
 
     /**
@@ -130,7 +132,7 @@ public class ReactiveFormDynamicRuleController {
     @Operation(summary = "删除表单动态规则", description = "删除表单动态规则")
     @Parameter(name = "id", description = "规则ID", required = true)
     public Mono<Void> delete(@PathVariable Long id) {
-        return dynamicRuleService.delete(id);
+        return service.delete(id);
     }
 
     /**
@@ -140,6 +142,6 @@ public class ReactiveFormDynamicRuleController {
     @Operation(summary = "批量创建表单动态规则", description = "批量创建表单动态规则")
     @Parameter(name = "formId", description = "表单ID", required = true)
     public Flux<FormDynamicRule> batchCreate(@PathVariable Long formId, @RequestBody List<FormDynamicRule> dynamicRules) {
-        return dynamicRuleService.batchCreate(formId, Flux.fromIterable(dynamicRules));
+        return service.batchCreate(formId, Flux.fromIterable(dynamicRules));
     }
 }

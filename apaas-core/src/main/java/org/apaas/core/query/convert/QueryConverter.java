@@ -18,12 +18,12 @@
  */
 package org.apaas.core.query.convert;
 
-import jakarta.persistence.Column;
 import org.apaas.core.exception.BusinessException;
 import org.apaas.core.query.Condition;
 import org.apaas.core.query.Query;
 import org.apaas.core.utils.StringUtils;
 import org.springframework.data.domain.Example;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.objenesis.instantiator.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -77,10 +77,10 @@ public class QueryConverter {
             Field field = ReflectionUtils.findField(entityClass, fieldName);
             if (Objects.nonNull(field)) {
                 Column column = field.getAnnotation(Column.class);
-                if (column == null || Objects.isNull(column.name()) || column.name().isEmpty()) {
+                if (column == null || column.value().isEmpty()) {
                     return StringUtils.toUnderlineCase(fieldName);
                 }
-                return column.name();
+                return column.value();
             }
             return fieldName;
         } catch (Exception e) {

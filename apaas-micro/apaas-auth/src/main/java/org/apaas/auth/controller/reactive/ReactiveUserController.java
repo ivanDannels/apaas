@@ -6,9 +6,11 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.auth.domain.dto.UserDTO;
+import org.apaas.core.query.Condition;
 import org.apaas.core.query.PageResult;
 import org.apaas.auth.entity.User;
 import org.apaas.auth.service.reactive.ReactiveUserService;
+import org.apaas.core.query.Query;
 import org.apaas.core.web.controller.ReactiveBaseController;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +39,8 @@ public class ReactiveUserController extends ReactiveBaseController<User, Long, R
         @Parameter(name = "username", description = "用户名", required = true),
         @Parameter(name = "password", description = "密码", required = true)
     })
-    public Mono<String> login(@RequestParam String username, @RequestParam String password) {
-        return service.login(username, password)
-                .switchIfEmpty(Mono.error(new RuntimeException("用户名或密码错误")));
+    public Mono<User> login(@RequestParam String username, @RequestParam String password) {
+        return service.login(username, password);
     }
 
     /**
@@ -48,7 +49,7 @@ public class ReactiveUserController extends ReactiveBaseController<User, Long, R
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "用户注册", description = "创建新用户")
     public Mono<Boolean> register(@RequestBody User user) {
-        return service.register(user);
+        return service.addUser(user).thenReturn( true);
     }
 
     /**
@@ -73,14 +74,9 @@ public class ReactiveUserController extends ReactiveBaseController<User, Long, R
             @RequestParam(required = false) String phone,
             @RequestParam(required = false) Integer status,
             @RequestParam(required = false) Long deptId) {
-        UserDTO query = new UserDTO();
-        query.setPageNum(pageNum);
-        query.setPageSize(pageSize);
-        query.setUsername(username);
-        query.setNickname(nickname);
-        query.setPhone(phone);
-        query.setStatus(status);
-        query.setDeptId(deptId);
+
+        Query query = Query.builder();
+
         return service.selectPage(query);
     }
 

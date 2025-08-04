@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormLayout;
 import org.apaas.form.engine.service.reactive.ReactiveFormLayoutService;
 import org.springframework.http.MediaType;
@@ -19,10 +19,11 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/form-layouts")
 @Tag(name = "响应式表单布局管理", description = "响应式表单布局相关操作")
-@RequiredArgsConstructor
-public class ReactiveFormLayoutController {
+public class ReactiveFormLayoutController extends ReactiveBaseController<FormLayout, Long, ReactiveFormLayoutService> {
 
-    private final ReactiveFormLayoutService layoutService;
+    public ReactiveFormLayoutController(ReactiveFormLayoutService service) {
+        super(service);
+    }
 
     /**
      * 分页查询表单布局
@@ -38,7 +39,7 @@ public class ReactiveFormLayoutController {
             @RequestParam Long formId,
             @RequestParam Integer pageNum,
             @RequestParam Integer pageSize) {
-        return layoutService.selectPage(formId, pageNum, pageSize);
+        return service.selectPage(formId, pageNum, pageSize);
     }
 
     /**
@@ -48,7 +49,7 @@ public class ReactiveFormLayoutController {
     @Operation(summary = "根据表单ID查询布局列表", description = "根据表单ID查询所有布局列表")
     @Parameter(name = "formId", description = "表单ID", required = true)
     public Flux<FormLayout> selectByFormId(@PathVariable Long formId) {
-        return layoutService.selectByFormId(formId);
+        return service.selectByFormId(formId);
     }
 
     /**
@@ -63,7 +64,7 @@ public class ReactiveFormLayoutController {
     public Flux<FormLayout> selectByFormIdAndType(
             @PathVariable Long formId,
             @PathVariable Integer type) {
-        return layoutService.selectByFormIdAndType(formId, type);
+        return service.selectByFormIdAndType(formId, type);
     }
 
     /**
@@ -78,7 +79,7 @@ public class ReactiveFormLayoutController {
     public Flux<FormLayout> selectByFormIdAndTerminal(
             @PathVariable Long formId,
             @PathVariable Integer terminal) {
-        return layoutService.selectByFormIdAndTerminal(formId, terminal);
+        return service.selectByFormIdAndTerminal(formId, terminal);
     }
 
     /**
@@ -88,7 +89,7 @@ public class ReactiveFormLayoutController {
     @Operation(summary = "根据表单ID查询默认布局", description = "根据表单ID查询默认布局")
     @Parameter(name = "formId", description = "表单ID", required = true)
     public Mono<FormLayout> selectDefaultByFormId(@PathVariable Long formId) {
-        return layoutService.selectDefaultByFormId(formId);
+        return service.selectDefaultByFormId(formId);
     }
 
     /**
@@ -98,7 +99,7 @@ public class ReactiveFormLayoutController {
     @Operation(summary = "获取表单布局详情", description = "根据ID获取表单布局详情")
     @Parameter(name = "id", description = "布局ID", required = true)
     public Mono<FormLayout> getById(@PathVariable Long id) {
-        return layoutService.findById(id);
+        return service.findById(id);
     }
 
     /**
@@ -107,7 +108,7 @@ public class ReactiveFormLayoutController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建表单布局", description = "创建新的表单布局")
     public Mono<FormLayout> create(@RequestBody FormLayout layout) {
-        return layoutService.create(layout);
+        return service.create(layout);
     }
 
     /**
@@ -118,7 +119,7 @@ public class ReactiveFormLayoutController {
     @Parameter(name = "id", description = "布局ID", required = true)
     public Mono<FormLayout> update(@PathVariable Long id, @RequestBody FormLayout layout) {
         layout.setId(id);
-        return layoutService.update(layout);
+        return service.update(layout);
     }
 
     /**
@@ -128,7 +129,7 @@ public class ReactiveFormLayoutController {
     @Operation(summary = "删除表单布局", description = "删除表单布局")
     @Parameter(name = "id", description = "布局ID", required = true)
     public Mono<Void> delete(@PathVariable Long id) {
-        return layoutService.delete(id);
+        return service.delete(id);
     }
 
     /**
@@ -138,6 +139,6 @@ public class ReactiveFormLayoutController {
     @Operation(summary = "设置默认布局", description = "设置默认布局")
     @Parameter(name = "id", description = "布局ID", required = true)
     public Mono<Boolean> setDefault(@PathVariable Long id) {
-        return layoutService.setDefault(id);
+        return service.setDefault(id);
     }
 }

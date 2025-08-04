@@ -2,8 +2,6 @@ package org.apaas.flow.engine.service.reactive;
 
 import org.apaas.core.service.BaseService;
 import org.apaas.flow.engine.entity.FlowTask;
-import org.apaas.core.web.domain.BasePageQuery;
-import org.apaas.core.query.PageResult;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 
@@ -11,14 +9,6 @@ import reactor.core.publisher.Flux;
  * 响应式流程任务服务接口
  */
 public interface ReactiveFlowTaskService extends BaseService<FlowTask, Long> {
-
-    /**
-     * 分页查询流程任务
-     *
-     * @param query 查询参数
-     * @return 分页结果
-     */
-    Mono<PageResult<FlowTask>> selectFlowTaskPage(BasePageQuery query);
 
     /**
      * 根据流程实例ID查询流程任务列表
