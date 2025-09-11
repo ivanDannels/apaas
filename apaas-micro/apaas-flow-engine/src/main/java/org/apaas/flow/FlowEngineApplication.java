@@ -12,7 +12,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication(scanBasePackages = "org.apaas")
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "org.apaas")
-
 public class FlowEngineApplication {
 
     public static void main(String[] args) {
