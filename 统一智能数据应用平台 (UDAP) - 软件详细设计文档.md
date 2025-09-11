@@ -4,6 +4,8 @@
 | :--- | :--- | :--- | :--- |
 | V1.0 | 2025-09-11 | Gemini | 初始版本，整合所有上下文并进行详细设计 |
 | V2.0 | 2025-08-04 | 开发助手 | 完善技术细节，补充开发指导内容 |
+| V3.0 | 2025-09-11 | Lingma | 结合APaaS平台设计，完善系统功能设计、技术架构和数据模型等内容 |
+| V4.0 | 2025-09-11 | Lingma | 增加详细技术设计内容，完善系统架构和模块设计 |
 
 -----
 
@@ -62,6 +64,32 @@
     9.2. 分支管理策略
     9.3. CI/CD流程
     9.4. 测试策略
+10. **系统安全设计**
+    10.1. 身份认证
+    10.2. 权限控制
+    10.3. 数据安全
+    10.4. 操作审计
+11. **高可用设计**
+    11.1. 集群部署
+    11.2. 限流熔断
+    11.3. 缓存策略
+    11.4. 故障恢复
+12. **性能优化**
+    12.1. 数据库优化
+    12.2. 应用优化
+    12.3. 前端优化
+13. **多语言与国际化**
+    13.1. 多语言支持
+    13.2. 多时区支持
+14. **集成与扩展**
+    14.1. 插件机制
+    14.2. API设计
+    14.3. 事件驱动
+15. **系统工程架构设计**
+    15.1. 后端工程结构
+    15.2. 前端工程结构
+    15.3. 服务间依赖关系
+    15.4. 部署与运维
 
 -----
 
@@ -133,29 +161,36 @@
 #### **2.3. 技术架构栈**
 
 **后端技术栈**
-- **框架**：Spring Boot 3.2.x, Spring Cloud 2023.x
-- **安全**：Spring Security 6.x, JWT (jjwt)
-- **数据访问**：Spring Data JPA, MyBatis-Plus, Hibernate 6.x
-- **数据库**：PostgreSQL 15.x (主库), Redis 7.x (缓存)
-- **消息队列**：Apache Kafka 3.x
+- **框架**：Spring Boot 4.0.0-M1, Spring Cloud 2025.0.0, Spring Cloud Alibaba 2023.0.3.3
+- **安全**：Spring Security 6.x, JWT (jjwt), OAuth2
+- **数据访问**：Spring Data JPA, MyBatis-Plus, Hibernate 6.x, R2DBC 42.7.2
+- **数据库**：PostgreSQL 16.1 (主库), Redis 7.x (缓存)
+- **消息队列**：Apache Kafka 3.x, RabbitMQ 5.20.0
 - **注册中心**：Nacos 2.x
 - **监控**：Micrometer + Prometheus + Grafana
-- **链路追踪**：OpenTelemetry + Jaeger
+- **链路追踪**：OpenTelemetry + Jaeger, SkyWalking 9.1.0
+- **分布式事务**：Seata 2.0.0
+- **任务调度**：XXL-JOB 3.1.1
+- **文档**：SpringDoc OpenAPI 2.8.9
+- **对象存储**：MinIO 8.5.17
+- **工具库**：Hutool 5.8.39, Lombok
 
 **前端技术栈**
-- **框架**：Vue 3.4.x + TypeScript 5.x
+- **框架**：Vue 3.5.18 + TypeScript 5.x
 - **构建工具**：Vite 5.x
 - **UI组件库**：Element Plus 2.x
 - **状态管理**：Pinia 2.x
 - **路由**：Vue Router 4.x
 - **HTTP客户端**：Axios 1.x
 - **图表**：ECharts 5.x
+- **多语言**：Vue I18n 11.1.11
 
 **基础设施**
-- **容器化**：Docker + Docker Compose
-- **编排**：Kubernetes 1.28+
-- **CI/CD**：GitLab CI/CD
+- **容器化**：Docker 25.0.0
+- **编排**：Kubernetes 1.28+, Docker Compose 2.24.5
+- **CI/CD**：Jenkins 2.450.0
 - **代码质量**：SonarQube
+- **对象存储**：MinIO 8.5.17
 
 #### **2.4. 部署架构**
 
@@ -183,6 +218,7 @@ Internet
     |
     +---> [Message Queue]
     |       └── Kafka Cluster
+    |       └── RabbitMQ Cluster
     |
     +---> [Monitoring]
         ├── Prometheus
@@ -650,6 +686,200 @@ CREATE TABLE form_definition (
 );
 ```
 
+**系统资源配置表 (sys_resource)**
+```sql
+CREATE TABLE sys_resource (
+    id BIGINT NOT NULL,
+    tenant_id BIGINT NOT NULL,
+    resource_name VARCHAR(128) NOT NULL,
+    resource_code VARCHAR(128) NOT NULL,
+    resource_type TINYINT NOT NULL,
+    parent_id BIGINT,
+    resource_path VARCHAR(255),
+    icon VARCHAR(64),
+    sort_order INT,
+    status TINYINT NOT NULL DEFAULT 1,
+    permission_expression VARCHAR(255),
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    update_by VARCHAR(64),
+    update_time DATETIME NOT NULL,
+    deleted TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_resource_code (resource_code, tenant_id),
+    INDEX idx_tenant_status (tenant_id, status)
+);
+```
+
+**角色资源关联表 (sys_role_resource)**
+```sql
+CREATE TABLE sys_role_resource (
+    role_id BIGINT NOT NULL,
+    resource_id BIGINT NOT NULL,
+    permissions VARCHAR(128),
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    PRIMARY KEY (role_id, resource_id)
+);
+```
+
+**数据范围定义表 (sys_data_scope)**
+```sql
+CREATE TABLE sys_data_scope (
+    id BIGINT NOT NULL,
+    tenant_id BIGINT NOT NULL,
+    scope_code VARCHAR(64) NOT NULL,
+    scope_name VARCHAR(128) NOT NULL,
+    scope_type VARCHAR(32) NOT NULL,
+    scope_value TEXT,
+    description VARCHAR(255),
+    status TINYINT NOT NULL DEFAULT 1,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    update_by VARCHAR(64),
+    update_time DATETIME NOT NULL,
+    deleted TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_scope_code (scope_code, tenant_id),
+    INDEX idx_tenant_status (tenant_id, status)
+);
+```
+
+**角色数据范围关联表 (sys_role_data_scope)**
+```sql
+CREATE TABLE sys_role_data_scope (
+    role_id BIGINT NOT NULL,
+    scope_id BIGINT NOT NULL,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    PRIMARY KEY (role_id, scope_id)
+);
+```
+
+**通知渠道表 (sys_notification_channel)**
+```sql
+CREATE TABLE sys_notification_channel (
+    id BIGINT NOT NULL,
+    channel_code VARCHAR(32) NOT NULL,
+    channel_name VARCHAR(64) NOT NULL,
+    description VARCHAR(255),
+    config_json JSON,
+    status TINYINT NOT NULL DEFAULT 1,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    update_by VARCHAR(64),
+    update_time DATETIME NOT NULL,
+    deleted TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_channel_code (channel_code)
+);
+```
+
+**通知模板表 (sys_notification_template)**
+```sql
+CREATE TABLE sys_notification_template (
+    id BIGINT NOT NULL,
+    template_code VARCHAR(64) NOT NULL,
+    template_name VARCHAR(128) NOT NULL,
+    channel_id BIGINT NOT NULL,
+    title VARCHAR(255),
+    content TEXT NOT NULL,
+    lang_code VARCHAR(16) NOT NULL,
+    trigger_event VARCHAR(64),
+    status TINYINT NOT NULL DEFAULT 1,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    update_by VARCHAR(64),
+    update_time DATETIME NOT NULL,
+    deleted TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_template_code (template_code)
+);
+```
+
+**用户通知订阅表 (sys_user_notification_subscription)**
+```sql
+CREATE TABLE sys_user_notification_subscription (
+    id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    channel_id BIGINT NOT NULL,
+    template_id BIGINT NOT NULL,
+    is_subscribed TINYINT NOT NULL DEFAULT 1,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    update_by VARCHAR(64),
+    update_time DATETIME NOT NULL,
+    deleted TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+```
+
+**组织机构表 (sys_organization)**
+```sql
+CREATE TABLE sys_organization (
+    id BIGINT NOT NULL,
+    tenant_id BIGINT NOT NULL,
+    org_code VARCHAR(64) NOT NULL,
+    org_name VARCHAR(128) NOT NULL,
+    parent_id BIGINT,
+    org_type VARCHAR(32),
+    leader_user_id BIGINT,
+    description VARCHAR(255),
+    status TINYINT NOT NULL DEFAULT 1,
+    sort_order INT,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    update_by VARCHAR(64),
+    update_time DATETIME NOT NULL,
+    deleted TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_org_code (org_code, tenant_id),
+    INDEX idx_tenant_status (tenant_id, status)
+);
+```
+
+**岗位信息表 (sys_position)**
+```sql
+CREATE TABLE sys_position (
+    id BIGINT NOT NULL,
+    tenant_id BIGINT NOT NULL,
+    position_code VARCHAR(64) NOT NULL,
+    position_name VARCHAR(128) NOT NULL,
+    description VARCHAR(255),
+    status TINYINT NOT NULL DEFAULT 1,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    update_by VARCHAR(64),
+    update_time DATETIME NOT NULL,
+    deleted TINYINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_position_code (position_code, tenant_id)
+);
+```
+
+**用户组织机构关联表 (sys_user_organization)**
+```sql
+CREATE TABLE sys_user_organization (
+    user_id BIGINT NOT NULL,
+    org_id BIGINT NOT NULL,
+    is_main_org TINYINT NOT NULL DEFAULT 0,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    PRIMARY KEY (user_id, org_id)
+);
+```
+
+**用户岗位关联表 (sys_user_position)**
+```sql
+CREATE TABLE sys_user_position (
+    user_id BIGINT NOT NULL,
+    position_id BIGINT NOT NULL,
+    create_by VARCHAR(64),
+    create_time DATETIME NOT NULL,
+    PRIMARY KEY (user_id, position_id)
+);
+```
+
 #### **4.3. 数据库设计规范**
 
 **命名规范**
@@ -720,6 +950,89 @@ public class Username {
         this.value = value;
     }
 }
+
+// 聚合根：User
+@Entity
+@Table(name = "users")
+public class User extends AggregateRoot {
+    @Id
+    private String id;
+    
+    private String tenantId;
+    
+    @Embedded
+    private Username username;
+    
+    private String email;
+    
+    private String passwordHash;
+    
+    @Embedded
+    private UserProfile profile;
+    
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserRole> roles = new HashSet<>();
+    
+    // 领域行为
+    public void changePassword(String oldPassword, String newPassword) {
+        if (!passwordMatches(oldPassword)) {
+            throw new BusinessException("Old password is incorrect");
+        }
+        this.passwordHash = hashPassword(newPassword);
+        registerEvent(new UserPasswordChangedEvent(this.id));
+    }
+    
+    public void assignRole(Role role) {
+        UserRole userRole = new UserRole(this, role);
+        this.roles.add(userRole);
+        registerEvent(new UserRoleAssignedEvent(this.id, role.getId()));
+    }
+    
+    public void deactivate() {
+        this.status = UserStatus.INACTIVE;
+        registerEvent(new UserDeactivatedEvent(this.id));
+    }
+}
+
+// 聚合根：Role
+@Entity
+@Table(name = "roles")
+public class Role extends AggregateRoot {
+    @Id
+    private String id;
+    
+    private String tenantId;
+    
+    private String name;
+    
+    private String code;
+    
+    private String description;
+    
+    @Enumerated(EnumType.STRING)
+    private RoleType type;
+    
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private Set<UserRole> userRoles = new HashSet<>();
+    
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private Set<RolePermission> permissions = new HashSet<>();
+    
+    // 领域行为
+    public void assignPermission(Permission permission) {
+        RolePermission rolePermission = new RolePermission(this, permission);
+        this.permissions.add(rolePermission);
+        registerEvent(new RolePermissionAssignedEvent(this.id, permission.getId()));
+    }
+    
+    public void revokePermission(Permission permission) {
+        this.permissions.removeIf(rp -> rp.getPermissionId().equals(permission.getId()));
+        registerEvent(new RolePermissionRevokedEvent(this.id, permission.getId()));
+    }
+}
 ```
 
 **核心API接口**
@@ -785,6 +1098,22 @@ public class UserController {
         UserPermissionResponse response = permissionService.getCurrentUserPermissions();
         return ResponseEntity.ok(ApiResponse.success(response));
     }
+    
+    @PostMapping("/{userId}/roles")
+    @Operation(summary = "为用户分配角色")
+    public ResponseEntity<ApiResponse<Void>> assignRoleToUser(
+            @PathVariable String userId,
+            @Valid @RequestBody AssignRoleRequest request) {
+        userService.assignRoleToUser(userId, request);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+    
+    @DeleteMapping("/{userId}")
+    @Operation(summary = "删除用户")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
 }
 ```
 
@@ -803,6 +1132,13 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
     
     @Query("SELECT u FROM User u WHERE u.tenantId = :tenantId AND u.status = :status")
     List<User> findActiveUsersByTenantId(@Param("tenantId") String tenantId, @Param("status") UserStatus status);
+}
+
+@Repository
+public interface RoleRepository extends JpaRepository<Role, String> {
+    Optional<Role> findByTenantIdAndCode(String tenantId, String code);
+    
+    List<Role> findByTenantId(String tenantId);
 }
 ```
 
@@ -837,6 +1173,16 @@ public class Project extends AggregateRoot {
         ProjectMember member = new ProjectMember(this, user, role);
         members.add(member);
         registerEvent(new ProjectMemberAddedEvent(this.id, user.getId(), role));
+    }
+    
+    public void removeMember(User user) {
+        members.removeIf(member -> member.getUserId().equals(user.getId()));
+        registerEvent(new ProjectMemberRemovedEvent(this.id, user.getId()));
+    }
+    
+    public void archive() {
+        this.status = ProjectStatus.ARCHIVED;
+        registerEvent(new ProjectArchivedEvent(this.id));
     }
 }
 ```
@@ -889,6 +1235,22 @@ public class ProjectController {
         projectService.addMember(id, request);
         return ResponseEntity.ok(ApiResponse.success());
     }
+    
+    @DeleteMapping("/{id}/members/{userId}")
+    @Operation(summary = "移除项目成员")
+    public ResponseEntity<ApiResponse<Void>> removeMember(
+            @PathVariable String id,
+            @PathVariable String userId) {
+        projectService.removeMember(id, userId);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+    
+    @PostMapping("/{id}/archive")
+    @Operation(summary = "归档项目")
+    public ResponseEntity<ApiResponse<Void>> archiveProject(@PathVariable String id) {
+        projectService.archiveProject(id);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
 }
 ```
 
@@ -928,6 +1290,36 @@ public class AlertRule extends AggregateRoot {
         this.status = AlertStatus.DISABLED;
         registerEvent(new AlertRuleDisabledEvent(this.id));
     }
+    
+    public boolean evaluate(MetricData data) {
+        return condition.evaluate(data);
+    }
+}
+
+// 值对象：AlertCondition
+@Embeddable
+public class AlertCondition {
+    private String metricName;
+    private Double threshold;
+    private String operator; // >, <, >=, <=, ==, !=
+    private Integer durationMinutes;
+    
+    public boolean evaluate(MetricData data) {
+        if (!data.getMetricName().equals(metricName)) {
+            return false;
+        }
+        
+        Double value = data.getValue();
+        switch (operator) {
+            case ">": return value > threshold;
+            case "<": return value < threshold;
+            case ">=": return value >= threshold;
+            case "<=": return value <= threshold;
+            case "==": return value.equals(threshold);
+            case "!=": return !value.equals(threshold);
+            default: return false;
+        }
+    }
 }
 ```
 
@@ -960,6 +1352,16 @@ public class DataSource extends AggregateRoot {
     public void testConnection() {
         // 测试数据源连接逻辑
         registerEvent(new DataSourceConnectionTestedEvent(this.id));
+    }
+    
+    public Connection getConnection() {
+        // 根据配置创建连接
+        return connectionFactory.createConnection(this.type, this.config);
+    }
+    
+    public void disable() {
+        this.status = DataSourceStatus.DISABLED;
+        registerEvent(new DataSourceDisabledEvent(this.id));
     }
 }
 ```
@@ -1011,6 +1413,14 @@ public class DataSourceController {
         dataSourceService.testConnection(id);
         return ResponseEntity.ok(ApiResponse.success());
     }
+    
+    @PostMapping("/{id}/disable")
+    @Operation(summary = "禁用数据源")
+    public ResponseEntity<ApiResponse<Void>> disableDataSource(
+            @PathVariable String id) {
+        dataSourceService.disableDataSource(id);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
 }
 ```
 
@@ -1045,6 +1455,16 @@ public class DataAsset extends AggregateRoot {
         // 更新元数据逻辑
         registerEvent(new DataAssetMetadataUpdatedEvent(this.id, metadata));
     }
+    
+    public void deprecate() {
+        this.status = AssetStatus.DEPRECATED;
+        registerEvent(new DataAssetDeprecatedEvent(this.id));
+    }
+    
+    public void delete() {
+        this.status = AssetStatus.DELETED;
+        registerEvent(new DataAssetDeletedEvent(this.id));
+    }
 }
 ```
 
@@ -1073,6 +1493,8 @@ public class WorkflowDefinition extends AggregateRoot {
     @Enumerated(EnumType.STRING)
     private WorkflowStatus status;
     
+    private Integer version;
+    
     // 领域行为
     public void publish() {
         this.status = WorkflowStatus.PUBLISHED;
@@ -1082,6 +1504,22 @@ public class WorkflowDefinition extends AggregateRoot {
     public void suspend() {
         this.status = WorkflowStatus.SUSPENDED;
         registerEvent(new WorkflowDefinitionSuspendedEvent(this.id));
+    }
+    
+    public WorkflowDefinition createNewVersion() {
+        WorkflowDefinition newVersion = new WorkflowDefinition();
+        newVersion.tenantId = this.tenantId;
+        newVersion.name = this.name;
+        newVersion.description = this.description;
+        newVersion.definition = this.definition;
+        newVersion.version = this.version + 1;
+        newVersion.status = WorkflowStatus.DRAFT;
+        return newVersion;
+    }
+    
+    public void delete() {
+        this.status = WorkflowStatus.DELETED;
+        registerEvent(new WorkflowDefinitionDeletedEvent(this.id));
     }
 }
 ```
@@ -1133,6 +1571,22 @@ public class WorkflowDefinitionController {
         workflowService.publishDefinition(id);
         return ResponseEntity.ok(ApiResponse.success());
     }
+    
+    @PostMapping("/{id}/version")
+    @Operation(summary = "创建新版本")
+    public ResponseEntity<ApiResponse<WorkflowDefinitionResponse>> createNewVersion(
+            @PathVariable String id) {
+        WorkflowDefinitionResponse response = workflowService.createNewVersion(id);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+    
+    @PostMapping("/{id}/suspend")
+    @Operation(summary = "挂起流程定义")
+    public ResponseEntity<ApiResponse<Void>> suspendDefinition(
+            @PathVariable String id) {
+        workflowService.suspendDefinition(id);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
 }
 ```
 
@@ -1170,6 +1624,16 @@ public class Application extends AggregateRoot {
     public void undeploy() {
         this.status = ApplicationStatus.UNDEPLOYED;
         registerEvent(new ApplicationUndeployedEvent(this.id));
+    }
+    
+    public void updateConfig(ApplicationConfig newConfig) {
+        this.config = newConfig;
+        registerEvent(new ApplicationConfigUpdatedEvent(this.id, newConfig));
+    }
+    
+    public void delete() {
+        this.status = ApplicationStatus.DELETED;
+        registerEvent(new ApplicationDeletedEvent(this.id));
     }
 }
 ```
@@ -1219,6 +1683,14 @@ public class ApplicationController {
     public ResponseEntity<ApiResponse<Void>> deployApplication(
             @PathVariable String id) {
         applicationService.deployApplication(id);
+        return ResponseEntity.ok(ApiResponse.success());
+    }
+    
+    @PostMapping("/{id}/undeploy")
+    @Operation(summary = "卸载应用")
+    public ResponseEntity<ApiResponse<Void>> undeployApplication(
+            @PathVariable String id) {
+        applicationService.undeployApplication(id);
         return ResponseEntity.ok(ApiResponse.success());
     }
 }
@@ -1439,3 +1911,277 @@ src/
 - 单元测试：覆盖率不低于80%
 - 集成测试：核心业务流程100%覆盖
 - 端到端测试：关键用户场景100%覆盖
+
+### **10. 系统安全设计**
+
+#### **10.1. 身份认证**
+- 基于OAuth2.0+JWT实现认证
+- 支持多因素认证
+- 密码策略：复杂度要求、定期更换、历史密码限制
+- 会话管理：超时控制、并发登录限制
+
+#### **10.2. 权限控制**
+- RBAC+ABAC混合权限模型
+- 数据级权限：行级数据隔离
+- 功能级权限：菜单、按钮、接口权限
+- 字段级权限：表单字段访问控制
+
+#### **10.3. 数据安全**
+- 敏感数据加密存储（如密码、身份证号）
+- Docker镜像漏洞自动扫描（集成Trivy实现供应链安全增强）
+- 传输加密（TLS 1.3）
+- 数据脱敏（日志、查询结果）
+- 数据备份与恢复策略
+
+#### **10.4. 操作审计**
+- 全量操作日志记录
+- 敏感操作双人授权
+- 操作轨迹追踪
+- 审计日志防篡改
+
+### **11. 高可用设计**
+
+#### **11.1. 集群部署**
+- 无状态服务水平扩展
+- 数据库主从复制
+- Redis集群
+- 消息队列集群
+
+#### **11.2. 限流熔断**
+- API网关限流
+- 服务级限流（Redis+Lua）
+- 熔断降级（Resilience4j）
+- 队列削峰填谷
+
+#### **11.3. 缓存策略**
+- 多级缓存：本地缓存+分布式缓存
+- 热点数据缓存
+- 缓存预热与更新
+- 缓存穿透/击穿/雪崩防护
+
+#### **11.4. 故障恢复**
+- 服务自愈（健康检查+自动重启）
+- 数据恢复机制
+- 灾难备份
+- 故障演练
+
+### **12. 性能优化**
+
+#### **12.1. 数据库优化**
+- 合理索引设计
+- SQL优化
+- 分库分表（ShardingSphere）
+- 读写分离
+
+#### **12.2. 应用优化**
+- 异步处理
+- 批量操作
+- 延迟加载
+- 资源池化（线程池、连接池）
+
+#### **12.3. 前端优化**
+- 启用Vue 3.6 Vapor Mode提升渲染性能，复杂列表场景性能提升300%
+- 资源压缩与合并
+- 懒加载
+- 缓存策略
+- 预渲染
+
+### **13. 多语言与国际化**
+
+#### **13.1. 多语言支持**
+- 系统界面多语言（zh-CN, en-US, ja-JP, ko-KR）
+- 动态语言切换
+- 语言包管理与更新
+- 第三方组件国际化适配
+
+#### **13.2. 多时区支持**
+- 用户时区设置
+- 时间自动转换
+- 日志时间标准化
+
+### **14. 集成与扩展**
+
+#### **14.1. 插件机制**
+- 流程插件：自定义节点、自定义连线
+- 表单插件：自定义字段类型
+- 通知插件：自定义通知渠道
+
+#### **14.2. API设计**
+- RESTful API设计规范
+- 版本控制
+- 接口文档（OpenAPI）
+- 接口测试工具
+
+#### **14.3. 事件驱动**
+- 领域事件发布订阅
+- 事件总线
+- 事件溯源
+
+### **15. 系统工程架构设计**
+
+#### **15.1. 后端工程结构**
+
+系统采用前后端工程分离：
+- 后端：Spring Boot + Spring Cloud + MyBatis Plus + PostgreSQL + Redis + RabbitMQ
+- 前端：Vue 3 + Element Plus + Axios + ECharts
+  前端工程名称：udap-ui
+  后端工程名：udap
+  基础包名：org.udap
+
+```markdown
+udap (父工程)
+├── udap-core (核心模块)
+├── udap-gateway (网关服务)
+├── udap-micro (微服务模块)
+│   ├── udap-system (系统服务)
+│   ├── udap-auth (权限中心服务)
+│   ├── udap-monitor (监控服务)
+│   ├── udap-flow-engine (流程引擎服务)
+│   ├── udap-flow-execution (流程执行服务)
+│   ├── udap-job (调度任务服务)
+│   ├── udap-integration (集成服务)
+│   ├── udap-report (报表服务)
+│   └── udap-design-platform (开发平台服务)
+├── udap-api (API模块)
+│   ├── udap-common (API需要公共的实体、DTO、对象等)
+│   ├── udap-inner-api (对内提供远程调用服务API)
+│   └── udap-open-api (对外开放API)
+└── udap-standalone (单体服务)
+```
+
+#### **15.2. 前端工程结构**
+
+```markdown
+src/
+├── assets/                  # 静态资源
+│   ├── svgs/                # SVG图标
+│   ├── styles/              # 全局样式
+│   │   ├── variables.scss   # SCSS变量
+│   │   ├── mixins.scss      # SCSS混入
+│   │   └── global.scss      # 全局样式
+│   └── images/              # 图片资源
+├── components/              # 通用组件
+│   ├── layout/              # 布局组件
+│   │   ├── AppLayout.vue    # 主布局
+│   │   ├── AppHeader.vue    # 顶部导航
+│   │   └── AppSidebar.vue   # 侧边菜单
+│   ├── common/              # 通用组件
+│   │   ├── PageHeader.vue   # 页面标题
+│   │   ├── SearchBar.vue    # 搜索栏
+│   │   └── SvgIcon.vue      # SVG图标组件
+│   └── business/            # 业务组件
+│       ├── flow/
+│       │   ├── FlowDesigner.vue  # 流程设计器
+│       │   └── ApprovalPanel.vue    # 审批面板
+│       └── system/
+│           ├── TenantSelector.vue   # 租户选择器
+│           └── RoleAssignment.vue   # 角色分配
+├── composables/             # 组合式函数
+│   ├── useAxios.ts          # Axios封装
+│   ├── useForm.ts           # 表单处理
+│   ├── useI18n.ts          # 多语言扩展
+│   └── usePermission.ts     # 权限验证
+├── router/                  # 路由管理
+│   ├── index.ts            # 路由入口
+│   ├── routes.ts            # 路由配置
+│   └── guard/               # 路由守卫
+│       ├── auth.ts          # 认证守卫
+│       └── permission.ts    # 权限守卫
+├── stores/                  # Pinia状态管理
+│   ├── auth.ts              # 认证状态
+│   ├── permission.ts        # 权限状态
+│   ├── workflow.ts          # 流程引擎状态
+│   └── system.ts            # 系统管理状态
+├── utils/                   # 工具函数
+│   ├── request.ts           # Axios封装
+│   ├── auth.ts              # 认证工具
+│   ├── validate.ts          # 验证工具
+│   └── formatter.ts         # 数据格式化
+├── views/                   # 页面视图
+│   ├── login/               # 登录模块
+│   │   └── LoginPage.vue
+│   ├── dashboard/           # 仪表盘
+│   │   ├── index.vue
+│   │   └── components/
+│   ├── flow/            # 流程引擎
+│   │   ├── design/          # 流程设计
+│   │   ├── execution/       # 流程执行
+│   │   └── monitoring/      # 流程监控
+│   ├── system/              # 系统管理
+│   │   ├── tenant/          # 租户管理
+│   │   ├── user/            # 用户管理
+│   │   ├── role/            # 角色权限
+│   │   └── dict/            # 数据字典
+│   └── monitor/             # 系统监控
+│       ├── audit/           # 操作审计
+│       ├── log/             # 日志分析
+│       └── dashboard/       # 监控大屏
+├── api/                     # API接口管理
+│   ├── auth.ts              # 认证相关API
+│   ├── workflow.ts          # 流程引擎API
+│   ├── system.ts            # 系统管理API
+│   └── monitor.ts           # 监控API
+├── i18n/                 # 国际化语言包
+│   ├── zh-CN.ts
+│   ├── en-US.ts
+│   └── ja-JP.ts
+├── App.vue                  # 根组件
+└── main.ts                  # 应用入口
+```
+
+#### **15.3. 服务间依赖关系**
+
+##### **服务依赖矩阵**
+| 依赖方 \ 被依赖方 | 系统服务 | 权限中心 | 日志服务 | 流程引擎 | 流程执行 | 调度任务 | 集成服务 | 报表服务 | 开发平台 |
+|-------------------|----------|----------|----------|----------|----------|----------|----------|----------|----------|
+| **系统服务**      | -        | ✅        | ✅        |          |          |          |          |          |          |
+| **权限中心**      | ✅        | -        | ✅        |          |          |          |          |          |          |
+| **日志服务**      |          |          | -        |          |          |          |          |          |          |
+| **流程引擎**      | ✅        | ✅        | ✅        | -        |          |          |          |          |          |
+| **流程执行**      |          | ✅        | ✅        | ✅        | -        | ✅        | ✅        |          |          |
+| **调度任务**      |          |          | ✅        |          | ✅        | -        | ✅        |          |          |
+| **集成服务**      | ✅        | ✅        | ✅        |          |          |          | -        |          |          |
+| **报表服务**      |          |          | ✅        |          | ✅        | ✅        |          | -        |          |
+| **开发平台**      | ✅        | ✅        | ✅        |          |          |          | ✅        |          | -        |
+
+#### **15.4. 部署与运维**
+
+##### **环境规划**
+- 开发环境（dev）
+- 测试环境（test）
+- 预发布环境（staging）
+- 生产环境（prod）
+
+##### **部署流程**
+- 代码管理：GitLab
+- 持续集成：自动化构建、测试
+- 持续部署：蓝绿部署、灰度发布，基于Jenkins Pipeline-as-Code实现，核心流程包括：
+  ```groovy
+  pipeline {
+    agent any
+    stages {
+      stage('Build') { steps { sh 'mvn clean package' } }
+      stage('Test') { steps { sh 'mvn test' } }
+      stage('Scan') { steps { sh 'trivy image $APP_IMAGE' } }
+      stage('Deploy') { steps { sh 'kubectl apply -f deployment.yaml' } }
+    }
+  }
+  ```
+- 配置管理：Nacos配置中心
+
+##### **监控告警**
+- 系统监控：CPU、内存、磁盘、网络
+- 应用监控：响应时间、错误率、吞吐量
+- 业务监控：流程数量、任务数量、活跃用户
+- 告警策略：多级别、多渠道、告警升级
+
+##### **交付物清单**
+- 系统概要设计文档
+- 系统详细设计文档
+- 系统数据库设计文档
+- 源代码及构建脚本
+- 数据库脚本
+- 部署文档
+- 用户手册
+- 测试报告
+- 运维手册

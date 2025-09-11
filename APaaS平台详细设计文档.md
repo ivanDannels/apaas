@@ -372,14 +372,14 @@
 - **模型设计**：支持数据模型的设计，包括实体类、关联关系、索引、视图等
 - **代码模板管理**：支持代码模板的定义、管理、查询、导入导出
 - **代码生成器**：支持根据元数据生成JAVA代码、前端代码，包括实体类、DAO、Service、Resource、前端页面等
-- **数据源管理**：支持MySQL、PostgreSQL、ClickHouse、Doris、 MongoDB、Redis、Elasticsearch等
+- **数据源管理**：支持PostgreSQL、PostgreSQL、ClickHouse、Doris、 MongoDB、Redis、Elasticsearch等
 - **API接口**：支持定义、管理、查询、导入导出API接口，支持接口版本管理，通过封装SQL语句脚本来生成API（
 1、对于通过SQL语句脚本生成的API，引入更严格的安全沙箱机制，并对SQL进行语法分析和潜在风险检测。同时，提供SQL性能分析和优化建议工具；
 2、在开发平台中集成SQL语法校验器和安全过滤器，限制用户自定义API的SQL权限。
 3、考虑提供一个“SQL健康度”评估工具，自动检测潜在的性能问题（如全表扫描、缺乏索引等）。
 4、优先推荐通过配置数据模型和ORM方式生成API，而非直接编写SQL，以提高安全性和维护性）。
 ）
-- **数据同步**：支持数据同步，如MySQL、PostgreSQL、ClickHouse、Doris、 MongoDB、Redis、Elasticsearch等多数据源之间的数据同步。
+- **数据同步**：支持数据同步，如PostgreSQL、PostgreSQL、ClickHouse、Doris、 MongoDB、Redis、Elasticsearch等多数据源之间的数据同步。
 - **数据导入导出**：支持数据导入导出，如CSV、Excel、PDF、Word、JSON等
 - **数据可视化**：支持数据可视化，如折线图、柱状图、饼图等
 - **数据挖掘**：支持数据挖掘，如关联规则、聚类分析、异常检测等
@@ -1792,7 +1792,7 @@ flowchart LR
 | `tenant_id`     | BIGINT     |      | 否       | 否       | 租户ID             |
 | `ds_code`       | VARCHAR    | 128  | 是       | 是       | 数据源编码 (唯一)  |
 | `ds_name`       | VARCHAR    | 128  | 是       | 否       | 数据源名称         |
-| `ds_type`       | VARCHAR    | 32   | 是       | 否       | 数据源类型 (e.g., MySQL, PostgreSQL, Redis, ES) |
+| `ds_type`       | VARCHAR    | 32   | 是       | 否       | 数据源类型 (e.g., PostgreSQL, PostgreSQL, Redis, ES) |
 | `connection_url` | VARCHAR   | 512  | 是       | 否       | 连接URL            |
 | `username`      | VARCHAR    | 128  | 否       | 否       | 用户名             |
 | `password`      | VARCHAR    | 255  | 否       | 否       | 密码 (加密存储)    |
@@ -2677,7 +2677,7 @@ src/
 │   │   │   │   ├── FullSyncStrategy.java     # 全量同步
 │   │   │   │   └── IncrementalSyncStrategy.java # 增量同步
 │   │   │   └── handler/                     # 同步处理器
-│   │   │       ├── MySQLHandler.java
+│   │   │       ├── PostgreSQLHandler.java
 │   │   │       └── ...
 │   │   ├── api/                              # API接口生成
 │   │   │   ├── builder/                      # API构建器
