@@ -1,48 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0           http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0-M1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>4.0.0-M3</version>
+        <relativePath></relativePath>
+        <!-- lookup parent from repository -->
     </parent>
-
+    
     <groupId>org.apaas</groupId>
     <artifactId>apaas</artifactId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
-
+    
     <modules>
-        <module>apaas-core</module>
+        <!-- <module>apaas-framework</module>
         <module>apaas-gateway</module>
         <module>apaas-micro</module>
         <module>apaas-api</module>
-        <module>apaas-standalone</module>
+        <module>apaas-standalone</module> -->
     </modules>
-
+    
     <properties>
-        <java.version>24</java.version>
-        <spring-boot.version>4.0.0-M1</spring-boot.version>
-        <spring-cloud.version>2025.0.0</spring-cloud.version>
-        <spring-cloud-alibaba.version>2023.0.3.3</spring-cloud-alibaba.version>
+        <apaas.version>${revision}</apaas.version>
+        <fastexcel.version>1.3.0</fastexcel.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
+        <java.version>25</java.version>
+        <logback.version>1.5.18</logback.version>
+        <!-- maven 插件依赖版本 -->
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <minio.version>8.5.17</minio.version>
         <postgresql.version>42.7.2</postgresql.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
-        <redisson.version>3.27.1</redisson.version>
         <rabbitmq.version>5.20.0</rabbitmq.version>
-        <springdoc.version>2.8.9</springdoc.version>
+        <reactive-feign.version>4.2.1</reactive-feign.version>
+        <redisson.version>3.27.1</redisson.version>
+        <revision>1.0.0</revision>
         <seata.version>2.0.0</seata.version>
         <skywalking.version>9.1.0</skywalking.version>
-        <xxl-job.version>3.1.1</xxl-job.version>
-        <logback.version>1.5.18</logback.version>
-        <reactive-feign.version>4.2.1</reactive-feign.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spotless-maven-plugin.version>2.44.2</spotless-maven-plugin.version>
+        <spring-boot.version>4.0.0-M3</spring-boot.version>
+        <spring-cloud-alibaba.version>2025.0.0.0-preview</spring-cloud-alibaba.version>
+        <spring-cloud.version>2025.1.0-M2</spring-cloud.version>
+        <springdoc.version>3.0.0-M1</springdoc.version>
+        <versions-maven-plugin.version>2.19.1</versions-maven-plugin.version>
+        <xxl-job.version>3.2.0</xxl-job.version>
     </properties>
-
+    
     <dependencyManagement>
         <dependencies>
             <!-- Spring Boot Starter -->
@@ -53,7 +61,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            
             <!-- Spring Cloud -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -62,7 +70,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            
             <!-- Spring Cloud Alibaba -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -71,153 +79,145 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-
+            
             <!-- PostgreSQL -->
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
             </dependency>
-
+            
             <!-- Redisson -->
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
-
+            
             <!-- RabbitMQ -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-amqp</artifactId>
                 <version>${rabbitmq.version}</version>
             </dependency>
-
+            
             <!-- WebFlux -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-webflux</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-
+            
             <!-- R2DBC PostgreSQL -->
             <dependency>
                 <groupId>io.r2dbc</groupId>
                 <artifactId>r2dbc-postgresql</artifactId>
                 <version>${r2dbc-postgresql.version}</version>
             </dependency>
-
+            
             <!-- Reactive Feign -->
             <dependency>
                 <groupId>com.playtika.reactivefeign</groupId>
                 <artifactId>feign-reactor-spring-cloud-starter</artifactId>
                 <version>${reactive-feign.version}</version>
-                <type>pom</type>
             </dependency>
-
+            
+            <!-- 支持 WebFlux 编解码器 -->
+            <dependency>
+                <groupId>com.playtika.reactivefeign</groupId>
+                <artifactId>feign-reactor-webclient</artifactId>
+                <version>${reactive-feign.version}</version>
+            </dependency>
+            
             <!-- SpringDoc OpenAPI -->
             <dependency>
                 <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
-
+            
             <!-- Spring Security + OAuth2 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
+            
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-
+            
             <!-- Seata -->
             <dependency>
                 <groupId>io.seata</groupId>
                 <artifactId>seata-spring-boot-starter</artifactId>
                 <version>${seata.version}</version>
             </dependency>
-
+            
             <!-- SkyWalking -->
             <dependency>
                 <groupId>org.apache.skywalking</groupId>
                 <artifactId>apm-toolkit-trace</artifactId>
                 <version>${skywalking.version}</version>
             </dependency>
-
+            
             <!-- XXL-Job -->
             <dependency>
                 <groupId>com.xuxueli</groupId>
                 <artifactId>xxl-job-core</artifactId>
                 <version>${xxl-job.version}</version>
             </dependency>
-
-            <!-- Apache Commons -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.18.0</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.20.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-collections4</artifactId>
-                <version>4.5.0</version>
-            </dependency>
-
-            <!-- Hutool -->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>5.8.26</version>
-            </dependency>
-
+            
             <!-- MinIO -->
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
-                <version>8.5.17</version>
+                <version>${minio.version}</version>
             </dependency>
-
-            <!-- EasyExcel -->
+            
+            <!-- FastExcel -->
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>easyexcel</artifactId>
-                <version>3.2.1</version>
+                <groupId>cn.idev.excel</groupId>
+                <artifactId>fastexcel</artifactId>
+                <version>${fastexcel.version}</version>
             </dependency>
-
-            <!-- Lombok -->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.38</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <!-- SpringDoc OpenAPI -->
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-                <version>2.5.0</version>
-            </dependency>
-
+            
             <!-- Logback -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-core</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-common</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-inner-api</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-open-api</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            
         </dependencies>
     </dependencyManagement>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -239,19 +239,123 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- 统一 revision 版本 -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>${flatten-maven-plugin.version}</version>
+                    <configuration>
+                        <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                        <updatePomFile>true</updatePomFile>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>flatten.clean</id>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                            <phase>clean</phase>
+                        </execution>
+                        <execution>
+                            <id>flatten</id>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                            <phase>process-resources</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--代码格式插件，默认使用spotless 规则 mvn spotless:apply -->
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless-maven-plugin.version}</version>
+                    <configuration>
+                        <java>
+                            <eclipse>
+                                <file>${maven.multiModuleProjectDirectory}/dev-support/spotless_mq-idempotent_formatter.xml</file>
+                            </eclipse>
+                            <licenseHeader>
+                                <file>${maven.multiModuleProjectDirectory}/dev-support/license-header</file>
+                            </licenseHeader>
+                        </java>
+                        <pom>
+                            <sortPom>
+                                <encoding>UTF-8</encoding>
+                                <nrOfIndentSpace>4</nrOfIndentSpace>
+                                <keepBlankLines>true</keepBlankLines>
+                                <indentBlankLines>true</indentBlankLines>
+                                <indentSchemaLocation>true</indentSchemaLocation>
+                                <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                                <sortModules>true</sortModules>
+                                <sortExecutions>true</sortExecutions>
+                                <predefinedSortOrder>custom_1</predefinedSortOrder>
+                                <expandEmptyElements>true</expandEmptyElements>
+                                <sortProperties>true</sortProperties>
+                            </sortPom>
+                        </pom>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>apply</goal>
+                            </goals>
+                            <phase>compile</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
+            <!-- 统一代码版本 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+            <!--代码格式化-->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <target>${java.version}</target>
+                    <source>${java.version}</source>
+                    <encoding>UTF-8</encoding>
+                    <parameters>true</parameters>
                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                        </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Amapstruct.verbose=true</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -268,5 +372,35 @@
             </plugin>
         </plugins>
     </build>
-
+    
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
+    
+    <distributionManagement>
+        <repository>
+            <!--必须与 settings.xml 的 id 一致-->
+            <id>jfast-cloud-jfast-spring-cloud-public</id>
+            <name>jfast-cloud-jfast-spring-cloud-public</name>
+            <url>https://jfast-cloud-maven.pkg.coding.net/repository/jfast-spring-cloud/public</url>
+        </repository>
+    </distributionManagement>
+    
 </project>

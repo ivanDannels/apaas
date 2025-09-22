@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<!-- files  代表你想对项目中的哪个类进行过来  -->
+<!-- checks 代表你想过滤掉哪种检查 -->
+<!-- 以下为例子 -->
+<suppressions>
+  <suppress files="[/\\]target[/\\]" checks=".*" />
+  <suppress files="com.mapper" checks="Javadoc" />
+  <suppress files="com.dto" checks="Javadoc" />
+  <suppress files="HelloResource.java" checks="AvoidStarImport" />
+  <suppress files="[\\/]com[\\/]sgy[\\/]ssm[\\/]" checks="[a-zA-Z0-9]*"/>
+  <suppress files="[\\/]resources[\\/]" checks="[a-zA-Z0-9]*"/>
+  <suppress files=".*(Switch|Enum|ErrorCode).java" checks="[a-zA-Z0-9]*"/>
+</suppressions>

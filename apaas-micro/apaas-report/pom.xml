@@ -6,11 +6,10 @@
     <parent>
         <groupId>org.apaas</groupId>
         <artifactId>apaas-micro</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>apaas-report</artifactId>
-    <version>1.0.0</version>
     <name>apaas-report</name>
     <description>APaaS报表服务</description>
 
@@ -24,7 +23,6 @@
         <dependency>
             <groupId>com.playtika.reactivefeign</groupId>
             <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-            <version>4.2.1</version>
         </dependency>
 
         <!-- 报表生成相关依赖 -->

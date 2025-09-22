@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.apaas</groupId>
         <artifactId>apaas</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>apaas-gateway</artifactId>
@@ -49,18 +49,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- Apache Commons Lang3 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <!-- Hutool -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-
         <!-- Resilience4j -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -79,7 +67,6 @@
         <dependency>
             <groupId>org.apaas</groupId>
             <artifactId>apaas-core</artifactId>
-            <version>1.0.0</version>
         </dependency>
 
         <!-- Test -->

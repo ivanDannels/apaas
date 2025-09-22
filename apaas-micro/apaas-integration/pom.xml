@@ -5,7 +5,7 @@
     <parent>
         <artifactId>apaas-micro</artifactId>
         <groupId>org.apaas</groupId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,13 +22,11 @@
         <dependency>
             <groupId>com.playtika.reactivefeign</groupId>
             <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-            <version>3.1.0</version>
         </dependency>
         
         <dependency>
             <groupId>org.apaas</groupId>
             <artifactId>apaas-common</artifactId>
-            <version>1.0.0</version>
         </dependency>
         
         <dependency>

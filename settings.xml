@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
+	
+	<pluginGroups/>
+	
+	<proxies/>
+	
+	<servers>
+		<server>
+			<id>jfast-cloud-jfast-spring-cloud-public</id>
+			<username>public-1701618468357</username>
+			<password>a90607e109bfe3e88daca8d9399a21103a50991f</password>
+		</server>
+	</servers>
+	
+	<mirrors>
+		<mirror>
+			<id>jfast-cloud-jfast-spring-cloud-public</id>
+			<name>jfast-cloud-jfast-spring-cloud-public</name>
+			<mirrorOf>central,!nexus-tencentyun</mirrorOf>
+			<url>https://jfast-cloud-maven.pkg.coding.net/repository/jfast-spring-cloud/public</url>
+		</mirror>
+		<mirror>
+			<id>nexus-aliyun</id>
+			<mirrorOf>central,!nexus-tencentyun</mirrorOf>
+			<name>Nexus aliyun</name>
+			<url>https://maven.aliyun.com/repository/public</url>
+		</mirror>
+		<mirror>
+			<id>spring</id>
+			<name>Maven spring Mirror</name>
+			<url>https://maven.aliyun.com/repository/spring</url>
+			<mirrorOf>!nexus-tencentyun</mirrorOf>
+		</mirror>
+		<mirror>
+			<id>huaweicloud</id>
+			<name>huaweicloud maven</name>
+			<mirrorOf>!nexus-tencentyun</mirrorOf>
+			<url>https://mirrors.huaweicloud.com/repository/maven/</url>
+		</mirror>
+		<mirror>
+			<id>nexus-163</id>
+			<mirrorOf>!nexus-tencentyun</mirrorOf>
+			<name>Nexus 163</name>
+			<url>https://mirrors.163.com/maven/repository/maven-public/</url>
+		</mirror>
+		<mirror>
+			<id>nexus-tencentyun</id>
+			<mirrorOf>!jfast-cloud-jfast-spring-cloud-public</mirrorOf>
+			<name>Nexus tencentyun</name>
+			<url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+		</mirror>
+	</mirrors>
+	
+	<profiles>
+		<profile>
+			<id>jfast-cloud-framework</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>jfast-cloud-jfast-spring-cloud-public</id>
+					<name>jfast-cloud-jfast-spring-cloud-public</name>
+					<url>https://jfast-cloud-maven.pkg.coding.net/repository/jfast-spring-cloud/public</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+</settings>
