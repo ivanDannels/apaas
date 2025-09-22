@@ -23,7 +23,6 @@
         <dependency>
             <groupId>com.playtika.reactivefeign</groupId>
             <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-            <type>pom</type>
         </dependency>
         
         <!-- Spring Data R2DBC -->

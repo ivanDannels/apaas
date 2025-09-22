@@ -79,7 +79,7 @@ public interface ReactiveUserService extends BaseService<User, Long> {
      */
     Mono<Void> recordLoginInfo(Long userId, String loginIp);
 
-    Flux<User> login(String username, String password);
+    Mono<User> login(String username, String password);
 
     Mono<Boolean> updatePassword(String oldPassword, String newPassword);
 

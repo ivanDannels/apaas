@@ -1,7 +1,6 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormLayout;
@@ -21,8 +20,8 @@ import reactor.core.publisher.Mono;
 public class ReactiveFormLayoutServiceImpl extends BaseServiceImpl<FormLayout, Long, FormLayoutRepository> implements ReactiveFormLayoutService {
 
 
-    public ReactiveFormLayoutServiceImpl(FormLayoutRepository repository, RedisDomainEventPublisher<org.apaas.core.event.EntityChangedEvent<FormLayout>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFormLayoutServiceImpl(FormLayoutRepository repository) {
+        super(repository);
     }
 
     @Override

@@ -3,11 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Role;
 import org.apaas.auth.repository.reactive.ReactiveRoleRepository;
 import org.apaas.auth.service.reactive.ReactiveRoleService;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
-import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,8 +14,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveRoleServiceImpl extends BaseServiceImpl<Role, Long, ReactiveRoleRepository> implements ReactiveRoleService {
 
-    public ReactiveRoleServiceImpl(ReactiveRoleRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Role>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveRoleServiceImpl(ReactiveRoleRepository repository) {
+        super(repository);
     }
 
     @Override
@@ -28,53 +24,20 @@ public class ReactiveRoleServiceImpl extends BaseServiceImpl<Role, Long, Reactiv
     }
 
     @Override
-    public Mono<PageResult<Role>> getRolePage(Pageable pageable) {
-        return repository.findByPage(pageable)
-                .map(page -> new PageResult<Role>(page.getContent(), page.getTotalElements()));
-    }
-
-    @Override
     public Mono<Role> addRole(Role role) {
         // 检查角色名是否已存在
-        return repository.existsByRoleName(role.getRoleName())
-                .flatMap(exists -> {
-                    if (exists) {
-                        return Mono.error(new BusinessException("角色名已存在"));
-                    }
-                    return super.save(role);
-                });
+        return repository.save(role);
     }
 
     @Override
     public Mono<Role> updateRole(Role role) {
-        return super.findById(role.getId())
-                .switchIfEmpty(Mono.error(new BusinessException("角色不存在")))
-                .flatMap(existingRole -> {
-                    // 检查角色名是否修改
-                    if (!existingRole.getRoleName().equals(role.getRoleName())) {
-                        return repository.existsByRoleName(role.getRoleName())
-                                .flatMap(exists -> {
-                                    if (exists) {
-                                        return Mono.error(new BusinessException("角色名已存在"));
-                                    }
-                                    return super.save(role);
-                                });
-                    }
-                    return super.save(role);
-                });
+        return super.save(role);
     }
 
     @Override
     public Mono<Void> deleteRole(Long id) {
         // 检查是否为管理员角色
-        return super.findById(id)
-                .switchIfEmpty(Mono.error(new BusinessException("角色不存在")))
-                .flatMap(role -> {
-                    if ("admin".equals(role.getRoleName())) {
-                        return Mono.error(new BusinessException("不能删除管理员角色"));
-                    }
-                    return super.deleteById(id);
-                });
+        return super.deleteById(id);
     }
 
     @Override

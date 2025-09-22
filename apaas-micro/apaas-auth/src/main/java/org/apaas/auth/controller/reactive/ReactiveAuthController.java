@@ -1,6 +1,5 @@
 package org.apaas.auth.controller.reactive;
 
-import io.reactivex.rxjava3.core.Single;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -60,8 +59,7 @@ public class ReactiveAuthController {
                     
                     // 记录登录信息
                     String ipAddr = IpUtils.getIpAddr(request);
-                    return systemFeignClient.recordLoginInfo(username, ipAddr)
-                            .thenReturn(loginUser);
+                    return systemFeignClient.recordLoginInfo(username, ipAddr).thenReturn(loginUser);
                 });
     }
 

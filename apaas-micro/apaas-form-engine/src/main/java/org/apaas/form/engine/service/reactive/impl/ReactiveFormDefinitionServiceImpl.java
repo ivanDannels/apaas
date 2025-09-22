@@ -1,17 +1,12 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.common.utils.SecurityUtils;
 import org.apaas.core.context.TenantContext;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
-import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
-import org.apaas.core.utils.SecurityUtils;
-import org.apaas.form.engine.domain.dto.FormDefinitionDTO;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.apaas.form.engine.repository.FormDefinitionRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,39 +21,8 @@ import java.time.LocalDateTime;
 @Service
 public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefinition, Long, FormDefinitionRepository> implements ReactiveFormDefinitionService {
 
-    public ReactiveFormDefinitionServiceImpl(FormDefinitionRepository repository, RedisDomainEventPublisher<org.apaas.core.event.EntityChangedEvent<FormDefinition>> eventPublisher) {
-        super(repository, eventPublisher);
-    }
-
-    @Override
-    public Mono<PageResult<FormDefinition>> selectFormDefinitionPage(FormDefinitionDTO query) {
-        PageRequest pageRequest = PageRequest.of(
-                query.getPageNum() - 1,
-                query.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "createTime")
-        );
-
-        return TenantContext.getTenantIdAsync()
-                .flatMap(tenantId -> {
-                    Flux<FormDefinition> flux = repository.findAllByTenantIdOrderByCreatedTimeDesc(tenantId, pageRequest);
-                    
-                    // 应用过滤条件
-                    if (query.getName() != null) {
-                        flux = flux.filter(form -> form.getName().contains(query.getName()));
-                    }
-                    if (query.getType() != null) {
-                        flux = flux.filter(form -> form.getType().equals(query.getType()));
-                    }
-                    if (query.getStatus() != null) {
-                        flux = flux.filter(form -> form.getStatus().equals(query.getStatus()));
-                    }
-                    
-                    return Mono.zip(
-                            flux.collectList(),
-                            repository.countByTenantIdAndDeletedFalse(tenantId).defaultIfEmpty(0L),
-                            (list, count) -> new PageResult<>(query.getPageNum(), query.getPageSize(), count, list)
-                    );
-                });
+    public ReactiveFormDefinitionServiceImpl(FormDefinitionRepository repository) {
+        super(repository);
     }
 
     @Override
@@ -91,7 +55,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     // 设置更新人、更新时间
                     formDefinition.setUpdater(SecurityUtils.getUsername());
                     formDefinition.setUpdatedTime(LocalDateTime.now());
-                    
+
                     // 检查表单状态
                     return findById(formDefinition.getId())
                             .flatMap(oldDefinition -> {
@@ -116,7 +80,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                                 if (hasPublished) {
                                     return Mono.error(new RuntimeException("包含已发布的表单定义，不允许删除"));
                                 }
-                                
+
                                 return Flux.fromArray(ids)
                                         .flatMap(this::deleteById)
                                         .then(Mono.just(true));
@@ -133,14 +97,14 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     formDefinition.setStatus(1);
                     formDefinition.setUpdater(SecurityUtils.getUsername());
                     formDefinition.setUpdatedTime(LocalDateTime.now());
-                    
+
                     // 如果设为默认版本，则更新其他版本为非默认
                     Mono<FormDefinition> updateMono = Mono.just(formDefinition);
                     if (formDefinition.getIsDefault()) {
                         updateMono = repository.updateIsDefaultByCode(formDefinition.getCode(), false)
                                 .then(Mono.just(formDefinition));
                     }
-                    
+
                     return updateMono
                             .flatMap(this::save)
                             .map(saved -> true);
@@ -156,7 +120,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     formDefinition.setStatus(2);
                     formDefinition.setUpdater(SecurityUtils.getUsername());
                     formDefinition.setUpdatedTime(LocalDateTime.now());
-                    
+
                     return save(formDefinition)
                             .map(saved -> true);
                 });
@@ -165,7 +129,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
     @Override
     public Flux<FormDefinition> getVersionsByCode(String code) {
         return TenantContext.getTenantIdAsync()
-                .flatMapMany(tenantId -> 
+                .flatMapMany(tenantId ->
                     repository.findByCode(code)
                             .filter(form -> form.getTenantId().equals(tenantId))
                             .sort((f1, f2) -> f2.getVersion().compareTo(f1.getVersion()))
@@ -188,7 +152,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     newDefinition.setFlowId(source.getFlowId());
                     newDefinition.setStatus(0); // 草稿状态
                     newDefinition.setIsDefault(false);
-                    
+
                     return TenantContext.getTenantIdAsync()
                             .flatMap(tenantId -> {
                                 newDefinition.setTenantId(tenantId);
@@ -196,7 +160,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                                 newDefinition.setUpdater(SecurityUtils.getUsername());
                                 newDefinition.setCreatedTime(LocalDateTime.now());
                                 newDefinition.setUpdatedTime(LocalDateTime.now());
-                                
+
                                 // 处理版本号
                                 return handleVersion(newDefinition)
                                         .flatMap(this::save)
@@ -221,7 +185,7 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
         formDefinition.setCode("IMPORT_" + System.currentTimeMillis());
         formDefinition.setItemsJson(itemsJson);
         formDefinition.setStatus(0);
-        
+
         return TenantContext.getTenantIdAsync()
                 .flatMap(tenantId -> {
                     formDefinition.setTenantId(tenantId);
@@ -229,13 +193,13 @@ public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefin
                     formDefinition.setUpdater(SecurityUtils.getUsername());
                     formDefinition.setCreatedTime(LocalDateTime.now());
                     formDefinition.setUpdatedTime(LocalDateTime.now());
-                    
+
                     return handleVersion(formDefinition)
                             .flatMap(this::save)
                             .map(FormDefinition::getId);
                 });
     }
-    
+
     /**
      * 处理表单版本号
      *

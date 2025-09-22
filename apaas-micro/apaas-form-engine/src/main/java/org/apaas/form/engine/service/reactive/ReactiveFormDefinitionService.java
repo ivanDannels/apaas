@@ -1,8 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.query.PageResult;
 import org.apaas.core.service.BaseService;
-import org.apaas.form.engine.domain.dto.FormDefinitionDTO;
 import org.apaas.form.engine.entity.FormDefinition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,13 +10,6 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 public interface ReactiveFormDefinitionService extends BaseService<FormDefinition, Long> {
-    /**
-     * 分页查询表单定义
-     *
-     * @param query 查询条件
-     * @return 分页结果
-     */
-    Mono<PageResult<FormDefinition>> selectFormDefinitionPage(FormDefinitionDTO query);
 
     /**
      * 保存表单定义

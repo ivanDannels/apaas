@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormField;
 import org.apaas.form.engine.service.reactive.ReactiveFormFieldService;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +20,11 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/form-fields")
 @Tag(name = "响应式表单字段管理", description = "响应式表单字段相关操作")
-@RequiredArgsConstructor
-public class ReactiveFormFieldController {
+public class ReactiveFormFieldController extends ReactiveBaseController<FormField, Long, ReactiveFormFieldService> {
 
-    private final ReactiveFormFieldService formFieldService;
+    public ReactiveFormFieldController(ReactiveFormFieldService service) {
+        super(service);
+    }
 
     /**
      * 分页查询表单字段
@@ -38,7 +40,7 @@ public class ReactiveFormFieldController {
             @RequestParam Long formId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return formFieldService.selectPage(formId, PageRequest.of(page, size));
+        return service.selectPage(formId, PageRequest.of(page, size));
     }
 
     /**
@@ -48,7 +50,7 @@ public class ReactiveFormFieldController {
     @Operation(summary = "根据ID查询表单字段", description = "根据ID查询表单字段信息")
     @Parameter(name = "id", description = "字段ID", required = true)
     public Mono<FormField> selectById(@PathVariable Long id) {
-        return formFieldService.findById(id);
+        return service.findById(id);
     }
 
     /**
@@ -58,7 +60,7 @@ public class ReactiveFormFieldController {
     @Operation(summary = "根据表单ID查询字段列表", description = "根据表单ID查询所有字段列表")
     @Parameter(name = "formId", description = "表单ID", required = true)
     public Flux<FormField> selectByFormId(@PathVariable Long formId) {
-        return formFieldService.selectByFormId(formId);
+        return service.selectByFormId(formId);
     }
 
     /**
@@ -73,7 +75,7 @@ public class ReactiveFormFieldController {
     public Flux<FormField> selectByFormIdAndType(
             @PathVariable Long formId,
             @PathVariable Integer type) {
-        return formFieldService.selectByFormIdAndType(formId, type);
+        return service.selectByFormIdAndType(formId, type);
     }
 
     /**
@@ -88,7 +90,7 @@ public class ReactiveFormFieldController {
     public Flux<FormField> selectByFormIdAndGroupName(
             @PathVariable Long formId,
             @PathVariable String groupName) {
-        return formFieldService.selectByFormIdAndGroupName(formId, groupName);
+        return service.selectByFormIdAndGroupName(formId, groupName);
     }
 
     /**
@@ -97,7 +99,7 @@ public class ReactiveFormFieldController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建表单字段", description = "创建新的表单字段")
     public Mono<FormField> create(@RequestBody FormField formField) {
-        return formFieldService.create(formField);
+        return service.create(formField);
     }
 
     /**
@@ -108,7 +110,7 @@ public class ReactiveFormFieldController {
     @Parameter(name = "id", description = "字段ID", required = true)
     public Mono<FormField> update(@PathVariable Long id, @RequestBody FormField formField) {
         formField.setId(id);
-        return formFieldService.update(formField);
+        return service.update(formField);
     }
 
     /**
@@ -118,7 +120,7 @@ public class ReactiveFormFieldController {
     @Operation(summary = "删除表单字段", description = "删除表单字段")
     @Parameter(name = "id", description = "字段ID", required = true)
     public Mono<Void> delete(@PathVariable Long id) {
-        return formFieldService.delete(id);
+        return service.delete(id);
     }
 
     /**
@@ -130,6 +132,6 @@ public class ReactiveFormFieldController {
     public Flux<FormField> batchCreate(
             @PathVariable Long formId,
             @RequestBody Flux<FormField> formFields) {
-        return formFieldService.batchCreate(formId, formFields);
+        return service.batchCreate(formId, formFields);
     }
 }

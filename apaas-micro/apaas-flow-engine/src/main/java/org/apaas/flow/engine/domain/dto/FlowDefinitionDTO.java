@@ -1,13 +1,12 @@
 package org.apaas.flow.engine.domain.dto;
 
 import lombok.Data;
-import org.apaas.core.web.domain.BasePageQuery;
 
 /**
  * 流程定义查询DTO
  */
 @Data
-public class FlowDefinitionDTO extends BasePageQuery {
+public class FlowDefinitionDTO {
     /**
      * 流程名称
      */

@@ -1,7 +1,7 @@
 package org.apaas.auth.utils;
 
 import org.apaas.auth.domain.DataScope;
-import org.apaas.core.utils.SecurityUtils;
+import org.apaas.common.utils.SecurityUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;

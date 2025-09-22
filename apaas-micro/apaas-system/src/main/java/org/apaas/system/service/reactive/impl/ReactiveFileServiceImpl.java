@@ -1,8 +1,6 @@
 package org.apaas.system.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.entity.Files;
 import org.apaas.system.repository.FilesRepository;
@@ -23,14 +21,14 @@ import java.util.UUID;
 @Service
 public class ReactiveFileServiceImpl extends BaseServiceImpl<Files, Long, FilesRepository> implements ReactiveFileService {
 
-    public ReactiveFileServiceImpl(FilesRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Files>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveFileServiceImpl(FilesRepository repository) {
+        super(repository);
     }
 
     @Override
     public Mono<String> uploadFile(FilePart file) {
         // 生成唯一文件名
-        String fileName = UUID.randomUUID().toString() + "_" + file.filename();
+        String fileName = UUID.randomUUID() + "_" + file.filename();
         return uploadFile(file, fileName);
     }
 

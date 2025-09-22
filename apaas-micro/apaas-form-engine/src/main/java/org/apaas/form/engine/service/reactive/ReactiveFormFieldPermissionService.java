@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式表单字段权限服务接口
  */
-@Service
 public interface ReactiveFormFieldPermissionService extends BaseService<FormFieldPermission, Long> {
     
     /**

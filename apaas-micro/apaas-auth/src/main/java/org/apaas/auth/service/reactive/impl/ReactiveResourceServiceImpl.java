@@ -3,8 +3,6 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Resource;
 import org.apaas.auth.repository.ResourceRepository;
 import org.apaas.auth.service.reactive.ReactiveResourceService;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -16,8 +14,8 @@ import reactor.core.publisher.Flux;
 @Service
 public class ReactiveResourceServiceImpl extends BaseServiceImpl<Resource, Long, ResourceRepository> implements ReactiveResourceService {
 
-    public ReactiveResourceServiceImpl(ResourceRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Resource>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveResourceServiceImpl(ResourceRepository repository) {
+        super(repository);
     }
 
     /**

@@ -5,15 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 
-import org.junit.jupiter.api.Disabled;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.DynamicPropertyRegistry;
 import org.apaas.core.config.TestConfig;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -21,27 +14,10 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled("Requires Docker environment")
 @DataR2dbcTest
-@Testcontainers
 @ContextConfiguration(classes = TestConfig.class)
 class ReactiveBaseRepositoryTest {
-    
-    @Container
-    static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:13"))
-            .withDatabaseName("testdb")
-            .withUsername("test")
-            .withPassword("test");
-    
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.r2dbc.url", () -> "r2dbc:postgresql://" + 
-            postgresqlContainer.getHost() + ":" + postgresqlContainer.getFirstMappedPort() + 
-            "/" + postgresqlContainer.getDatabaseName());
-        registry.add("spring.r2dbc.username", postgresqlContainer::getUsername);
-        registry.add("spring.r2dbc.password", postgresqlContainer::getPassword);
-    }
-    
+
     @Autowired
     private TestEntityRepository testEntityRepository;
     

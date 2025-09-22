@@ -1,7 +1,6 @@
 package org.apaas.core.repository;
 
 import org.apaas.core.domain.TestEntity;
-import org.apaas.core.repository.ReactiveBaseRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 

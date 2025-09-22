@@ -2,10 +2,10 @@ package org.apaas.gateway.filter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.constant.SecurityConstants;
+import org.apaas.common.constant.SecurityConstants;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final ReactiveRedisTemplate<String, Object> reactiveRedisTemplate;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
@@ -50,16 +50,16 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         // 验证token
         try {
             // 检查token是否在黑名单
-            Boolean isBlack = redisTemplate.hasKey(SecurityConstants.TOKEN_BLACKLIST_PREFIX + token);
-            if (Boolean.TRUE.equals(isBlack)) {
+            Mono<Boolean> isBlack = reactiveRedisTemplate.hasKey(SecurityConstants.TOKEN_BLACKLIST_PREFIX + token);
+            if (isBlack.equals(Mono.just(Boolean.TRUE))) {
                 return setUnauthorizedResponse(response, "令牌已失效");
             }
 
             String username = "";
-            Long userId = 0L;
+            long userId = 0L;
 
             // 获取用户权限
-            List<String> permissions = (List<String>) redisTemplate.opsForValue().get(SecurityConstants.USER_PERMISSIONS_PREFIX + userId);
+            List<String> permissions = (List<String>) reactiveRedisTemplate.opsForValue().get(SecurityConstants.USER_PERMISSIONS_PREFIX + userId);
             if (permissions == null) {
                 permissions = new ArrayList<>();
             }

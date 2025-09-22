@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.annotation.Id;
+
 import java.time.LocalDateTime;
 
 

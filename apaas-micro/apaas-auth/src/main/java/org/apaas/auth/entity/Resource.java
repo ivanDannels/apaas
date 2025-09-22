@@ -1,9 +1,9 @@
 package org.apaas.auth.entity;
 
-import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import org.apaas.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.List;

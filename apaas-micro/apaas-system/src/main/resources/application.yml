@@ -1,7 +1,5 @@
 server:
   port: 8081
-  servlet:
-    context-path: /system
 
 spring:
   application:
@@ -10,47 +8,52 @@ spring:
     active: dev
   cloud:
     nacos:
+      server-addr: ${NACOS_HOST:jfast-register}:${NACOS_PORT:8848}
+      username: ${NACOS_USER:nacos}
+      password: ${NACOS_PASSWORD:Nacos@9527}
       discovery:
-        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
-        namespace: ${NACOS_NAMESPACE:public}
+        server-addr: ${NACOS_HOST:jfast-register}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:apaas}
       config:
-        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
-        namespace: ${NACOS_NAMESPACE:public}
+        server-addr: ${NACOS_HOST:jfast-register}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:apaas}
         file-extension: yml
-        shared-configs:
-          - data-id: application-common.yml
-            refresh: true
+        refresh-enabled: true
   config:
     import:
-      - optional:nacos:application-common.yml
+      - optional:nacos:application.yml
       - optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+  autoconfigure:
+    exclude:
+      - org.springdoc.core.configuration.SpringDocKotlinConfiguration
   r2dbc:
-    url: r2dbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:apaas}
+    url: r2dbc:postgresql://${POSTGRES_HOST:jfast-postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:apaas}
     username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
+    password: ${POSTGRES_PASSWORD:Postgresql@9527$}
     pool:
       enabled: true
       initial-size: 5
       max-size: 20
       max-idle-time: 30m
       validation-query: SELECT 1
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:}
-    database: 0
-    timeout: 10s
-    lettuce:
-      pool:
-        min-idle: 0
-        max-idle: 8
-        max-active: 8
-        max-wait: -1ms
-  elasticsearch:
-    uris: http://${ELASTICSEARCH_HOST:localhost}:${ELASTICSEARCH_PORT:9200}
-    username: ${ELASTICSEARCH_USERNAME:}
-    password: ${ELASTICSEARCH_PASSWORD:}
- 
+  sql:
+    init:
+      mode: always
+  data:
+    redis:
+      client-type: lettuce
+      host: ${REDIS_HOST:10.100.20.61}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:Redis@9527$}
+      database: 0
+      timeout: 10s
+      lettuce:
+        pool:
+          min-idle: 0
+          max-idle: 8
+          max-active: 8
+          max-wait: 5000ms
+
 logging:
   level:
     org.apaas: info
@@ -76,16 +79,20 @@ system:
 
 # SpringDoc配置
 springdoc:
+  enable-kotlin: false
   api-docs:
     enabled: true
     path: /v3/api-docs
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
-  packages-to-scan: org.apaas.system.controller
+  packages-to-scan: org.apaas
 
 # 暴露监控端点
 management:
+  health:
+    redis:
+      enabled: true
   endpoints:
     web:
       exposure:

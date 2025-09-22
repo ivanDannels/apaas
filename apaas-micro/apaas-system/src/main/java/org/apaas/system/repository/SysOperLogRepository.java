@@ -2,11 +2,7 @@ package org.apaas.system.repository;
 
 import org.apaas.core.repository.ReactiveBaseRepository;
 import org.apaas.system.entity.SysOperLog;
-import org.springframework.data.r2dbc.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * @author ivan
@@ -14,15 +10,4 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface SysOperLogRepository extends ReactiveBaseRepository<SysOperLog, Long> {
 
-    @Query("DELETE FROM sys_oper_log WHERE oper_id IN (:ids)")
-    Mono<Integer> deleteByIds(@Param("ids") Long[] ids);
-    
-    @Query("DELETE FROM sys_oper_log")
-    Mono<Integer> cleanOperLog();
-
-    Flux<SysOperLog> findByOperUserId(Long operUserId);
-
-    Flux<SysOperLog> findByBusinessType(String businessType);
-
-    Flux<SysOperLog> findByModuleName(String moduleName);
 }

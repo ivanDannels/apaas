@@ -1,9 +1,6 @@
 package org.apaas.system.service.reactive.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
@@ -24,8 +21,8 @@ import java.util.List;
 @Service
 public class ReactiveNotificationServiceImpl extends BaseServiceImpl<Notification, Long, NotificationRepository> implements ReactiveNotificationService {
 
-    public ReactiveNotificationServiceImpl(NotificationRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Notification>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveNotificationServiceImpl(NotificationRepository repository) {
+        super(repository);
     }
 
     @Override

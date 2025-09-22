@@ -17,11 +17,11 @@
     <packaging>pom</packaging>
     
     <modules>
-        <!-- <module>apaas-framework</module>
+        <module>apaas-api</module>
+        <module>apaas-framework</module>
         <module>apaas-gateway</module>
         <module>apaas-micro</module>
-        <module>apaas-api</module>
-        <module>apaas-standalone</module> -->
+        <module>apaas-standalone</module>
     </modules>
     
     <properties>

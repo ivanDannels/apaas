@@ -1,23 +1,13 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.context.TenantContext;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
-import org.apaas.core.query.PageResult;
 import org.apaas.core.service.impl.BaseServiceImpl;
-import org.apaas.core.utils.SecurityUtils;
-import org.apaas.core.web.domain.BasePageQuery;
 import org.apaas.form.engine.entity.FormData;
 import org.apaas.form.engine.repository.FormDataRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormDataService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.time.LocalDateTime;
 
 /**
  * 响应式表单数据服务实现类
@@ -26,34 +16,8 @@ import java.time.LocalDateTime;
 @Service
 public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long, FormDataRepository> implements ReactiveFormDataService {
 
-    public ReactiveFormDataServiceImpl(FormDataRepository repository, RedisDomainEventPublisher<EntityChangedEvent<FormData>> eventPublisher) {
-        super(repository, eventPublisher);
-    }
-
-    /**
-     * 分页查询表单数据
-     *
-     * @param query 查询参数
-     * @return 分页结果
-     */
-    @Override
-    public Mono<PageResult<FormData>> selectFormDataPage(BasePageQuery query) {
-        PageRequest pageRequest = PageRequest.of(
-                query.getPageNum() - 1,
-                query.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "createTime")
-        );
-
-        return TenantContext.getTenantIdAsync()
-                .flatMap(tenantId -> {
-                    Flux<FormData> flux = repository.findAllByTenantId(tenantId, pageRequest);
-
-                    return Mono.zip(
-                            flux.collectList(),
-                            repository.countByTenantId(tenantId).defaultIfEmpty(0L),
-                            (list, count) -> new PageResult<>(query.getPageNum(), query.getPageSize(), count, list)
-                    );
-                });
+    public ReactiveFormDataServiceImpl(FormDataRepository repository) {
+        super(repository);
     }
 
     /**
@@ -64,8 +28,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Flux<FormData> getFormDataByFormCode(String formCode) {
-        return TenantContext.getTenantIdAsync()
-                .flatMapMany(tenantId -> repository.findByFormCodeAndTenantId(formCode, tenantId));
+        return null;
     }
 
     /**
@@ -77,8 +40,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Flux<FormData> getFormDataByFormCodeAndVersion(String formCode, String version) {
-        return TenantContext.getTenantIdAsync()
-                .flatMapMany(tenantId -> repository.findByFormCodeAndVersionAndTenantId(formCode, version, tenantId));
+        return null;
     }
 
     /**
@@ -89,8 +51,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<FormData> getFormDataByBusinessKey(String businessKey) {
-        return TenantContext.getTenantIdAsync()
-                .flatMap(tenantId -> repository.findByBusinessKeyAndTenantId(businessKey, tenantId));
+        return null;
     }
 
     /**
@@ -101,12 +62,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Boolean> deleteFormData(Long[] ids) {
-        return TenantContext.getTenantIdAsync()
-                .flatMap(tenantId -> {
-                    return Flux.fromArray(ids)
-                            .flatMap(repository::deleteById)
-                            .then(Mono.just(true));
-                });
+        return null;
     }
 
     /**
@@ -157,14 +113,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Boolean> updateFormData(FormData formData) {
-        return TenantContext.getTenantIdAsync()
-                .flatMap(tenantId -> {
-                    // 设置更新人、更新时间
-                    formData.setUpdater(SecurityUtils.getUsername());
-                    formData.setUpdatedTime(LocalDateTime.now());
-
-                    return save(formData).map(saved -> true);
-                });
+        return null;
     }
 
     /**
@@ -175,18 +124,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Long> submitFormData(FormData formData) {
-        return TenantContext.getTenantIdAsync()
-                .flatMap(tenantId -> {
-                    // 设置租户ID
-                    formData.setTenantId(tenantId);
-                    // 设置提交人、提交时间
-                    formData.setUpdater(SecurityUtils.getUsername());
-                    formData.setUpdatedTime(LocalDateTime.now());
-                    // 设置状态为已提交
-                    formData.setStatus(1);
-
-                    return save(formData).map(FormData::getId);
-                });
+        return null;
     }
 
     /**
@@ -197,23 +135,7 @@ public class ReactiveFormDataServiceImpl extends BaseServiceImpl<FormData, Long,
      */
     @Override
     public Mono<Long> saveFormData(FormData formData) {
-        return TenantContext.getTenantIdAsync()
-                .flatMap(tenantId -> {
-                    // 设置租户ID
-                    formData.setTenantId(tenantId);
-                    // 设置创建人、更新人
-                    String username = SecurityUtils.getUsername();
-                    formData.setCreator(username);
-                    formData.setUpdater(username);
-                    // 设置创建时间、更新时间
-                    LocalDateTime now = LocalDateTime.now();
-                    formData.setCreatedTime(now);
-                    formData.setUpdatedTime(now);
-                    // 初始状态为草稿
-                    formData.setStatus(0);
-
-                    return save(formData).map(FormData::getId);
-                });
+        return null;
     }
 
     /**

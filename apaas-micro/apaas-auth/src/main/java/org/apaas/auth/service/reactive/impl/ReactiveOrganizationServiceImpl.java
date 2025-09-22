@@ -3,10 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Organization;
 import org.apaas.auth.repository.reactive.ReactiveOrganizationRepository;
 import org.apaas.auth.service.reactive.ReactiveOrganizationService;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,20 +12,20 @@ import reactor.core.publisher.Mono;
 public class ReactiveOrganizationServiceImpl extends BaseServiceImpl<Organization, Long, ReactiveOrganizationRepository> implements ReactiveOrganizationService {
 
 
-    public ReactiveOrganizationServiceImpl(ReactiveOrganizationRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Organization>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactiveOrganizationServiceImpl(ReactiveOrganizationRepository repository) {
+        super(repository);
     }
 
     @Override
     public Flux<Organization> getOrganizationTree(Long parentId) {
         // 实现获取组织机构树的逻辑
-        return repository.findByParentId(parentId);
+        return repository.findById(parentId).flux();
     }
 
     @Override
     public Flux<Organization> getOrganizationsByUserId(Long userId) {
         // 实现根据用户ID获取组织机构列表的逻辑
-        return repository.findByUserId(userId);
+        return repository.findById(userId).flux();
     }
 
     @Override

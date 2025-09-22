@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apaas.core.web.controller.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormFieldPermission;
 import org.apaas.form.engine.service.reactive.ReactiveFormFieldPermissionService;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +20,11 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/form-field-permissions")
 @Tag(name = "响应式表单字段权限管理", description = "响应式表单字段权限相关操作")
-@RequiredArgsConstructor
-public class ReactiveFormFieldPermissionController {
+public class ReactiveFormFieldPermissionController extends ReactiveBaseController<FormFieldPermission, Long, ReactiveFormFieldPermissionService> {
 
-    private final ReactiveFormFieldPermissionService fieldPermissionService;
+    public ReactiveFormFieldPermissionController(ReactiveFormFieldPermissionService service) {
+        super(service);
+    }
 
     /**
      * 分页查询表单字段权限
@@ -38,7 +40,7 @@ public class ReactiveFormFieldPermissionController {
             @RequestParam Long formId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return fieldPermissionService.selectPage(formId, PageRequest.of(page, size));
+        return service.selectPage(formId, PageRequest.of(page, size));
     }
 
     /**
@@ -48,7 +50,7 @@ public class ReactiveFormFieldPermissionController {
     @Operation(summary = "根据ID查询表单字段权限", description = "根据ID查询表单字段权限信息")
     @Parameter(name = "id", description = "权限ID", required = true)
     public Mono<FormFieldPermission> selectById(@PathVariable Long id) {
-        return fieldPermissionService.findById(id);
+        return service.findById(id);
     }
 
     /**
@@ -58,7 +60,7 @@ public class ReactiveFormFieldPermissionController {
     @Operation(summary = "根据表单ID查询字段权限列表", description = "根据表单ID查询所有字段权限列表")
     @Parameter(name = "formId", description = "表单ID", required = true)
     public Flux<FormFieldPermission> selectByFormId(@PathVariable Long formId) {
-        return fieldPermissionService.selectByFormId(formId);
+        return service.selectByFormId(formId);
     }
 
     /**
@@ -68,7 +70,7 @@ public class ReactiveFormFieldPermissionController {
     @Operation(summary = "根据字段ID查询字段权限列表", description = "根据字段ID查询所有字段权限列表")
     @Parameter(name = "fieldId", description = "字段ID", required = true)
     public Flux<FormFieldPermission> selectByFieldId(@PathVariable Long fieldId) {
-        return fieldPermissionService.selectByFieldId(fieldId);
+        return service.selectByFieldId(fieldId);
     }
 
     /**
@@ -78,7 +80,7 @@ public class ReactiveFormFieldPermissionController {
     @Operation(summary = "根据角色ID查询字段权限列表", description = "根据角色ID查询所有字段权限列表")
     @Parameter(name = "roleId", description = "角色ID", required = true)
     public Flux<FormFieldPermission> selectByRoleId(@PathVariable Long roleId) {
-        return fieldPermissionService.selectByRoleId(roleId);
+        return service.selectByRoleId(roleId);
     }
 
     /**
@@ -93,7 +95,7 @@ public class ReactiveFormFieldPermissionController {
     public Flux<FormFieldPermission> selectByFormIdAndRoleId(
             @PathVariable Long formId,
             @PathVariable Long roleId) {
-        return fieldPermissionService.selectByFormIdAndRoleId(formId, roleId);
+        return service.selectByFormIdAndRoleId(formId, roleId);
     }
 
     /**
@@ -108,7 +110,7 @@ public class ReactiveFormFieldPermissionController {
     public Mono<FormFieldPermission> selectByFieldIdAndRoleId(
             @PathVariable Long fieldId,
             @PathVariable Long roleId) {
-        return fieldPermissionService.selectByFieldIdAndRoleId(fieldId, roleId);
+        return service.selectByFieldIdAndRoleId(fieldId, roleId);
     }
 
     /**
@@ -117,7 +119,7 @@ public class ReactiveFormFieldPermissionController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建表单字段权限", description = "创建新的表单字段权限")
     public Mono<FormFieldPermission> create(@RequestBody FormFieldPermission fieldPermission) {
-        return fieldPermissionService.create(fieldPermission);
+        return service.create(fieldPermission);
     }
 
     /**
@@ -128,7 +130,7 @@ public class ReactiveFormFieldPermissionController {
     @Parameter(name = "id", description = "权限ID", required = true)
     public Mono<FormFieldPermission> update(@PathVariable Long id, @RequestBody FormFieldPermission fieldPermission) {
         fieldPermission.setId(id);
-        return fieldPermissionService.update(fieldPermission);
+        return service.update(fieldPermission);
     }
 
     /**
@@ -138,7 +140,7 @@ public class ReactiveFormFieldPermissionController {
     @Operation(summary = "删除表单字段权限", description = "删除表单字段权限")
     @Parameter(name = "id", description = "权限ID", required = true)
     public Mono<Void> delete(@PathVariable Long id) {
-        return fieldPermissionService.delete(id);
+        return service.delete(id);
     }
 
     /**
@@ -150,6 +152,6 @@ public class ReactiveFormFieldPermissionController {
     public Flux<FormFieldPermission> batchCreate(
             @PathVariable Long formId,
             @RequestBody Flux<FormFieldPermission> fieldPermissions) {
-        return fieldPermissionService.batchCreate(formId, fieldPermissions);
+        return service.batchCreate(formId, fieldPermissions);
     }
 }

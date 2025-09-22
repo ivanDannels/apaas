@@ -1,8 +1,6 @@
 package org.apaas.system.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.apaas.system.entity.Internationalization;
 import org.apaas.system.repository.InternationalizationRepository;
@@ -24,8 +22,8 @@ public class ReactiveInternationalizationServiceImpl extends BaseServiceImpl<Int
     
     private final MessageSource messageSource;
 
-    public ReactiveInternationalizationServiceImpl(InternationalizationRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Internationalization>> eventPublisher, MessageSource messageSource) {
-        super(repository, eventPublisher);
+    public ReactiveInternationalizationServiceImpl(InternationalizationRepository repository, MessageSource messageSource) {
+        super(repository);
         this.messageSource = messageSource;
     }
 

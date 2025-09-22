@@ -1,16 +1,20 @@
 package org.apaas.core.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.apaas.core.annotation.Log;
 import org.apaas.core.domain.BaseEntity;
+import org.apaas.core.enums.BusinessType;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import org.apaas.core.service.BaseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 响应式控制器基类
@@ -107,9 +111,11 @@ public abstract class ReactiveBaseController<T extends BaseEntity, ID extends Se
      * @param ids 实体ID列表
      * @return 删除结果
      */
-    @DeleteMapping("/batch/{ids}")
-    public Mono<Void> deleteBatch(@PathVariable ID[] ids) {
-        return service.deleteByIds(Flux.fromArray(ids));
+    @Operation(summary = "批量删除数据")
+    @Log(title = "删除数据", businessType = BusinessType.DELETE)
+    @DeleteMapping(value = "/batch")
+    public Mono<Void> deleteBatch(@Parameter(description = "ID集合") @RequestBody List<ID> ids) {
+        return service.deleteAllById(ids);
     }
 
     /**

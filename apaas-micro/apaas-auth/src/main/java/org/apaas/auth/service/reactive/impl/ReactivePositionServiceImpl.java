@@ -3,8 +3,6 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Position;
 import org.apaas.auth.repository.reactive.ReactivePositionRepository;
 import org.apaas.auth.service.reactive.ReactivePositionService;
-import org.apaas.core.event.EntityChangedEvent;
-import org.apaas.core.event.impl.RedisDomainEventPublisher;
 import org.apaas.core.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -13,14 +11,14 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactivePositionServiceImpl extends BaseServiceImpl<Position, Long, ReactivePositionRepository> implements ReactivePositionService {
 
-    public ReactivePositionServiceImpl(ReactivePositionRepository repository, RedisDomainEventPublisher<EntityChangedEvent<Position>> eventPublisher) {
-        super(repository, eventPublisher);
+    public ReactivePositionServiceImpl(ReactivePositionRepository repository) {
+        super(repository);
     }
 
     @Override
     public Flux<Position> getPositionsByUserId(Long userId) {
         // 实现根据用户ID获取岗位列表的逻辑
-        return repository.findByUserId(userId);
+        return repository.findByIdAndDeletedFalse(userId).flux();
     }
 
     @Override
