@@ -1,6 +1,24 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.system.service.reactive;
 
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.system.domain.dto.SysConfigDTO;
 import org.apaas.system.entity.SysConfig;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +34,7 @@ import java.util.List;
  * @author ivan
  */
 public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
+    
     /**
      * 分页查询参数配置列表
      *
@@ -24,7 +43,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 参数配置列表
      */
     Flux<SysConfig> getConfigPage(Pageable pageable, SysConfigDTO query);
-
+    
     /**
      * 新增参数配置
      *
@@ -32,7 +51,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 结果
      */
     Mono<Boolean> addConfig(SysConfig config);
-
+    
     /**
      * 修改参数配置
      *
@@ -40,7 +59,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 结果
      */
     Mono<Boolean> updateConfig(SysConfig config);
-
+    
     /**
      * 删除参数配置
      *
@@ -48,7 +67,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 结果
      */
     Mono<Boolean> deleteConfig(Long id);
-
+    
     /**
      * 批量删除参数配置
      *
@@ -56,7 +75,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 结果
      */
     Mono<Boolean> batchDeleteConfig(List<Long> ids);
-
+    
     /**
      * 修改参数配置状态
      *
@@ -65,7 +84,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 结果
      */
     Mono<Boolean> changeStatus(Long id, Integer status);
-
+    
     /**
      * 根据参数编码查询参数配置
      *
@@ -73,7 +92,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 参数配置信息
      */
     Mono<SysConfig> getConfigByCode(String code);
-
+    
     /**
      * 导出参数配置
      *
@@ -82,7 +101,7 @@ public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
      * @return 结果
      */
     Mono<Void> exportExcel(ServerWebExchange exchange, SysConfigDTO query);
-
+    
     /**
      * 导入参数配置
      *

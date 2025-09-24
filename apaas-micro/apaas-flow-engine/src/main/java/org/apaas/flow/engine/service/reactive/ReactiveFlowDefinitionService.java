@@ -1,7 +1,25 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.flow.engine.service.reactive;
 
 import org.apaas.core.query.PageResult;
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.flow.engine.entity.FlowDefinition;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
@@ -11,7 +29,7 @@ import reactor.core.publisher.Mono;
  * 响应式流程定义服务接口
  */
 public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinition, Long> {
-
+    
     /**
      * 根据流程定义键获取流程定义
      *
@@ -19,7 +37,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 流程定义信息
      */
     Mono<FlowDefinition> getFlowDefinitionByKey(String flowKey);
-
+    
     /**
      * 分页获取流程定义列表
      *
@@ -27,7 +45,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 流程定义分页结果
      */
     Mono<PageResult<FlowDefinition>> getFlowDefinitionPage(Pageable pageable);
-
+    
     /**
      * 添加流程定义
      *
@@ -35,7 +53,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 添加结果
      */
     Mono<FlowDefinition> addFlowDefinition(FlowDefinition flowDefinition);
-
+    
     /**
      * 更新流程定义
      *
@@ -43,7 +61,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 更新结果
      */
     Mono<FlowDefinition> updateFlowDefinition(FlowDefinition flowDefinition);
-
+    
     /**
      * 删除流程定义
      *
@@ -51,7 +69,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 删除结果
      */
     Mono<Void> deleteFlowDefinition(Long id);
-
+    
     /**
      * 部署流程定义
      *
@@ -59,7 +77,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 部署结果
      */
     Mono<FlowDefinition> deployFlowDefinition(Long id);
-
+    
     /**
      * 挂起流程定义
      *
@@ -67,7 +85,7 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 挂起结果
      */
     Mono<Void> suspendFlowDefinition(Long id);
-
+    
     /**
      * 激活流程定义
      *
@@ -75,8 +93,8 @@ public interface ReactiveFlowDefinitionService extends BaseService<FlowDefinitio
      * @return 激活结果
      */
     Mono<Void> activateFlowDefinition(Long id);
-
+    
     Mono<FlowDefinition> disableFlowDefinition(Long id);
-
+    
     Flux<FlowDefinition> getVersionsByCode(String code);
 }

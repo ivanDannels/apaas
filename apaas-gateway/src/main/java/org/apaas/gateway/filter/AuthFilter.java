@@ -1,6 +1,25 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.gateway.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apaas.utils.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -20,66 +39,53 @@ import java.util.List;
 @Slf4j
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
-
+    
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String AUTH_HEADER = "Authorization";
     private static final String USER_ID_HEADER = "X-User-Id";
     private static final String USER_NAME_HEADER = "X-User-Name";
-
+    
     /**
      * 白名单路径，不需要认证
      */
-    private static final List<String> WHITE_LIST = Arrays.asList(
-            "/auth/login",
-            "/auth/captcha",
-            "/auth/register",
-            "/actuator",
-            "/swagger-ui",
-            "/swagger-resources",
-            "/v3/api-docs",
-            "/webjars",
-            "/doc.html"
-    );
-
+    private static final List<String> WHITE_LIST = Arrays.asList("/auth/login", "/auth/captcha", "/auth/register", "/actuator", "/swagger-ui", "/swagger-resources", "/v3/api-docs", "/webjars", "/doc.html");
+    
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         String path = request.getURI().getPath();
-
+        
         // 白名单路径直接放行
         if (isWhitePath(path)) {
             return chain.filter(exchange);
         }
-
+        
         // 获取token
         String token = request.getHeaders().getFirst(AUTH_HEADER);
-        if (StrUtil.isBlank(token) || !token.startsWith(TOKEN_PREFIX)) {
+        if (StringUtils.isBlank(token) || !token.startsWith(TOKEN_PREFIX)) {
             log.warn("Token is missing or invalid: {}", token);
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();
         }
-
+        
         // 解析token，这里简化处理，实际应该调用认证服务验证token
         // 在实际项目中，应该调用认证服务验证token，并获取用户信息
         // 这里简化处理，假设token有效，并从token中提取用户ID和用户名
         String userId = "1";
         String userName = "admin";
-
+        
         // 将用户信息添加到请求头中，传递给下游服务
-        ServerHttpRequest newRequest = request.mutate()
-                .header(USER_ID_HEADER, userId)
-                .header(USER_NAME_HEADER, userName)
-                .build();
-
+        ServerHttpRequest newRequest = request.mutate().header(USER_ID_HEADER, userId).header(USER_NAME_HEADER, userName).build();
+        
         return chain.filter(exchange.mutate().request(newRequest).build());
     }
-
+    
     @Override
     public int getOrder() {
         return -50;
     }
-
+    
     /**
      * 判断是否为白名单路径
      */

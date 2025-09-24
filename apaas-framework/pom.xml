@@ -15,6 +15,7 @@
     
     <modules>
         <module>apaas-core</module>
+        <module>apaas-domain</module>
         <module>apaas-utils</module>
     </modules>
     

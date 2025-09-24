@@ -1,7 +1,7 @@
 package org.apaas.flow.execution.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.WorkflowTask;
 import org.apaas.flow.execution.repository.WorkflowTaskRepository;

@@ -1,6 +1,6 @@
 package org.apaas.design.platform.service.reactive;
 
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.design.platform.entity.CodeTemplate;
 
 /**

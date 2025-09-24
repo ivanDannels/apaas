@@ -1,9 +1,27 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.flow.engine.controller.reactive;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
 import org.apaas.flow.engine.entity.FlowInstance;
 import org.apaas.flow.engine.service.reactive.ReactiveFlowInstanceService;
@@ -19,11 +37,11 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/reactive/flow/instance")
 @Tag(name = "响应式流程实例管理", description = "响应式流程实例生命周期管理")
 public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowInstance, Long, ReactiveFlowInstanceService> {
-
+    
     public ReactiveFlowInstanceController(ReactiveFlowInstanceService service) {
         super(service);
     }
-
+    
     /**
      * 启动流程实例
      */
@@ -32,7 +50,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     public Mono<FlowInstance> startInstance(@RequestBody StartInstanceDTO startInstanceDTO) {
         return service.startInstance(startInstanceDTO);
     }
-
+    
     /**
      * 终止流程实例
      */
@@ -41,7 +59,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     public Mono<FlowInstance> terminateInstance(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
         return service.terminateInstance(id);
     }
-
+    
     /**
      * 暂停流程实例
      */
@@ -50,7 +68,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     public Mono<FlowInstance> suspendInstance(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
         return service.suspendInstance(id);
     }
-
+    
     /**
      * 恢复流程实例
      */
@@ -59,7 +77,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     public Mono<FlowInstance> resumeInstance(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
         return service.resumeInstance(id);
     }
-
+    
     /**
      * 获取流程实例的审批记录
      */

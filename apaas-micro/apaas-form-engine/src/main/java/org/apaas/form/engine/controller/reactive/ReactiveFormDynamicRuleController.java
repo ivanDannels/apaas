@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apaas.core.query.PageResult;
-import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormDynamicRule;
 import org.apaas.form.engine.service.reactive.ReactiveFormDynamicRuleService;
 import org.springframework.http.MediaType;

@@ -1,4 +1,22 @@
-package org.apaas.core.utils;
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apaas.utils;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,13 +27,13 @@ import java.util.Map;
  * @author ivan
  */
 public class StringUtils {
-
+    
     /** 空字符串 */
     private static final String NULLSTR = "";
-
+    
     /** 下划线 */
     private static final char SEPARATOR = '_';
-
+    
     /**
      * 获取参数不为空值
      *
@@ -25,7 +43,7 @@ public class StringUtils {
     public static <T> T nvl(T value, T defaultValue) {
         return value != null ? value : defaultValue;
     }
-
+    
     /**
      * * 判断一个Collection是否为空， 包含List，Set，Queue
      *
@@ -35,7 +53,7 @@ public class StringUtils {
     public static boolean isEmpty(Collection<?> coll) {
         return isNull(coll) || coll.isEmpty();
     }
-
+    
     /**
      * * 判断一个Collection是否非空，包含List，Set，Queue
      *
@@ -45,7 +63,7 @@ public class StringUtils {
     public static boolean isNotEmpty(Collection<?> coll) {
         return !isEmpty(coll);
     }
-
+    
     /**
      * * 判断一个对象数组是否为空
      *
@@ -55,7 +73,7 @@ public class StringUtils {
     public static boolean isEmpty(Object[] objects) {
         return isNull(objects) || (objects.length == 0);
     }
-
+    
     /**
      * * 判断一个对象数组是否非空
      *
@@ -65,7 +83,7 @@ public class StringUtils {
     public static boolean isNotEmpty(Object[] objects) {
         return !isEmpty(objects);
     }
-
+    
     /**
      * * 判断一个Map是否为空
      *
@@ -75,7 +93,7 @@ public class StringUtils {
     public static boolean isEmpty(Map<?, ?> map) {
         return isNull(map) || map.isEmpty();
     }
-
+    
     /**
      * * 判断一个Map是否为空
      *
@@ -85,7 +103,7 @@ public class StringUtils {
     public static boolean isNotEmpty(Map<?, ?> map) {
         return !isEmpty(map);
     }
-
+    
     /**
      * * 判断一个字符串是否为空串
      *
@@ -95,7 +113,7 @@ public class StringUtils {
     public static boolean isEmpty(String str) {
         return isNull(str) || NULLSTR.equals(str.trim());
     }
-
+    
     /**
      * * 判断一个字符串是否为非空串
      *
@@ -105,7 +123,7 @@ public class StringUtils {
     public static boolean isNotEmpty(String str) {
         return !isEmpty(str);
     }
-
+    
     /**
      * * 判断一个对象是否为空
      *
@@ -115,7 +133,7 @@ public class StringUtils {
     public static boolean isNull(Object object) {
         return object == null;
     }
-
+    
     /**
      * * 判断一个对象是否非空
      *
@@ -125,7 +143,27 @@ public class StringUtils {
     public static boolean isNotNull(Object object) {
         return !isNull(object);
     }
-
+    
+    /**
+     * * 判断一个字符串是否为空白字符串
+     *
+     * @param str String
+     * @return true：为空白字符串 false：非空白字符串
+     */
+    public static boolean isBlank(String str) {
+        return isNull(str) || NULLSTR.equals(str.trim());
+    }
+    
+    /**
+     * * 判断一个字符串是否为非空白字符串
+     *
+     * @param str String
+     * @return true：为非空白字符串 false：为空白字符串
+     */
+    public static boolean isNotBlank(String str) {
+        return !isBlank(str);
+    }
+    
     /**
      * * 判断一个对象是否是数组类型（Java基本型别的数组）
      *
@@ -135,14 +173,14 @@ public class StringUtils {
     public static boolean isArray(Object object) {
         return isNotNull(object) && object.getClass().isArray();
     }
-
+    
     /**
      * 去空格
      */
     public static String trim(String str) {
         return (str == null ? "" : str.trim());
     }
-
+    
     /**
      * 截取字符串
      *
@@ -154,21 +192,21 @@ public class StringUtils {
         if (str == null) {
             return NULLSTR;
         }
-
+        
         if (start < 0) {
             start = str.length() + start;
         }
-
+        
         if (start < 0) {
             start = 0;
         }
         if (start > str.length()) {
             return NULLSTR;
         }
-
+        
         return str.substring(start);
     }
-
+    
     /**
      * 截取字符串
      *
@@ -181,32 +219,32 @@ public class StringUtils {
         if (str == null) {
             return NULLSTR;
         }
-
+        
         if (end < 0) {
             end = str.length() + end;
         }
         if (start < 0) {
             start = str.length() + start;
         }
-
+        
         if (end > str.length()) {
             end = str.length();
         }
-
+        
         if (start > end) {
             return NULLSTR;
         }
-
+        
         if (start < 0) {
             start = 0;
         }
         if (end < 0) {
             end = 0;
         }
-
+        
         return str.substring(start, end);
     }
-
+    
     /**
      * 格式化文本, {} 表示占位符<br>
      * 此方法只是简单将占位符 {} 按照顺序替换为参数<br>
@@ -224,9 +262,26 @@ public class StringUtils {
         if (isEmpty(params) || isEmpty(template)) {
             return template;
         }
-        return StrUtil.format(template, params);
+        int placeholderIndex = 0;
+        StringBuilder sb = new StringBuilder(template.length());
+        for (int i = 0; i < template.length(); i++) {
+            if (template.charAt(i) == '{' && i + 1 < template.length() && template.charAt(i + 1) == '}') {
+                if (placeholderIndex < params.length) {
+                    sb.append(params[placeholderIndex++]);
+                    i++;
+                } else {
+                    sb.append("{}");
+                }
+            } else if (template.charAt(i) == '\\' && i + 1 < template.length() && (template.charAt(i + 1) == '{' || template.charAt(i + 1) == '}')) {
+                sb.append(template.charAt(i + 1));
+                i++;
+            } else {
+                sb.append(template.charAt(i));
+            }
+        }
+        return sb.toString();
     }
-
+    
     /**
      * 下划线转驼峰命名
      */
@@ -237,7 +292,7 @@ public class StringUtils {
         s = toCamelCase(s);
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
-
+    
     /**
      * 下划线转驼峰命名
      */
@@ -245,13 +300,13 @@ public class StringUtils {
         if (s == null) {
             return null;
         }
-
+        
         s = s.toLowerCase();
         StringBuilder sb = new StringBuilder(s.length());
         boolean upperCase = false;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-
+            
             if (c == SEPARATOR) {
                 upperCase = true;
             } else if (upperCase) {
@@ -261,10 +316,10 @@ public class StringUtils {
                 sb.append(c);
             }
         }
-
+        
         return sb.toString();
     }
-
+    
     /**
      * 驼峰转下划线命名
      */
@@ -272,18 +327,18 @@ public class StringUtils {
         if (s == null) {
             return null;
         }
-
+        
         StringBuilder sb = new StringBuilder();
         boolean upperCase = false;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-
+            
             boolean nextUpperCase = true;
-
+            
             if (i < (s.length() - 1)) {
                 nextUpperCase = Character.isUpperCase(s.charAt(i + 1));
             }
-
+            
             if ((i > 0) && Character.isUpperCase(c)) {
                 if (!upperCase || !nextUpperCase) {
                     sb.append(SEPARATOR);
@@ -292,13 +347,13 @@ public class StringUtils {
             } else {
                 upperCase = false;
             }
-
+            
             sb.append(Character.toLowerCase(c));
         }
-
+        
         return sb.toString();
     }
-
+    
     /**
      * 包含任意一个字符串
      *
@@ -317,7 +372,75 @@ public class StringUtils {
         }
         return false;
     }
-
+    
+    /**
+     * * 判断一个对象数组是否为空
+     * 此方法与已有的判断对象数组是否为空的方法逻辑一致，为了处理 CharSequence 数组的情况
+     *
+     * @param objects 要判断的对象数组
+     * @return true：为空 false：非空
+     */
+    public static boolean isEmpty(CharSequence... objects) {
+        return isNull(objects) || (objects.length == 0);
+    }
+    
+    /**
+     * 忽略大小写判断字符串是否包含指定子字符串
+     *
+     * @param cs 原字符串
+     * @param searchStr 需要检查的子字符串
+     * @return 如果包含则返回 true，否则返回 false
+     */
+    public static boolean containsIgnoreCase(CharSequence cs, CharSequence searchStr) {
+        if (cs == null || searchStr == null) {
+            return false;
+        }
+        final int len = searchStr.length();
+        final int max = cs.length() - len;
+        for (int i = 0; i <= max; i++) {
+            if (regionMatches(cs, true, i, searchStr, 0, len)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * 比较两个字符序列的指定区域是否匹配
+     *
+     * @param cs 第一个字符序列
+     * @param ignoreCase 是否忽略大小写
+     * @param thisStart 第一个字符序列的起始位置
+     * @param substring 第二个字符序列
+     * @param start 第二个字符序列的起始位置
+     * @param length 要比较的长度
+     * @return 如果匹配则返回 true，否则返回 false
+     */
+    private static boolean regionMatches(CharSequence cs, boolean ignoreCase, int thisStart, CharSequence substring, int start, int length) {
+        if (cs instanceof String && substring instanceof String) {
+            return ((String) cs).regionMatches(ignoreCase, thisStart, (String) substring, start, length);
+        }
+        for (int i = 0; i < length; i++) {
+            char c1 = cs.charAt(thisStart + i);
+            char c2 = substring.charAt(start + i);
+            if (c1 == c2) {
+                continue;
+            }
+            if (ignoreCase) {
+                char u1 = Character.toUpperCase(c1);
+                char u2 = Character.toUpperCase(c2);
+                if (u1 == u2) {
+                    continue;
+                }
+                if (Character.toLowerCase(u1) == Character.toLowerCase(u2)) {
+                    continue;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * 驼峰转连字符
      *
@@ -330,7 +453,7 @@ public class StringUtils {
         }
         return input.replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase();
     }
-
+    
     /**
      * 连字符转驼峰
      *
@@ -351,7 +474,7 @@ public class StringUtils {
         }
         return result.toString();
     }
-
+    
     /**
      * 判断字符串是否包含中文
      *
@@ -364,7 +487,7 @@ public class StringUtils {
         }
         return str.matches(".*[\u4e00-\u9fa5]+.*");
     }
-
+    
     /**
      * 数组转字符串
      *
@@ -385,7 +508,7 @@ public class StringUtils {
         }
         return sb.toString();
     }
-
+    
     /**
      * 集合转字符串
      *
@@ -399,7 +522,7 @@ public class StringUtils {
         }
         return arrayToString(collection.toArray(), separator);
     }
-
+    
     /**
      * 字符串转集合
      *

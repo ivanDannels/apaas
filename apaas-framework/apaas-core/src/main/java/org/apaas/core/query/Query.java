@@ -19,7 +19,7 @@
 package org.apaas.core.query;
 
 import lombok.Data;
-import org.apache.commons.lang3.ArrayUtils;
+import org.apaas.utils.ArrayUtils;
 
 import java.io.Serial;
 import java.io.Serializable;

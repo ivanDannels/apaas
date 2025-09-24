@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apaas</groupId>
         <artifactId>apaas-micro</artifactId>
         <version>${revision}</version>
     </parent>
-
+    
     <artifactId>apaas-flow-engine</artifactId>
     <packaging>jar</packaging>
     <description>APaaS平台流程引擎模块</description>
-
+    
     <dependencies>
         <!-- 响应式数据库相关依赖 -->
         <dependency>
@@ -22,8 +21,6 @@
     </dependencies>
     
     <build>
-        <plugins>
-
-        </plugins>
+        <plugins></plugins>
     </build>
 </project>

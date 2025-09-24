@@ -1,7 +1,7 @@
 package org.apaas.report.entity;
 
 import lombok.experimental.SuperBuilder;
-import org.apaas.core.domain.BaseEntity;
+import org.apaas.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.relational.core.mapping.Table;

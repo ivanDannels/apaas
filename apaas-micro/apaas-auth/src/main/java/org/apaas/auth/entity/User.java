@@ -1,7 +1,7 @@
 package org.apaas.auth.entity;
 
 import lombok.experimental.SuperBuilder;
-import org.apaas.core.domain.BaseEntity;
+import org.apaas.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;

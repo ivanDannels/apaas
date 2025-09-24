@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>apaas-api</artifactId>
-        <groupId>org.apaas</groupId>
-        <version>1.0.0</version>
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>org.apaas</groupId>
+        <artifactId>apaas-api</artifactId>
+        <version>${revision}</version>
+    </parent>
+    
     <artifactId>apaas-open-api</artifactId>
     <name>apaas-open-api</name>
     <description>对外开放API</description>
-
+    
     <dependencies>
         <!-- 依赖公共模块 -->
         <dependency>
             <groupId>org.apaas</groupId>
             <artifactId>apaas-core</artifactId>
         </dependency>
+        <!-- 依赖WebFlux -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
     </dependencies>
-
+    
 </project>

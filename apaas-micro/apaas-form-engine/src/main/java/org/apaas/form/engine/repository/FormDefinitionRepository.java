@@ -1,6 +1,6 @@
 package org.apaas.form.engine.repository;
 
-import org.apaas.core.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.ReactiveBaseRepository;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;

@@ -1,6 +1,6 @@
 package org.apaas.design.platform.repository;
 
-import org.apaas.core.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.ReactiveBaseRepository;
 import org.apaas.design.platform.entity.APIEntity;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;

@@ -3,7 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Position;
 import org.apaas.auth.repository.reactive.ReactivePositionRepository;
 import org.apaas.auth.service.reactive.ReactivePositionService;
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

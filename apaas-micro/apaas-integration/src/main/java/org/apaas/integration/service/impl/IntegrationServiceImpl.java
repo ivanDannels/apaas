@@ -1,6 +1,6 @@
 package org.apaas.integration.service.impl;
 
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.integration.entity.IntegrationEntity;
 import org.apaas.integration.repository.IntegrationRepository;
 import org.apaas.integration.service.IntegrationService;

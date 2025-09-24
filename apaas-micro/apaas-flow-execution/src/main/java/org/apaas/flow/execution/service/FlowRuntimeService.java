@@ -1,6 +1,6 @@
 package org.apaas.flow.execution.service;
 
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.FlowInstance;
 import reactor.core.publisher.Mono;

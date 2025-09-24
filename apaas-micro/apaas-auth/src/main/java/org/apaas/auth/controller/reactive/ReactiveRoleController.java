@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apaas.auth.domain.dto.RoleDTO;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.auth.entity.Role;
 import org.apaas.auth.service.reactive.ReactiveRoleService;
 import org.springframework.http.MediaType;

@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
 import org.springframework.http.HttpHeaders;

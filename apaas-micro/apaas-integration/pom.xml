@@ -20,13 +20,8 @@
         </dependency>
         
         <dependency>
-            <groupId>com.playtika.reactivefeign</groupId>
-            <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-        </dependency>
-        
-        <dependency>
             <groupId>org.apaas</groupId>
-            <artifactId>apaas-common</artifactId>
+            <artifactId>apaas-core</artifactId>
         </dependency>
         
         <dependency>

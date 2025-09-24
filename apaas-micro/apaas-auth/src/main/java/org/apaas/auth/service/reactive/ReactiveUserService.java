@@ -2,7 +2,7 @@ package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.User;
 import org.apaas.core.query.PageResult;
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

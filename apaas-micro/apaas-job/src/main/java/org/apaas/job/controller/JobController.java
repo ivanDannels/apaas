@@ -1,6 +1,6 @@
 package org.apaas.job.controller;
 
-import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.job.entity.JobEntity;
 import org.apaas.job.service.JobService;
 import org.springframework.web.bind.annotation.*;

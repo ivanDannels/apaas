@@ -3,7 +3,7 @@ package org.apaas.design.platform.service.reactive.impl;
 import org.apaas.design.platform.entity.Metadata;
 import org.apaas.design.platform.repository.MetadataRepository;
 import org.apaas.design.platform.service.reactive.ReactiveMetadataService;
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

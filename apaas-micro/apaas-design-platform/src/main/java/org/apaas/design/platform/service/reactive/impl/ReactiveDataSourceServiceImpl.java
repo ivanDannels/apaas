@@ -3,7 +3,7 @@ package org.apaas.design.platform.service.reactive.impl;
 import org.apaas.design.platform.entity.DataSource;
 import org.apaas.design.platform.repository.DataSourceRepository;
 import org.apaas.design.platform.service.reactive.ReactiveDataSourceService;
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

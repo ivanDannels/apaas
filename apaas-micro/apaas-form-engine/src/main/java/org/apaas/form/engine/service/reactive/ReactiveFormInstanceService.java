@@ -1,6 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.form.engine.entity.FormInstance;
 import reactor.core.publisher.Mono;
 

@@ -1,8 +1,8 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Resource;
-import org.apaas.core.service.BaseService;
-import org.apaas.core.web.domain.BasePageQuery;
+import org.apaas.domain.service.BaseService;
+
 import org.apaas.core.query.PageResult;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;

@@ -11,7 +11,7 @@ import org.apaas.core.query.PageResult;
 import org.apaas.auth.entity.User;
 import org.apaas.auth.service.reactive.ReactiveUserService;
 import org.apaas.core.query.Query;
-import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.domain.rest.ReactiveBaseController;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;

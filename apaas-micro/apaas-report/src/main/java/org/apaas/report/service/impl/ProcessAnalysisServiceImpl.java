@@ -1,6 +1,6 @@
 package org.apaas.report.service.impl;
 
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.report.entity.ProcessAnalysis;
 import org.apaas.report.repository.ProcessAnalysisRepository;
 import org.apaas.report.service.ProcessAnalysisService;

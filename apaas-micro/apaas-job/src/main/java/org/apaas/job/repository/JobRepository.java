@@ -1,7 +1,7 @@
 package org.apaas.job.repository;
 
 import org.apaas.job.entity.JobEntity;
-import org.apaas.core.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.ReactiveBaseRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

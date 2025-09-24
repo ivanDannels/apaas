@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.system.controller.reactive;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -5,7 +23,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.core.web.controller.ReactiveBaseController;
+import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.system.entity.Notification;
 import org.apaas.system.service.reactive.ReactiveNotificationService;
 import org.springframework.http.MediaType;
@@ -28,7 +46,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public NotificationController(ReactiveNotificationService service) {
         super(service);
     }
-
+    
     /**
      * 分页查询通知列表
      *
@@ -40,7 +58,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<PageResult<Notification>> list(@RequestBody Query query) {
         return service.selectPage(query);
     }
-
+    
     /**
      * 获取通知详情
      *
@@ -53,7 +71,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<Notification> detail(@PathVariable Long id) {
         return super.get(id);
     }
-
+    
     /**
      * 创建通知
      *
@@ -65,7 +83,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<Notification> create(@Validated @RequestBody Notification notification) {
         return super.add(notification);
     }
-
+    
     /**
      * 更新通知
      *
@@ -78,7 +96,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
         notification.setId(id);
         return super.update(notification);
     }
-
+    
     /**
      * 删除通知
      *
@@ -92,7 +110,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<Void> delete(@PathVariable Long id) {
         return super.delete(id);
     }
-
+    
     /**
      * 标记通知为已读
      *
@@ -105,7 +123,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<Boolean> markAsRead(@PathVariable Long id) {
         return service.markAsRead(id);
     }
-
+    
     /**
      * 批量标记通知为已读
      *
@@ -157,7 +175,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<Void> importData(@RequestBody byte[] data) {
         return service.importData(data);
     }
-
+    
     /**
      * 查询用户未读通知数量
      *
@@ -170,7 +188,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<Integer> countUnread(@RequestParam Long userId) {
         return service.countUnreadByUserId(userId);
     }
-
+    
     /**
      * 查询用户通知列表
      *
@@ -187,7 +205,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
     public Mono<PageResult<Notification>> getUserNotifications(@RequestParam Long userId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         return service.getByUserId(userId, pageNum, pageSize).collectList().map(PageResult::of);
     }
-
+    
     /**
      * 发送通知
      *
@@ -204,7 +222,7 @@ public class NotificationController extends ReactiveBaseController<Notification,
         }
         return service.send(notification);
     }
-
+    
     /**
      * 批量发送通知
      *

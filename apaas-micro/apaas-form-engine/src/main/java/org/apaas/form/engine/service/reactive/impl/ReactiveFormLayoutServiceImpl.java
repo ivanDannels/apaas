@@ -2,7 +2,7 @@ package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.query.PageResult;
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.form.engine.entity.FormLayout;
 import org.apaas.form.engine.repository.FormLayoutRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormLayoutService;

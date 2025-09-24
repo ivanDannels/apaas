@@ -1,6 +1,6 @@
 package org.apaas.integration.service;
 
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.integration.entity.IntegrationEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

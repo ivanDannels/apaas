@@ -1,6 +1,6 @@
 package org.apaas.job.service;
 
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.job.entity.JobEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

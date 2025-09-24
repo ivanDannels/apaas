@@ -1,6 +1,6 @@
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.core.service.BaseService;
+import org.apaas.domain.service.BaseService;
 import org.apaas.form.engine.entity.FormField;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;

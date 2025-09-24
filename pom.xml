@@ -193,13 +193,20 @@
             
             <dependency>
                 <groupId>org.apaas</groupId>
-                <artifactId>apaas-core</artifactId>
+                <artifactId>apaas-utils</artifactId>
                 <version>${apaas.version}</version>
             </dependency>
             
             <dependency>
                 <groupId>org.apaas</groupId>
-                <artifactId>apaas-common</artifactId>
+                <artifactId>apaas-core</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            
+            <!-- 领域模块 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-domain</artifactId>
                 <version>${apaas.version}</version>
             </dependency>
             
@@ -215,6 +222,58 @@
                 <version>${apaas.version}</version>
             </dependency>
             
+            <!-- 新增模块依赖 -->
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-system</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-auth</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-monitor</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-flow-engine</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-flow-execution</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-form-engine</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-job</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-integration</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-report</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apaas</groupId>
+                <artifactId>apaas-design-platform</artifactId>
+                <version>${apaas.version}</version>
+            </dependency>
+            
         </dependencies>
     </dependencyManagement>
     
@@ -227,6 +286,16 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+        </dependency>
+        <!-- slf4j依赖 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -313,6 +382,46 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <target>${java.version}</target>
+                        <source>${java.version}</source>
+                        <encoding>UTF-8</encoding>
+                        <parameters>true</parameters>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-configuration-processor</artifactId>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <compilerArgs>
+                            <arg>-Amapstruct.verbose=true</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -333,42 +442,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <target>${java.version}</target>
-                    <source>${java.version}</source>
-                    <encoding>UTF-8</encoding>
-                    <parameters>true</parameters>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-configuration-processor</artifactId>
-                        </path>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${mapstruct.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Amapstruct.verbose=true</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

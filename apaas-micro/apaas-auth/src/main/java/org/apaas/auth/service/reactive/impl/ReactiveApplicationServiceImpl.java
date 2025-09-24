@@ -3,7 +3,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Application;
 import org.apaas.auth.repository.reactive.ReactiveApplicationRepository;
 import org.apaas.auth.service.reactive.ReactiveApplicationService;
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

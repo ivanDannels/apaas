@@ -1,6 +1,6 @@
 package org.apaas.report.service.impl;
 
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.report.entity.UserAnalysis;
 import org.apaas.report.repository.UserAnalysisRepository;
 import org.apaas.report.service.UserAnalysisService;

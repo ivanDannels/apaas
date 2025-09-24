@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apaas</groupId>
         <artifactId>apaas-micro</artifactId>
         <version>${revision}</version>
     </parent>
-
+    
     <artifactId>apaas-system</artifactId>
     <packaging>jar</packaging>
     <description>APaaS平台系统服务</description>
-
+    
     <dependencies>
         <!-- Spring Boot Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <!-- Reactive Feign -->
-        <dependency>
-            <groupId>com.playtika.reactivefeign</groupId>
-            <artifactId>feign-reactor-spring-cloud-starter</artifactId>
         </dependency>
         
         <!-- Spring Data R2DBC -->
@@ -30,7 +24,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
         </dependency>
-
+        
         <!-- PostgreSQL R2DBC -->
         <dependency>
             <groupId>io.r2dbc</groupId>
@@ -42,26 +36,26 @@
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
         </dependency>
-
+        
         <!-- EasyExcel -->
         <dependency>
             <groupId>cn.idev.excel</groupId>
             <artifactId>fastexcel</artifactId>
         </dependency>
-
+        
         <!-- Elasticsearch -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
-
+        
         <!-- APaaS Core -->
         <dependency>
             <groupId>org.apaas</groupId>
             <artifactId>apaas-core</artifactId>
         </dependency>
     </dependencies>
-
+    
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
@@ -76,7 +70,7 @@
                     </execution>
                 </executions>
             </plugin>
-
+            
         </plugins>
     </build>
 </project>

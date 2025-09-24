@@ -111,7 +111,7 @@ public class PageResult<T> implements Serializable {
     public boolean isNextPage() {
         return current < pages;
     }
-
+    
     public static <T> PageResult<T> of(List<T> list) {
         return new PageResult<>(1, list.size(), list.size(), list);
     }

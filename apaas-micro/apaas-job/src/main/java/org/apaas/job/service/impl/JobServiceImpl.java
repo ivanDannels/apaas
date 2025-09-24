@@ -1,6 +1,6 @@
 package org.apaas.job.service.impl;
 
-import org.apaas.core.service.impl.BaseServiceImpl;
+import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.job.entity.JobEntity;
 import org.apaas.job.repository.JobRepository;
 import org.apaas.job.service.JobService;

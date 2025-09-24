@@ -14,17 +14,6 @@
     <description>APaaS报表服务</description>
 
     <dependencies>
-        <!-- Spring Cloud OpenFeign with Reactive support -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.playtika.reactivefeign</groupId>
-            <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-        </dependency>
-
         <!-- 报表生成相关依赖 -->
         <dependency>
             <groupId>net.sf.jasperreports</groupId>

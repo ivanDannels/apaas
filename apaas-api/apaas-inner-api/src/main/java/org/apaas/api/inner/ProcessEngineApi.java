@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.api.inner;
 
 import org.apaas.core.query.PageResult;
@@ -14,85 +32,85 @@ import java.util.List;
  */
 @RequestMapping("/inner/process-engine")
 public interface ProcessEngineApi {
+    
     /**
      * 获取流程定义列表
      */
     @GetMapping("/definitions")
     Mono<PageResult<ProcessDefinitionDTO>> getProcessDefinitions();
-
+    
     /**
      * 获取流程定义详情
      */
     @GetMapping("/definitions/{id}")
     Mono<ProcessDefinitionDTO> getProcessDefinition(@PathVariable("id") String id);
-
+    
     /**
      * 创建流程定义
      */
     @PostMapping("/definitions")
     Mono<ProcessDefinitionDTO> createProcessDefinition(@RequestBody ProcessDefinitionDTO definitionDTO);
-
+    
     /**
      * 更新流程定义
      */
     @PutMapping("/definitions/{id}")
-    Mono<ProcessDefinitionDTO> updateProcessDefinition(@PathVariable("id") String id,
-                                                             @RequestBody ProcessDefinitionDTO definitionDTO);
-
+    Mono<ProcessDefinitionDTO> updateProcessDefinition(@PathVariable("id") String id, @RequestBody ProcessDefinitionDTO definitionDTO);
+    
     /**
      * 激活/禁用流程定义
      */
     @PutMapping("/definitions/{id}/status")
     Mono<Void> changeProcessDefinitionStatus(@PathVariable("id") String id, @RequestParam boolean active);
-
+    
     /**
      * 启动流程实例
      */
     @PostMapping("/instances")
     Mono<ProcessInstanceDTO> startProcessInstance(@RequestBody ProcessInstanceDTO instanceDTO);
-
+    
     /**
      * 获取流程实例列表
      */
     @GetMapping("/instances")
     Mono<PageResult<ProcessInstanceDTO>> getProcessInstances();
-
+    
     /**
      * 获取流程实例详情
      */
     @GetMapping("/instances/{id}")
     Mono<ProcessInstanceDTO> getProcessInstance(@PathVariable("id") String id);
-
+    
     /**
      * 暂停/恢复流程实例
      */
     @PutMapping("/instances/{id}/status")
     Mono<Void> changeProcessInstanceStatus(@PathVariable("id") String id, @RequestParam boolean active);
-
+    
     /**
      * 终止流程实例
      */
     @DeleteMapping("/instances/{id}")
     Mono<Void> terminateProcessInstance(@PathVariable("id") String id);
-
+    
     /**
      * 获取用户待办任务
      */
     @GetMapping("/tasks/todo")
     Mono<PageResult<ProcessTaskDTO>> getTodoTasks(@RequestParam String userId);
-
+    
     /**
      * 办理任务
      */
     @PostMapping("/tasks/{id}/complete")
     Mono<Void> completeTask(@PathVariable("id") String id, @RequestBody ProcessTaskDTO taskDTO);
-
+    
     /**
      * 转办任务
      */
     @PostMapping("/tasks/{id}/transfer")
     Mono<Void> transferTask(@PathVariable("id") String id, @RequestParam String targetUserId);
-
+    
     /**
      * 获取流程历史
      */

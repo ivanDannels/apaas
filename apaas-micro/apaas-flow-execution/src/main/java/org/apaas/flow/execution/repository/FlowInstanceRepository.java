@@ -1,6 +1,6 @@
 package org.apaas.flow.execution.repository;
 
-import org.apaas.core.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.ReactiveBaseRepository;
 import org.apaas.flow.execution.domain.entity.FlowInstance;
 import org.springframework.stereotype.Repository;
 

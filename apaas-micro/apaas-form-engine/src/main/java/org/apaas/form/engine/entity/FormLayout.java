@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
-import org.apaas.core.domain.BaseEntity;
+import org.apaas.domain.entity.BaseEntity;
 
 /**
  * 表单布局实体
