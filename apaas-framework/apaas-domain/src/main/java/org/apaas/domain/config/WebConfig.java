@@ -27,6 +27,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 /**
  * WebFlux配置类
+ * @author ivan
  */
 @Configuration
 @EnableWebFlux

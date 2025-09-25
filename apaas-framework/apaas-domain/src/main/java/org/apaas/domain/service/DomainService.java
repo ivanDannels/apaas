@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 领域服务接口
+ * @author ivan
  * @param <T> 领域对象类型
  */
 public interface DomainService<T> {

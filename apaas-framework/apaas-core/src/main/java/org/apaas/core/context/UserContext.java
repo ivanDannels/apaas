@@ -16,15 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.service.reactive;
-
-import org.apaas.domain.service.BaseService;
-import org.apaas.system.entity.SysOperLog;
+package org.apaas.core.context;
 
 /**
- * 响应式操作日志服务接口
  * @author ivan
  */
-public interface ReactiveSysOperLogService extends BaseService<SysOperLog, Long> {
-    
+public class UserContext {
 }

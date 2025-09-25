@@ -16,23 +16,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.service.reactive.impl;
+package org.apaas.design.platform;
 
-import org.apaas.system.entity.SysOperLog;
-import org.apaas.system.repository.SysOperLogRepository;
-import org.apaas.system.service.reactive.ReactiveSysOperLogService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * 响应式操作日志服务实现类
  * @author ivan
  */
-@Service
-public class ReactiveSysOperLogServiceImpl extends BaseServiceImpl<SysOperLog, Long, SysOperLogRepository> implements ReactiveSysOperLogService {
+@SpringBootApplication
+public class DesignApplication {
     
-    public ReactiveSysOperLogServiceImpl(SysOperLogRepository repository) {
-        super(repository);
+    public static void main(String[] args) {
+        
+        SpringApplication.run(DesignApplication.class, args);
+        
     }
     
 }

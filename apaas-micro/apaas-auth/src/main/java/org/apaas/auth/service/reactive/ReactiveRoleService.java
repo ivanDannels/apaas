@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Role;
@@ -7,9 +25,10 @@ import reactor.core.publisher.Mono;
 
 /**
  * 响应式角色服务接口
+ * @author ivan
  */
 public interface ReactiveRoleService extends BaseService<Role, Long> {
-
+    
     /**
      * 根据角色名获取角色
      *
@@ -17,7 +36,7 @@ public interface ReactiveRoleService extends BaseService<Role, Long> {
      * @return 角色信息
      */
     Mono<Role> getRoleByRoleName(String roleName);
-
+    
     /**
      * 添加角色
      *
@@ -25,7 +44,7 @@ public interface ReactiveRoleService extends BaseService<Role, Long> {
      * @return 添加结果
      */
     Mono<Role> addRole(Role role);
-
+    
     /**
      * 更新角色
      *
@@ -33,7 +52,7 @@ public interface ReactiveRoleService extends BaseService<Role, Long> {
      * @return 更新结果
      */
     Mono<Role> updateRole(Role role);
-
+    
     /**
      * 删除角色
      *
@@ -41,7 +60,7 @@ public interface ReactiveRoleService extends BaseService<Role, Long> {
      * @return 删除结果
      */
     Mono<Void> deleteRole(Long id);
-
+    
     /**
      * 获取角色权限
      *
@@ -49,7 +68,7 @@ public interface ReactiveRoleService extends BaseService<Role, Long> {
      * @return 权限列表
      */
     Flux<String> getRolePermissions(Long roleId);
-
+    
     /**
      * 为角色分配权限
      *
@@ -58,12 +77,12 @@ public interface ReactiveRoleService extends BaseService<Role, Long> {
      * @return 分配结果
      */
     Mono<Void> assignPermissionsToRole(Long roleId, Flux<Long> permissionIds);
-
+    
     Flux<Role> getUserRoles(Long userId);
-
+    
     Mono<Boolean> assignRoles(Long userId, Long[] roleIds);
-
+    
     Flux<Role> getAllRoles();
-
+    
     Mono<Boolean> changeStatus(Long id, Integer status);
 }

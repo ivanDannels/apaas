@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.form.engine.controller.reactive;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,16 +35,17 @@ import reactor.core.publisher.Mono;
 
 /**
  * 响应式表单定义控制器
+ * @author ivan
  */
 @RestController
 @RequestMapping("/api/v1/reactive/form-definitions")
 @Tag(name = "响应式表单定义管理", description = "响应式表单定义相关操作")
 public class ReactiveFormDefinitionController extends ReactiveBaseController<FormDefinition, Long, ReactiveFormDefinitionService> {
-
+    
     public ReactiveFormDefinitionController(ReactiveFormDefinitionService service) {
         super(service);
     }
-
+    
     /**
      * 获取表单定义列表
      */
@@ -35,7 +54,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     public Mono<PageResult<FormDefinition>> list(@RequestBody Query query) {
         return service.selectPage(query);
     }
-
+    
     /**
      * 获取表单定义详情
      */
@@ -45,7 +64,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     public Mono<FormDefinition> get(@PathVariable Long id) {
         return super.get(id);
     }
-
+    
     /**
      * 创建表单定义
      */
@@ -54,7 +73,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     public Mono<FormDefinition> add(@RequestBody FormDefinition formDefinition) {
         return service.saveFormDefinition(formDefinition).then(super.add(formDefinition));
     }
-
+    
     /**
      * 更新表单定义
      */
@@ -65,62 +84,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
         formDefinition.setId(id);
         return service.updateFormDefinition(formDefinition).then(super.update(formDefinition));
     }
-
-    /**
-     * 删除表单定义
-     */
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "删除表单定义", description = "删除表单定义")
-    @Parameter(name = "id", description = "表单ID", required = true)
-    public Mono<Void> delete(@PathVariable Long id) {
-        return service.deleteFormDefinitions(new Long[]{id}).then(super.delete(id));
-    }
     
-    /**
-     * 批量删除表单定义
-     */
-    @DeleteMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "批量删除表单定义", description = "批量删除表单定义")
-    public Mono<Void> deleteBatch(@RequestBody Long[] ids) {
-        return service.deleteByIds(Flux.fromArray(ids)).then(Mono.empty());
-    }
-    
-    /**
-     * 批量新增表单定义
-     */
-    @PostMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "批量新增表单定义", description = "批量新增表单定义")
-    public Flux<FormDefinition> addBatch(@RequestBody Flux<FormDefinition> forms) {
-        return service.saveBatch(forms);
-    }
-    
-    /**
-     * 批量更新表单定义
-     */
-    @PutMapping(value = "/batch", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "批量更新表单定义", description = "批量更新表单定义")
-    public Flux<FormDefinition> updateBatch(@RequestBody Flux<FormDefinition> forms) {
-        return service.updateBatch(forms);
-    }
-    
-    /**
-     * 导出表单定义
-     */
-    @PostMapping(value = "/export", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "导出表单定义", description = "导出表单定义")
-    public Mono<byte[]> export(@RequestBody Query query) {
-        return service.export(query);
-    }
-    
-    /**
-     * 导入表单定义
-     */
-    @PostMapping(value = "/import", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "导入表单定义", description = "导入表单定义")
-    public Mono<Void> importData(@RequestBody byte[] data) {
-        return service.importData(data);
-    }
-
     /**
      * 发布表单定义
      */
@@ -130,7 +94,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     public Mono<Void> publish(@PathVariable Long id) {
         return service.publishFormDefinition(id).then(Mono.empty());
     }
-
+    
     /**
      * 停用表单定义
      */
@@ -140,7 +104,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     public Mono<Void> disable(@PathVariable Long id) {
         return service.disableFormDefinition(id).then(Mono.empty());
     }
-
+    
     /**
      * 获取表单版本列表
      */
@@ -150,7 +114,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     public Flux<FormDefinition> getVersionsByCode(@PathVariable String code) {
         return service.getVersionsByCode(code);
     }
-
+    
     /**
      * 复制表单定义
      */
@@ -160,7 +124,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     public Mono<Long> copy(@PathVariable Long id, @RequestParam String newName) {
         return service.copyFormDefinition(id, newName);
     }
-
+    
     /**
      * 导出表单定义
      */
@@ -168,13 +132,9 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     @Operation(summary = "导出表单定义", description = "导出表单定义为JSON文件")
     @Parameter(name = "id", description = "表单ID", required = true)
     public Mono<ResponseEntity<byte[]>> export(@PathVariable Long id) {
-        return service.exportFormDefinition(id)
-                .map(data -> ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=form-" + id + ".json")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(data));
+        return service.exportFormDefinition(id).map(data -> ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=form-" + id + ".json").contentType(MediaType.APPLICATION_JSON).body(data));
     }
-
+    
     /**
      * 导入表单定义
      */

@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.service.reactive.impl;
+package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
 import org.apaas.system.repository.NotificationRepository;
-import org.apaas.system.service.reactive.ReactiveNotificationService;
+import org.apaas.system.service.ReactiveNotificationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

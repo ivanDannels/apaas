@@ -10,7 +10,7 @@ spring:
     url: jdbc:mysql://localhost:3306/apaas?useSSL=false&serverTimezone=UTC
     username: root
     password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update

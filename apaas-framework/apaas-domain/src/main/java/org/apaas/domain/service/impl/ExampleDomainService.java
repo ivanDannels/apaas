@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 示例领域服务实现
+ * @author ivan
  */
 @Service
 public class ExampleDomainService implements DomainService<String> {

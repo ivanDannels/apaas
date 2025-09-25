@@ -29,9 +29,7 @@ public class TenantContext {
     
     public static void setTenantId(Long tenantId) {
         // 写入并绑定作用域
-        ScopedValue.where(TENANT_ID_CONTEXT, tenantId).run(() -> {
-            TENANT_ID_CONTEXT.get();
-        });
+        ScopedValue.where(TENANT_ID_CONTEXT, tenantId).run(TENANT_ID_CONTEXT::get);
     }
     
     public static Long getTenantId() {

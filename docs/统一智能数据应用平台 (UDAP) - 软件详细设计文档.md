@@ -381,7 +381,7 @@ management:
   "timestamp": "2024-08-04T14:30:00.123Z",
   "level": "INFO",
   "thread": "http-nio-8080-exec-1",
-  "logger": "com.udap.iam.controller.AuthController",
+  "logger": "com.udap.iam.rest.AuthController",
   "message": "User login successful",
   "traceId": "a1b2c3d4e5f6",
   "spanId": "g7h8i9j0",

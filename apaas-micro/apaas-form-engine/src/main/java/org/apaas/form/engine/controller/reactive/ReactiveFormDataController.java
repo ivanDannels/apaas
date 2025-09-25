@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.form.engine.controller.reactive;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,11 +36,11 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/reactive/form-data")
 @Tag(name = "响应式表单数据管理", description = "响应式表单数据相关操作")
 public class ReactiveFormDataController extends ReactiveBaseController<FormData, Long, ReactiveFormDataService> {
-
+    
     public ReactiveFormDataController(ReactiveFormDataService service) {
         super(service);
     }
-
+    
     /**
      * 根据表单编码获取表单数据列表
      */
@@ -32,7 +50,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Flux<FormData> getByFormCode(@PathVariable String formCode) {
         return service.getFormDataByFormCode(formCode);
     }
-
+    
     /**
      * 根据表单编码和版本获取表单数据列表
      */
@@ -43,7 +61,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Flux<FormData> getByFormCodeAndVersion(@PathVariable String formCode, @PathVariable String version) {
         return service.getFormDataByFormCodeAndVersion(formCode, version);
     }
-
+    
     /**
      * 根据业务键获取表单数据
      */
@@ -53,7 +71,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Mono<FormData> getByBusinessKey(@PathVariable String businessKey) {
         return service.getFormDataByBusinessKey(businessKey);
     }
-
+    
     /**
      * 获取表单数据详情
      */
@@ -63,7 +81,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Mono<FormData> getById(@PathVariable Long id) {
         return service.findById(id);
     }
-
+    
     /**
      * 保存表单数据（草稿状态）
      */
@@ -72,7 +90,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Mono<Long> save(@RequestBody FormData formData) {
         return service.saveFormData(formData);
     }
-
+    
     /**
      * 提交表单数据
      */
@@ -81,7 +99,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Mono<Long> submit(@RequestBody FormData formData) {
         return service.submitFormData(formData);
     }
-
+    
     /**
      * 删除表单数据
      */
@@ -91,7 +109,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Mono<Boolean> remove(@PathVariable Long[] ids) {
         return service.deleteFormData(ids);
     }
-
+    
     /**
      * 批量导入表单数据
      */
@@ -101,7 +119,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Mono<Boolean> importData(@PathVariable String formCode, @RequestBody String dataJson) {
         return service.importFormData(formCode, dataJson);
     }
-
+    
     /**
      * 获取表单数据统计
      */
@@ -111,7 +129,7 @@ public class ReactiveFormDataController extends ReactiveBaseController<FormData,
     public Mono<Object> getStatistics(@PathVariable String formCode) {
         return service.getFormDataStatistics(formCode);
     }
-
+    
     /**
      * 验证表单数据
      */

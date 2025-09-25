@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.controller;
+package org.apaas.system.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.system.domain.dto.DataDictionaryItemDTO;
 import org.apaas.system.entity.DataDictionaryItem;
-import org.apaas.system.service.reactive.ReactiveDataDictionaryItemService;
+import org.apaas.system.service.ReactiveDataDictionaryItemService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

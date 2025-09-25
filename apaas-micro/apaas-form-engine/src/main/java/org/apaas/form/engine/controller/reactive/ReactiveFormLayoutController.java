@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.form.engine.controller.reactive;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,28 +38,21 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/reactive/form-layouts")
 @Tag(name = "响应式表单布局管理", description = "响应式表单布局相关操作")
 public class ReactiveFormLayoutController extends ReactiveBaseController<FormLayout, Long, ReactiveFormLayoutService> {
-
+    
     public ReactiveFormLayoutController(ReactiveFormLayoutService service) {
         super(service);
     }
-
+    
     /**
      * 分页查询表单布局
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "分页查询表单布局", description = "根据表单ID分页查询表单布局列表")
-    @Parameters({
-        @Parameter(name = "formId", description = "表单ID", required = true),
-        @Parameter(name = "pageNum", description = "页码", required = true),
-        @Parameter(name = "pageSize", description = "每页条数", required = true)
-    })
-    public Mono<PageResult<FormLayout>> selectPage(
-            @RequestParam Long formId,
-            @RequestParam Integer pageNum,
-            @RequestParam Integer pageSize) {
+    @Parameters({@Parameter(name = "formId", description = "表单ID", required = true), @Parameter(name = "pageNum", description = "页码", required = true), @Parameter(name = "pageSize", description = "每页条数", required = true)})
+    public Mono<PageResult<FormLayout>> selectPage(@RequestParam Long formId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         return service.selectPage(formId, pageNum, pageSize);
     }
-
+    
     /**
      * 根据表单ID查询布局列表
      */
@@ -51,37 +62,27 @@ public class ReactiveFormLayoutController extends ReactiveBaseController<FormLay
     public Flux<FormLayout> selectByFormId(@PathVariable Long formId) {
         return service.selectByFormId(formId);
     }
-
+    
     /**
      * 根据表单ID和布局类型查询布局列表
      */
     @GetMapping(value = "/form/{formId}/type/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "根据表单ID和布局类型查询布局列表", description = "根据表单ID和布局类型查询布局列表")
-    @Parameters({
-        @Parameter(name = "formId", description = "表单ID", required = true),
-        @Parameter(name = "type", description = "布局类型", required = true)
-    })
-    public Flux<FormLayout> selectByFormIdAndType(
-            @PathVariable Long formId,
-            @PathVariable Integer type) {
+    @Parameters({@Parameter(name = "formId", description = "表单ID", required = true), @Parameter(name = "type", description = "布局类型", required = true)})
+    public Flux<FormLayout> selectByFormIdAndType(@PathVariable Long formId, @PathVariable Integer type) {
         return service.selectByFormIdAndType(formId, type);
     }
-
+    
     /**
      * 根据表单ID和终端类型查询布局列表
      */
     @GetMapping(value = "/form/{formId}/terminal/{terminal}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "根据表单ID和终端类型查询布局列表", description = "根据表单ID和终端类型查询布局列表")
-    @Parameters({
-        @Parameter(name = "formId", description = "表单ID", required = true),
-        @Parameter(name = "terminal", description = "终端类型", required = true)
-    })
-    public Flux<FormLayout> selectByFormIdAndTerminal(
-            @PathVariable Long formId,
-            @PathVariable Integer terminal) {
+    @Parameters({@Parameter(name = "formId", description = "表单ID", required = true), @Parameter(name = "terminal", description = "终端类型", required = true)})
+    public Flux<FormLayout> selectByFormIdAndTerminal(@PathVariable Long formId, @PathVariable Integer terminal) {
         return service.selectByFormIdAndTerminal(formId, terminal);
     }
-
+    
     /**
      * 根据表单ID查询默认布局
      */
@@ -91,7 +92,7 @@ public class ReactiveFormLayoutController extends ReactiveBaseController<FormLay
     public Mono<FormLayout> selectDefaultByFormId(@PathVariable Long formId) {
         return service.selectDefaultByFormId(formId);
     }
-
+    
     /**
      * 获取表单布局详情
      */
@@ -101,7 +102,7 @@ public class ReactiveFormLayoutController extends ReactiveBaseController<FormLay
     public Mono<FormLayout> getById(@PathVariable Long id) {
         return service.findById(id);
     }
-
+    
     /**
      * 创建表单布局
      */
@@ -110,7 +111,7 @@ public class ReactiveFormLayoutController extends ReactiveBaseController<FormLay
     public Mono<FormLayout> create(@RequestBody FormLayout layout) {
         return service.create(layout);
     }
-
+    
     /**
      * 更新表单布局
      */
@@ -121,7 +122,7 @@ public class ReactiveFormLayoutController extends ReactiveBaseController<FormLay
         layout.setId(id);
         return service.update(layout);
     }
-
+    
     /**
      * 删除表单布局
      */
@@ -131,7 +132,7 @@ public class ReactiveFormLayoutController extends ReactiveBaseController<FormLay
     public Mono<Void> delete(@PathVariable Long id) {
         return service.delete(id);
     }
-
+    
     /**
      * 设置默认布局
      */

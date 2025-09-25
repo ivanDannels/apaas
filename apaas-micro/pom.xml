@@ -117,12 +117,6 @@
             <version>0.9.1</version>
         </dependency>
         
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        
         <!-- SkyWalking -->
         <dependency>
             <groupId>org.apache.skywalking</groupId>
@@ -135,6 +129,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
     
     <build>

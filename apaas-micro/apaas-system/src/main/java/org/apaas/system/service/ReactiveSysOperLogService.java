@@ -16,16 +16,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.monitor.service;
+package org.apaas.system.service;
 
-import org.apaas.monitor.entity.MonitorEntity;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.apaas.domain.service.BaseService;
+import org.apaas.system.entity.SysOperLog;
 
-public interface MonitorService {
+/**
+ * 响应式操作日志服务接口
+ * @author ivan
+ */
+public interface ReactiveSysOperLogService extends BaseService<SysOperLog, Long> {
     
-    Flux<MonitorEntity> findAll();
-    Mono<MonitorEntity> findById(Long id);
-    Mono<MonitorEntity> save(MonitorEntity entity);
-    Mono<Void> deleteById(Long id);
 }

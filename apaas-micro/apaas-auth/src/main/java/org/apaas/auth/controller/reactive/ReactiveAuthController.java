@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.auth.controller.reactive;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.auth.domain.LoginUser;
 import org.apaas.auth.feign.reactive.ReactiveSystemFeignClient;
-import org.apaas.core.utils.IpUtils;
+import org.apaas.domain.utils.IpUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -30,10 +48,10 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @Tag(name = "响应式认证管理", description = "响应式认证相关接口")
 public class ReactiveAuthController {
-
+    
     private final ReactiveAuthenticationManager authenticationManager;
     private final ReactiveSystemFeignClient systemFeignClient;
-
+    
     /**
      * 登录
      *
@@ -43,26 +61,19 @@ public class ReactiveAuthController {
      */
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "登录", description = "用户登录接口")
-    public Mono<LoginUser> login(
-            @Parameter(description = "用户名", required = true)
-            @RequestParam String username,
-            @Parameter(description = "密码", required = true)
-            @RequestParam String password,
-            ServerHttpRequest request) {
+    public Mono<LoginUser> login(@Parameter(description = "用户名", required = true) @RequestParam String username, @Parameter(description = "密码", required = true) @RequestParam String password, ServerHttpRequest request) {
         
         // 用户认证
-        return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password))
-                .flatMap(authentication -> {
-                    // 获取登录用户信息
-                    LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-                    
-                    // 记录登录信息
-                    String ipAddr = IpUtils.getIpAddr(request);
-                    return systemFeignClient.recordLoginInfo(username, ipAddr).thenReturn(loginUser);
-                });
+        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password)).flatMap(authentication -> {
+            // 获取登录用户信息
+            LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+            
+            // 记录登录信息
+            String ipAddr = IpUtils.getIpAddr(request);
+            return systemFeignClient.recordLoginInfo(username, ipAddr).thenReturn(loginUser);
+        });
     }
-
+    
     /**
      * 获取当前用户信息
      *
@@ -76,24 +87,22 @@ public class ReactiveAuthController {
             String username = jwt.getSubject();
             
             // 根据用户名获取用户信息
-            return systemFeignClient.getUserByUsername(username)
-                    .flatMap(user -> {
-                        if (user == null) {
-                            return Mono.error(new RuntimeException("用户不存在"));
-                        }
-                        LoginUser loginUser = new LoginUser();
-
-                        // 获取用户权限
-                        return systemFeignClient.getUserPermissions(user.getId())
-                                .map(permissions -> {
-                                    loginUser.setPermissions(permissions);
-                                    return loginUser;
-                                });
-                    });
+            return systemFeignClient.getUserByUsername(username).flatMap(user -> {
+                if (user == null) {
+                    return Mono.error(new RuntimeException("用户不存在"));
+                }
+                LoginUser loginUser = new LoginUser();
+                
+                // 获取用户权限
+                return systemFeignClient.getUserPermissions(user.getId()).map(permissions -> {
+                    loginUser.setPermissions(permissions);
+                    return loginUser;
+                });
+            });
         }
         return Mono.error(new RuntimeException("获取用户信息失败"));
     }
-
+    
     /**
      * 登出
      *

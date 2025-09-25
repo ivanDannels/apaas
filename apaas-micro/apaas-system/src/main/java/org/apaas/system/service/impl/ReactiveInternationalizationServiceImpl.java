@@ -16,13 +16,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.service.reactive.impl;
+package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.system.entity.Internationalization;
 import org.apaas.system.repository.InternationalizationRepository;
-import org.apaas.system.service.reactive.ReactiveInternationalizationService;
+import org.apaas.system.service.ReactiveInternationalizationService;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;

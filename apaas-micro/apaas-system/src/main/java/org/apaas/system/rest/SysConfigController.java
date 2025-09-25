@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.controller.reactive;
+package org.apaas.system.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.system.entity.SysConfig;
-import org.apaas.system.service.reactive.ReactiveSysConfigService;
+import org.apaas.system.service.ReactiveSysConfigService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;

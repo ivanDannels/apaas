@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.form.engine.controller.reactive;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,28 +40,21 @@ import java.util.List;
 @RequestMapping("/api/v1/reactive/form-validation-rules")
 @Tag(name = "响应式表单验证规则管理", description = "响应式表单验证规则相关操作")
 public class ReactiveFormValidationRuleController extends ReactiveBaseController<FormValidationRule, Long, ReactiveFormValidationRuleService> {
-
+    
     public ReactiveFormValidationRuleController(ReactiveFormValidationRuleService service) {
         super(service);
     }
-
+    
     /**
      * 分页查询表单验证规则
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "分页查询表单验证规则", description = "根据字段ID分页查询表单验证规则列表")
-    @Parameters({
-        @Parameter(name = "fieldId", description = "字段ID", required = true),
-        @Parameter(name = "pageNum", description = "页码", required = true),
-        @Parameter(name = "pageSize", description = "每页条数", required = true)
-    })
-    public Mono<PageResult<FormValidationRule>> selectPage(
-            @RequestParam Long fieldId,
-            @RequestParam Integer pageNum,
-            @RequestParam Integer pageSize) {
+    @Parameters({@Parameter(name = "fieldId", description = "字段ID", required = true), @Parameter(name = "pageNum", description = "页码", required = true), @Parameter(name = "pageSize", description = "每页条数", required = true)})
+    public Mono<PageResult<FormValidationRule>> selectPage(@RequestParam Long fieldId, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         return service.selectPage(fieldId, pageNum, pageSize);
     }
-
+    
     /**
      * 根据字段ID查询验证规则列表
      */
@@ -53,22 +64,17 @@ public class ReactiveFormValidationRuleController extends ReactiveBaseController
     public Flux<FormValidationRule> selectByFieldId(@PathVariable Long fieldId) {
         return service.selectByFieldId(fieldId);
     }
-
+    
     /**
      * 根据字段ID和规则类型查询验证规则列表
      */
     @GetMapping(value = "/field/{fieldId}/type/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "根据字段ID和规则类型查询验证规则列表", description = "根据字段ID和规则类型查询验证规则列表")
-    @Parameters({
-        @Parameter(name = "fieldId", description = "字段ID", required = true),
-        @Parameter(name = "type", description = "规则类型", required = true)
-    })
-    public Flux<FormValidationRule> selectByFieldIdAndType(
-            @PathVariable Long fieldId,
-            @PathVariable Integer type) {
+    @Parameters({@Parameter(name = "fieldId", description = "字段ID", required = true), @Parameter(name = "type", description = "规则类型", required = true)})
+    public Flux<FormValidationRule> selectByFieldIdAndType(@PathVariable Long fieldId, @PathVariable Integer type) {
         return service.selectByFieldIdAndType(fieldId, type);
     }
-
+    
     /**
      * 根据字段ID列表查询验证规则列表
      */
@@ -77,7 +83,7 @@ public class ReactiveFormValidationRuleController extends ReactiveBaseController
     public Flux<FormValidationRule> selectByFieldIds(@RequestBody List<Long> fieldIds) {
         return service.selectByFieldIds(fieldIds);
     }
-
+    
     /**
      * 获取表单验证规则详情
      */
@@ -87,7 +93,7 @@ public class ReactiveFormValidationRuleController extends ReactiveBaseController
     public Mono<FormValidationRule> getById(@PathVariable Long id) {
         return service.findById(id);
     }
-
+    
     /**
      * 创建表单验证规则
      */
@@ -96,7 +102,7 @@ public class ReactiveFormValidationRuleController extends ReactiveBaseController
     public Mono<FormValidationRule> create(@RequestBody FormValidationRule validationRule) {
         return service.create(validationRule);
     }
-
+    
     /**
      * 更新表单验证规则
      */
@@ -107,7 +113,7 @@ public class ReactiveFormValidationRuleController extends ReactiveBaseController
         validationRule.setId(id);
         return service.update(validationRule);
     }
-
+    
     /**
      * 删除表单验证规则
      */
@@ -117,7 +123,7 @@ public class ReactiveFormValidationRuleController extends ReactiveBaseController
     public Mono<Void> delete(@PathVariable Long id) {
         return service.delete(id);
     }
-
+    
     /**
      * 批量创建表单验证规则
      */

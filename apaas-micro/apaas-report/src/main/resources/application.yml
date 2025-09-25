@@ -17,14 +17,6 @@ logging:
   level:
     org.springframework.data.r2dbc: DEBUG
     org.springframework.web.reactive: DEBUG
-    reactivefeign: DEBUG
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    preferIpAddress: true
 
 management:
   endpoints:

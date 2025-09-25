@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.service.reactive.impl;
+package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.apaas.system.domain.dto.DataDictionaryItemDTO;
 import org.apaas.system.entity.DataDictionaryItem;
 import org.apaas.system.repository.DataDictionaryItemRepository;
-import org.apaas.system.service.reactive.ReactiveDataDictionaryItemService;
+import org.apaas.system.service.ReactiveDataDictionaryItemService;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.data.domain.Pageable;

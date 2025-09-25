@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>apaas-micro</artifactId>
         <groupId>org.apaas</groupId>
+        <artifactId>apaas-micro</artifactId>
         <version>${revision}</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-
+    
     <artifactId>apaas-flow-execution</artifactId>
     <name>apaas-flow-execution</name>
     <description>流程执行服务</description>
-
+    
     <dependencies>
         <!-- 引入流程引擎相关依赖 -->
         <dependency>
@@ -20,13 +19,13 @@
             <artifactId>apaas-flow-engine</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        
         <!-- Spring Boot Data R2DBC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
         </dependency>
-
+        
     </dependencies>
     
     <build>
@@ -37,5 +36,5 @@
             </plugin>
         </plugins>
     </build>
-
+    
 </project>

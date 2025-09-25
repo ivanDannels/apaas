@@ -16,16 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.monitor.service;
+package org.apaas.system.service.impl;
 
-import org.apaas.monitor.entity.MonitorEntity;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.apaas.system.entity.SysOperLog;
+import org.apaas.system.repository.SysOperLogRepository;
+import org.apaas.system.service.ReactiveSysOperLogService;
+import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.springframework.stereotype.Service;
 
-public interface MonitorService {
+/**
+ * 响应式操作日志服务实现类
+ * @author ivan
+ */
+@Service
+public class ReactiveSysOperLogServiceImpl extends BaseServiceImpl<SysOperLog, Long, SysOperLogRepository> implements ReactiveSysOperLogService {
     
-    Flux<MonitorEntity> findAll();
-    Mono<MonitorEntity> findById(Long id);
-    Mono<MonitorEntity> save(MonitorEntity entity);
-    Mono<Void> deleteById(Long id);
+    public ReactiveSysOperLogServiceImpl(SysOperLogRepository repository) {
+        super(repository);
+    }
+    
 }

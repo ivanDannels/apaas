@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.service.reactive;
+package org.apaas.system.service;
 
 import org.apaas.domain.service.BaseService;
 import org.apaas.system.domain.dto.NotificationDTO;

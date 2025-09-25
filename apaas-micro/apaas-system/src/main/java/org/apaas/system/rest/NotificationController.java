@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.controller.reactive;
+package org.apaas.system.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,7 +25,7 @@ import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.system.entity.Notification;
-import org.apaas.system.service.reactive.ReactiveNotificationService;
+import org.apaas.system.service.ReactiveNotificationService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;

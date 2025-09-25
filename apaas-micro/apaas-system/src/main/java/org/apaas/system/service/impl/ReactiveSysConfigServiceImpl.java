@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.system.service.reactive.impl;
+package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.domain.service.impl.BaseServiceImpl;
-import org.apaas.system.domain.dto.DataDictionaryDTO;
-import org.apaas.system.entity.DataDictionary;
-import org.apaas.system.repository.DataDictionaryRepository;
-import org.apaas.system.service.reactive.ReactiveDataDictionaryService;
+import org.apaas.system.domain.dto.SysConfigDTO;
+import org.apaas.system.entity.SysConfig;
+import org.apaas.system.repository.SysConfigRepository;
+import org.apaas.system.service.ReactiveSysConfigService;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.data.domain.Pageable;
@@ -36,55 +36,66 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * 响应式数据字典服务实现
+ * 响应式参数配置服务实现
  * @author ivan
  */
 @Slf4j
 @Service
-public class ReactiveDataDictionaryServiceImpl extends BaseServiceImpl<DataDictionary, Long, DataDictionaryRepository> implements ReactiveDataDictionaryService {
+public class ReactiveSysConfigServiceImpl extends BaseServiceImpl<SysConfig, Long, SysConfigRepository> implements ReactiveSysConfigService {
     
-    public ReactiveDataDictionaryServiceImpl(DataDictionaryRepository repository) {
+    public ReactiveSysConfigServiceImpl(SysConfigRepository repository) {
         super(repository);
     }
     
     @Override
-    public Flux<DataDictionary> selectPage(Pageable pageable, DataDictionaryDTO query) {
+    public Flux<SysConfig> getConfigPage(Pageable pageable, SysConfigDTO query) {
         // 这里需要根据实际需求实现分页查询逻辑
-        // 暂时返回所有数据字典
+        // 暂时返回所有配置
         return repository.findAll();
     }
     
     @Override
-    public Mono<Boolean> create(DataDictionary dataDictionary) {
-        return repository.save(dataDictionary).map(savedDataDictionary -> true).onErrorReturn(false);
+    public Mono<Boolean> addConfig(SysConfig config) {
+        return repository.save(config).map(savedConfig -> true).onErrorReturn(false);
     }
     
     @Override
-    public Mono<Boolean> update(DataDictionary dataDictionary) {
-        return repository.save(dataDictionary).map(updatedDataDictionary -> true).onErrorReturn(false);
+    public Mono<Boolean> updateConfig(SysConfig config) {
+        return repository.save(config).map(updatedConfig -> true).onErrorReturn(false);
     }
     
     @Override
-    public Mono<Boolean> delete(Long id) {
+    public Mono<Boolean> deleteConfig(Long id) {
         return repository.deleteById(id).then(Mono.just(true)).onErrorReturn(false);
     }
     
     @Override
-    public Mono<Boolean> changeStatus(Long id, Integer status) {
-        return repository.findById(id).flatMap(dataDictionary -> {
-            dataDictionary.setStatus(status);
-            dataDictionary.setUpdatedTime(LocalDateTime.now());
-            return repository.save(dataDictionary);
-        }).map(updatedDataDictionary -> true).onErrorReturn(false);
+    public Mono<Boolean> batchDeleteConfig(List<Long> ids) {
+        return Flux.fromIterable(ids).flatMap(id -> repository.deleteById(id)).then(Mono.just(true)).onErrorReturn(false);
     }
     
     @Override
-    public Mono<Void> exportExcel(ServerWebExchange exchange, DataDictionaryDTO query) {
+    public Mono<Boolean> changeStatus(Long id, Integer status) {
+        return repository.findById(id).flatMap(config -> {
+            config.setStatus(status);
+            config.setUpdatedTime(LocalDateTime.now());
+            return repository.save(config);
+        }).map(updatedConfig -> true).onErrorReturn(false);
+    }
+    
+    @Override
+    public Mono<SysConfig> getConfigByCode(String code) {
+        return repository.findByCode(code);
+    }
+    
+    @Override
+    public Mono<Void> exportExcel(ServerWebExchange exchange, SysConfigDTO query) {
         ServerHttpResponse response = exchange.getResponse();
         response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.getHeaders().set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dataDictionary.xlsx");
+        response.getHeaders().set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=config.xlsx");
         
         // 这里需要实现Excel导出逻辑
         // 暂时返回空响应

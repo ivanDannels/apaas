@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apaas.flow.execution.resource;
 
 import lombok.RequiredArgsConstructor;
@@ -29,12 +47,8 @@ public class FlowExecutionController {
      * @return 流程实例
      */
     @PostMapping("/instances/start")
-    public Mono<Result<FlowInstance>> startProcessInstance(
-            @RequestParam Long processId,
-            @RequestParam String businessKey,
-            @RequestHeader("user-id") Long starter) {
-        return flowRuntimeService.startProcessInstance(processId, businessKey, starter)
-                .onErrorReturn(Result.error("启动流程实例失败"));
+    public Mono<Result<FlowInstance>> startProcessInstance(@RequestParam Long processId, @RequestParam String businessKey, @RequestHeader("user-id") Long starter) {
+        return flowRuntimeService.startProcessInstance(processId, businessKey, starter).onErrorReturn(Result.error("启动流程实例失败"));
     }
     
     /**
@@ -45,11 +59,8 @@ public class FlowExecutionController {
      * @return 流程实例
      */
     @PostMapping("/activities/{activityInstanceId}/complete")
-    public Mono<Result<FlowInstance>> completeActivityInstance(
-            @PathVariable Long activityInstanceId,
-            @RequestHeader("user-id") Long userId) {
-        return flowRuntimeService.completeActivityInstance(activityInstanceId, userId)
-                .onErrorReturn(Result.error("完成活动实例失败"));
+    public Mono<Result<FlowInstance>> completeActivityInstance(@PathVariable Long activityInstanceId, @RequestHeader("user-id") Long userId) {
+        return flowRuntimeService.completeActivityInstance(activityInstanceId, userId).onErrorReturn(Result.error("完成活动实例失败"));
     }
     
     /**
@@ -60,11 +71,8 @@ public class FlowExecutionController {
      * @return 流程实例
      */
     @PostMapping("/instances/{flowInstanceId}/terminate")
-    public Mono<Result<FlowInstance>> terminateFlowInstance(
-            @PathVariable Long flowInstanceId,
-            @RequestHeader("user-id") Long userId) {
-        return flowRuntimeService.terminateFlowInstance(flowInstanceId, userId)
-                .onErrorReturn(Result.error("终止流程实例失败"));
+    public Mono<Result<FlowInstance>> terminateFlowInstance(@PathVariable Long flowInstanceId, @RequestHeader("user-id") Long userId) {
+        return flowRuntimeService.terminateFlowInstance(flowInstanceId, userId).onErrorReturn(Result.error("终止流程实例失败"));
     }
     
     /**
@@ -86,11 +94,8 @@ public class FlowExecutionController {
      * @return 任务
      */
     @PostMapping("/tasks/{taskId}/claim")
-    public Mono<Result<WorkflowTask>> claimTask(
-            @PathVariable Long taskId,
-            @RequestHeader("user-id") Long userId) {
-        return taskManagementService.claimTask(taskId, userId)
-                .onErrorReturn(Result.error("领取任务失败"));
+    public Mono<Result<WorkflowTask>> claimTask(@PathVariable Long taskId, @RequestHeader("user-id") Long userId) {
+        return taskManagementService.claimTask(taskId, userId).onErrorReturn(Result.error("领取任务失败"));
     }
     
     /**
@@ -101,11 +106,8 @@ public class FlowExecutionController {
      * @return 任务
      */
     @PostMapping("/tasks/{taskId}/complete")
-    public Mono<Result<WorkflowTask>> completeTask(
-            @PathVariable Long taskId,
-            @RequestHeader("user-id") Long userId) {
-        return taskManagementService.completeTask(taskId, userId)
-                .onErrorReturn(Result.error("完成任务失败"));
+    public Mono<Result<WorkflowTask>> completeTask(@PathVariable Long taskId, @RequestHeader("user-id") Long userId) {
+        return taskManagementService.completeTask(taskId, userId).onErrorReturn(Result.error("完成任务失败"));
     }
     
     /**
@@ -117,11 +119,7 @@ public class FlowExecutionController {
      * @return 任务
      */
     @PostMapping("/tasks/{taskId}/transfer")
-    public Mono<Result<WorkflowTask>> transferTask(
-            @PathVariable Long taskId,
-            @RequestParam Long fromUserId,
-            @RequestParam Long toUserId) {
-        return taskManagementService.transferTask(taskId, fromUserId, toUserId)
-                .onErrorReturn(Result.error("转办任务失败"));
+    public Mono<Result<WorkflowTask>> transferTask(@PathVariable Long taskId, @RequestParam Long fromUserId, @RequestParam Long toUserId) {
+        return taskManagementService.transferTask(taskId, fromUserId, toUserId).onErrorReturn(Result.error("转办任务失败"));
     }
 }
