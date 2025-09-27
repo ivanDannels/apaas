@@ -102,4 +102,22 @@ public class BaseEntity implements Serializable, HasDeleted, HasTenantId {
     public Integer getDeleted() {
         return deleted;
     }
+    
+    /**
+     * 获取实体标识
+     *
+     * @return 实体标识
+     */
+    public Long getId() {
+        return id;
+    }
+    
+    /**
+     * 设置实体标识
+     *
+     * @param id 实体标识
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

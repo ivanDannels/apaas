@@ -19,7 +19,7 @@
 package org.apaas.domain.rest;
 
 import lombok.RequiredArgsConstructor;
-import org.apaas.domain.service.DomainService;
+import org.apaas.domain.service.domain.DomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;

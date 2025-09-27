@@ -18,24 +18,19 @@
  */
 package org.apaas.domain.exception;
 
-import jakarta.validation.ConstraintViolationException;
-import org.apaas.core.exception.BusinessException;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import reactor.core.publisher.Mono;
-
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 全局异常处理器
@@ -45,94 +40,166 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
-    @Value("${logging.level.org.apaas:INFO}")
-    private String logLevel;
-    
     /**
      * 处理业务异常
      */
     @ExceptionHandler(BusinessException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleServiceException(BusinessException e) {
-        log.error(e.getMessage(), e);
-        Integer code = e.getCode();
-        HttpStatus status = code != null && code >= 400 && code < 600 ? HttpStatus.valueOf(code) : HttpStatus.INTERNAL_SERVER_ERROR;
+    public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException e) {
+        log.error("业务异常: {}", e.getMessage(), e);
         
-        String message = code != null ? e.getMessage() : "服务器内部错误，请联系管理员";
-        String detailMessage = e.getMessage(); // 使用getMessage()替代getDetailMessage()
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", e.getCode());
+        result.put("error", "Business Error");
+        result.put("message", e.getMessage());
+        result.put("path", "/api/v1/**");
         
-        return buildErrorResponse(status, "Service Error", message, detailMessage);
+        return ResponseEntity.status(e.getCode()).body(result);
     }
     
     /**
-     * 处理权限不足异常
+     * 处理缓存异常
      */
-    @ExceptionHandler(AccessDeniedException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleAccessDeniedException(AccessDeniedException e) {
-        log.error("权限不足", e);
-        return buildErrorResponse(HttpStatus.FORBIDDEN, "Access Denied", "权限不足", e.getMessage());
+    @ExceptionHandler(CacheException.class)
+    public ResponseEntity<Map<String, Object>> handleCacheException(CacheException e) {
+        log.error("缓存异常: {}", e.getMessage(), e);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 500);
+        result.put("error", "Cache Error");
+        result.put("message", e.getMessage());
+        result.put("path", "/api/v1/**");
+        
+        return ResponseEntity.status(500).body(result);
     }
     
     /**
-     * 处理参数校验异常
+     * 处理分布式锁获取异常
+     */
+    @ExceptionHandler(LockAcquisitionException.class)
+    public ResponseEntity<Map<String, Object>> handleLockAcquisitionException(LockAcquisitionException e) {
+        log.error("分布式锁获取异常: {}", e.getMessage(), e);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 500);
+        result.put("error", "Lock Acquisition Error");
+        result.put("message", e.getMessage());
+        result.put("path", "/api/v1/**");
+        
+        return ResponseEntity.status(500).body(result);
+    }
+    
+    /**
+     * 处理运行时异常
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException e) {
+        log.error("运行时异常: {}", e.getMessage(), e);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 500);
+        result.put("error", "Runtime Error");
+        result.put("message", "系统运行时错误: " + e.getMessage());
+        result.put("path", "/api/v1/**");
+        
+        return ResponseEntity.status(500).body(result);
+    }
+    
+    /**
+     * 处理空指针异常
+     */
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Map<String, Object>> handleNullPointerException(NullPointerException e) {
+        log.error("空指针异常: {}", e.getMessage(), e);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 500);
+        result.put("error", "Null Pointer Error");
+        result.put("message", "系统空指针错误，请联系管理员");
+        result.put("path", "/api/v1/**");
+        
+        return ResponseEntity.status(500).body(result);
+    }
+    
+    /**
+     * 处理参数异常
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error("参数异常: {}", e.getMessage(), e);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 400);
+        result.put("error", "Illegal Argument Error");
+        result.put("message", "参数错误: " + e.getMessage());
+        result.put("path", "/api/v1/**");
+        
+        return ResponseEntity.status(400).body(result);
+    }
+    
+    /**
+     * 处理方法参数验证异常
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage(), e);
-        String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation Error", message, e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("方法参数验证异常: {}", e.getMessage(), e);
+        
+        // 获取所有验证错误信息
+        String errorMessage = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 400);
+        result.put("error", "Validation Error");
+        result.put("message", "参数验证失败: " + errorMessage);
+        result.put("path", "/api/v1/**");
+        
+        return ResponseEntity.status(400).body(result);
     }
     
     /**
-     * 处理参数绑定异常
-     */
-    @ExceptionHandler(BindException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleBindException(BindException e) {
-        log.error(e.getMessage(), e);
-        String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Binding Error", message, e.getMessage());
-    }
-    
-    /**
-     * 处理参数校验异常
+     * 处理约束违反异常（通常用于@RequestParam或@PathVarible参数验证）
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleConstraintViolationException(ConstraintViolationException e) {
-        log.error(e.getMessage(), e);
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation Error", e.getMessage(), e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException e) {
+        log.error("约束违反异常: {}", e.getMessage(), e);
+        
+        // 获取所有验证错误信息
+        String errorMessage = e.getConstraintViolations().stream()
+                .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
+                .collect(Collectors.joining(", "));
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 400);
+        result.put("error", "Constraint Violation Error");
+        result.put("message", "参数验证失败: " + errorMessage);
+        result.put("path", "/api/v1/**");
+        
+        return ResponseEntity.status(400).body(result);
     }
     
     /**
      * 处理通用异常
      */
     @ExceptionHandler(Exception.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleException(Exception ex) {
-        log.error("系统异常: ", ex);
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "系统内部错误", ex.getMessage());
-    }
-    
-    /**
-     * 处理非法参数异常
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public Mono<ResponseEntity<Map<String, Object>>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        log.warn("非法参数异常: ", ex);
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Bad Request", ex.getMessage(), ex.getMessage());
-    }
-    
-    /**
-     * 构建错误响应
-     */
-    private Mono<ResponseEntity<Map<String, Object>>> buildErrorResponse(HttpStatus status, String error, String message, String detailMessage) {
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("timestamp", LocalDateTime.now());
-        errorResponse.put("status", status.value());
-        errorResponse.put("error", error);
-        errorResponse.put("message", message);
+    public ResponseEntity<Map<String, Object>> handleException(Exception e) {
+        log.error("系统异常: {}", e.getMessage(), e);
         
-        if ("DEBUG".equalsIgnoreCase(logLevel) && detailMessage != null) {
-            errorResponse.put("detail", detailMessage);
-        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("timestamp", LocalDateTime.now());
+        result.put("status", 500);
+        result.put("error", "Internal Server Error");
+        result.put("message", "系统内部错误");
+        result.put("path", "/api/v1/**");
         
-        return Mono.just(ResponseEntity.status(status).body(errorResponse));
+        return ResponseEntity.status(500).body(result);
     }
 }

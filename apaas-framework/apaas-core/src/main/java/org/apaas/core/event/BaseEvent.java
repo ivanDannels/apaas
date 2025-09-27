@@ -19,19 +19,19 @@
 package org.apaas.core.event;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 /**
- * 基础事件类
+ * 基础事件类 - 核心框架定义
  * @author ivan
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class BaseEvent {
+@SuperBuilder
+@EqualsAndHashCode
+public abstract class BaseEvent {
     
     /**
      * 事件类型
@@ -48,8 +48,19 @@ public class BaseEvent {
      */
     private String source;
     
-    public BaseEvent(String eventType, LocalDateTime eventTime) {
+    /**
+     * 事件描述
+     */
+    private String description;
+    
+    public BaseEvent() {
+        this.eventTime = LocalDateTime.now();
+    }
+    
+    public BaseEvent(String eventType, String source, String description) {
+        this();
         this.eventType = eventType;
-        this.eventTime = eventTime;
+        this.source = source;
+        this.description = description;
     }
 }

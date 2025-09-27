@@ -18,7 +18,7 @@
  */
 package org.apaas.domain.convert;
 
-import org.apaas.core.exception.BusinessException;
+import org.apaas.domain.exception.BusinessException;
 import org.apaas.core.query.Condition;
 import org.apaas.core.query.Query;
 import org.apaas.utils.StringUtils;

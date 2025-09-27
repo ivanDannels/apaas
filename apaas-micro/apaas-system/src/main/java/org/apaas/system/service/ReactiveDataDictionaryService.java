@@ -18,9 +18,9 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.service.application.ApplicationService;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
-import org.apaas.system.entity.DataDictionary;
+import org.apaas.system.entity.DataDictionaryAggregate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
@@ -30,22 +30,22 @@ import reactor.core.publisher.Mono;
  * 响应式数据字典服务接口
  * @author ivan
  */
-public interface ReactiveDataDictionaryService extends BaseService<DataDictionary, Long> {
+public interface ReactiveDataDictionaryService extends ApplicationService<DataDictionaryAggregate, Long> {
     
     /**
      * 分页查询数据字典
      */
-    Flux<DataDictionary> selectPage(Pageable pageable, DataDictionaryDTO query);
+    Flux<DataDictionaryAggregate> selectPage(Pageable pageable, DataDictionaryDTO query);
     
     /**
      * 创建数据字典
      */
-    Mono<Boolean> create(DataDictionary dataDictionary);
+    Mono<Boolean> create(DataDictionaryAggregate dictionary);
     
     /**
      * 更新数据字典
      */
-    Mono<Boolean> update(DataDictionary dataDictionary);
+    Mono<Boolean> update(DataDictionaryAggregate dictionary);
     
     /**
      * 删除数据字典
@@ -70,5 +70,5 @@ public interface ReactiveDataDictionaryService extends BaseService<DataDictionar
     /**
      * 根据ID查询数据字典
      */
-    Mono<DataDictionary> findById(Long id);
+    Mono<DataDictionaryAggregate> findById(Long id);
 }

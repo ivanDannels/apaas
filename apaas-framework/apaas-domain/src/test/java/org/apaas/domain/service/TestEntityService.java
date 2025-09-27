@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.service;
+package org.apaas.domain.service.application;
 
 import org.apaas.domain.entity.TestEntity;
 import reactor.core.publisher.Mono;

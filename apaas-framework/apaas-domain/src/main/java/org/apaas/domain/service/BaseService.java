@@ -27,9 +27,11 @@ import reactor.core.publisher.Mono;
 import java.io.Serializable;
 
 /**
+ * 基础服务接口
+ * 重新定位为应用服务接口，处理应用层逻辑
  * @author ivan
  */
-public interface BaseService<T extends BaseEntity, ID extends Serializable> {
+public interface BaseService<T extends BaseEntity, ID extends Serializable> extends ApplicationService<T, ID> {
     
     /**
      * 保存实体
@@ -37,6 +39,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param entity 实体对象
      * @return 保存后的实体
      */
+    @Override
     Mono<T> save(T entity);
     
     /**
@@ -45,6 +48,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param id 实体ID
      * @return 实体对象
      */
+    @Override
     Mono<T> findById(ID id);
     
     /**
@@ -52,6 +56,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      *
      * @return 实体对象列表
      */
+    @Override
     Flux<T> findAll();
     
     /**
@@ -59,6 +64,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      *
      * @param id 实体ID
      */
+    @Override
     Mono<Void> deleteById(ID id);
     
     /**
@@ -67,6 +73,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param entities 实体对象列表
      * @return 保存后的实体列表
      */
+    @Override
     Flux<T> saveAll(Iterable<T> entities);
     
     /**
@@ -75,6 +82,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param entities 实体对象流
      * @return 保存后的实体流
      */
+    @Override
     Flux<T> saveBatch(Flux<T> entities);
     
     /**
@@ -83,6 +91,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param entities 实体对象流
      * @return 更新后的实体流
      */
+    @Override
     Flux<T> updateBatch(Flux<T> entities);
     
     /**
@@ -91,6 +100,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param ids 实体ID列表
      * @return 删除结果
      */
+    @Override
     Mono<Void> deleteAllById(Iterable<ID> ids);
     
     /**
@@ -99,6 +109,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param query 查询条件
      * @return 分页结果
      */
+    @Override
     Mono<PageResult<T>> selectPage(Query query);
     
     /**
@@ -107,6 +118,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param query 查询条件
      * @return 导出的字节数据
      */
+    @Override
     Mono<byte[]> export(Query query);
     
     /**
@@ -115,6 +127,7 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      * @param data 导入的字节数据
      * @return 导入结果
      */
+    @Override
     Mono<Void> importData(byte[] data);
     
     /**
@@ -122,5 +135,6 @@ public interface BaseService<T extends BaseEntity, ID extends Serializable> {
      *
      * @return Repository对象
      */
+    @Override
     Repository<T, ID> getRepository();
 }

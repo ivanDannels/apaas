@@ -16,11 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.service.impl;
+package org.apaas.domain.service.application.impl;
 
 import org.apaas.domain.entity.TestEntity;
 import org.apaas.domain.repository.TestEntityRepository;
-import org.apaas.domain.service.TestEntityService;
+import org.apaas.domain.service.application.TestEntityService;
+import org.apaas.domain.service.application.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 

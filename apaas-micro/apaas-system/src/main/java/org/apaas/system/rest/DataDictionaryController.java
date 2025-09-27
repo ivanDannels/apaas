@@ -27,8 +27,8 @@ import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
 import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
-import org.apaas.system.entity.DataDictionary;
-import org.apaas.system.service.ReactiveDataDictionaryService;
+import org.apaas.system.entity.DataDictionaryAggregate;
+import org.apaas.system.service.DataDictionaryApplicationService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +44,9 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/data-dictionaries")
 @Tag(name = "响应式数据字典管理", description = "响应式数据字典相关操作")
-public class DataDictionaryController extends ReactiveBaseController<DataDictionary, Long, ReactiveDataDictionaryService> {
+public class DataDictionaryController extends ReactiveBaseController<DataDictionaryAggregate, Long, DataDictionaryApplicationService> {
     
-    public DataDictionaryController(ReactiveDataDictionaryService service) {
+    public DataDictionaryController(DataDictionaryApplicationService service) {
         super(service);
     }
     
@@ -57,7 +57,7 @@ public class DataDictionaryController extends ReactiveBaseController<DataDiction
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "分页查询数据字典", description = "根据条件分页查询数据字典列表")
     @Parameters({@Parameter(name = "pageNum", description = "页码", required = true), @Parameter(name = "pageSize", description = "每页条数", required = true), @Parameter(name = "name", description = "字典名称，模糊查询"), @Parameter(name = "type", description = "字典类型：0-系统字典，1-业务字典"), @Parameter(name = "status", description = "状态：0-正常，1-停用")})
-    public Flux<DataDictionary> selectPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String name, @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer status) {
+    public Flux<DataDictionaryAggregate> selectPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestParam(required = false) String name, @RequestParam(required = false) Integer type, @RequestParam(required = false) Integer status) {
         Pageable pageable = Pageable.ofSize(pageSize).withPage(pageNum - 1);
         DataDictionaryDTO query = new DataDictionaryDTO();
         query.setName(name);
@@ -73,7 +73,7 @@ public class DataDictionaryController extends ReactiveBaseController<DataDiction
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取数据字典详情", description = "根据ID获取数据字典详情")
     @Parameter(name = "id", description = "数据字典ID", required = true)
-    public Mono<DataDictionary> getById(@PathVariable Long id) {
+    public Mono<DataDictionaryAggregate> getById(@PathVariable Long id) {
         return service.findById(id).switchIfEmpty(Mono.error(new RuntimeException("数据字典不存在")));
     }
     
@@ -83,8 +83,8 @@ public class DataDictionaryController extends ReactiveBaseController<DataDiction
     @Log(title = "创建数据字典", businessType = BusinessType.INSERT, operatorType = OperatorType.MANAGE)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "创建数据字典", description = "创建新的数据字典")
-    public Mono<Boolean> create(@RequestBody DataDictionary dataDictionary) {
-        return service.create(dataDictionary);
+    public Mono<Boolean> create(@RequestBody DataDictionaryAggregate dictionary) {
+        return service.create(dictionary);
     }
     
     /**
@@ -94,9 +94,9 @@ public class DataDictionaryController extends ReactiveBaseController<DataDiction
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "更新数据字典", description = "更新数据字典信息")
     @Parameter(name = "id", description = "数据字典ID", required = true)
-    public Mono<Boolean> update(@PathVariable Long id, @RequestBody DataDictionary dataDictionary) {
-        dataDictionary.setId(id);
-        return service.update(dataDictionary);
+    public Mono<Boolean> update(@PathVariable Long id, @RequestBody DataDictionaryAggregate dictionary) {
+        dictionary.setId(id);
+        return service.update(dictionary);
     }
     
     /**

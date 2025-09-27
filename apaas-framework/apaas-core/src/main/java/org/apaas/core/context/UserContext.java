@@ -22,4 +22,5 @@ package org.apaas.core.context;
  * @author ivan
  */
 public class UserContext {
+    
 }

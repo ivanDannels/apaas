@@ -26,7 +26,7 @@ import org.apaas.domain.entity.BaseEntity;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.service.application.BaseService;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
