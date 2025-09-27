@@ -20,11 +20,34 @@ package org.apaas.system.repository;
 
 import org.apaas.system.entity.DataDictionary;
 import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 
 /**
  * 数据字典Repository接口
  */
 @Repository
 public interface DataDictionaryRepository extends ReactiveBaseRepository<DataDictionary, Long> {
+    
+    /**
+     * 根据名称、类型和状态分页查询数据字典
+     * 
+     * @param name 名称（模糊匹配）
+     * @param type 类型
+     * @param status 状态
+     * @param pageable 分页参数
+     * @return 数据字典列表
+     */
+    Flux<DataDictionary> findByNameContainingAndTypeAndStatus(String name, Integer type, Integer status, Pageable pageable);
+    
+    /**
+     * 根据名称、类型和状态查询数据字典（不分页）
+     * 
+     * @param name 名称（模糊匹配）
+     * @param type 类型
+     * @param status 状态
+     * @return 数据字典列表
+     */
+    Flux<DataDictionary> findByNameContainingAndTypeAndStatus(String name, Integer type, Integer status);
 }

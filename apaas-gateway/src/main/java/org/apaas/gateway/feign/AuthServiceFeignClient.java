@@ -16,35 +16,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.flow.engine.service.reactive;
+package org.apaas.gateway.feign;
 
-import org.apaas.domain.service.BaseService;
-import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
-import org.apaas.flow.engine.entity.FlowInstance;
-import org.apaas.flow.engine.entity.FlowTask;
-import reactor.core.publisher.Flux;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式流程实例服务接口
+ * 认证服务Feign客户端
  */
-public interface ReactiveFlowInstanceService extends BaseService<FlowInstance, Long> {
+@FeignClient(name = "apaas-auth", url = "${apaas.auth.service.url:http://localhost:8081}")
+public interface AuthServiceFeignClient {
     
     /**
-     * 根据流程实例ID获取流程实例
+     * 验证token
      *
-     * @param instanceId 流程实例ID
-     * @return 流程实例信息
+     * @param token token
+     * @return 验证结果
      */
-    Mono<FlowInstance> getFlowInstanceById(Long instanceId);
-    
-    Mono<FlowInstance> startInstance(StartInstanceDTO startInstanceDTO);
-    
-    Mono<FlowInstance> terminateInstance(Long id);
-    
-    Mono<FlowInstance> suspendInstance(Long id);
-    
-    Mono<FlowInstance> resumeInstance(Long id);
-    
-    Flux<FlowTask> getInstanceTasks(Long id);
+    @GetMapping("/api/v1/reactive/auth/validate")
+    Mono<Boolean> validateToken(@RequestHeader("Authorization") String token);
 }

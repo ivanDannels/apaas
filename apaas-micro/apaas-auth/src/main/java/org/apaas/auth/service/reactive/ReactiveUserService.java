@@ -103,4 +103,12 @@ public interface ReactiveUserService extends BaseService<User, Long> {
     Mono<Boolean> updatePassword(String oldPassword, String newPassword);
     
     Mono<User> getCurrentUser();
+    
+    /**
+     * 用户登出
+     *
+     * @param userId 用户ID
+     * @return 登出结果
+     */
+    Mono<Void> logout(Long userId);
 }

@@ -21,9 +21,13 @@ package org.apaas.flow.engine.controller.reactive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apaas.core.annotation.Log;
+import org.apaas.core.enums.BusinessType;
+import org.apaas.core.enums.OperatorType;
 import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
 import org.apaas.flow.engine.entity.FlowInstance;
+import org.apaas.flow.engine.entity.FlowTask;
 import org.apaas.flow.engine.service.reactive.ReactiveFlowInstanceService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +49,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     /**
      * 启动流程实例
      */
+    @Log(title = "启动流程实例", businessType = BusinessType.FLOW_START, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "启动流程实例", description = "根据流程定义ID启动新的流程实例")
     public Mono<FlowInstance> startInstance(@RequestBody StartInstanceDTO startInstanceDTO) {
@@ -54,6 +59,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     /**
      * 终止流程实例
      */
+    @Log(title = "终止流程实例", businessType = BusinessType.FLOW_TERMINATE, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/{id}/terminate", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "终止流程实例", description = "将运行中的流程实例终止")
     public Mono<FlowInstance> terminateInstance(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
@@ -63,6 +69,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     /**
      * 暂停流程实例
      */
+    @Log(title = "暂停流程实例", businessType = BusinessType.UPDATE, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/{id}/suspend", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "暂停流程实例", description = "暂停运行中的流程实例")
     public Mono<FlowInstance> suspendInstance(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
@@ -72,6 +79,7 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     /**
      * 恢复流程实例
      */
+    @Log(title = "恢复流程实例", businessType = BusinessType.UPDATE, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/{id}/resume", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "恢复流程实例", description = "恢复暂停的流程实例")
     public Mono<FlowInstance> resumeInstance(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
@@ -81,9 +89,10 @@ public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowI
     /**
      * 获取流程实例的审批记录
      */
+    @Log(title = "获取审批记录", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
     @GetMapping(value = "/{id}/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取审批记录", description = "查询流程实例的所有任务记录")
-    public Flux<Object> getInstanceTasks(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
+    public Flux<FlowTask> getInstanceTasks(@Parameter(description = "实例ID", required = true) @PathVariable Long id) {
         return service.getInstanceTasks(id);
     }
 }

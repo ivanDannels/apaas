@@ -20,12 +20,16 @@ package org.apaas.flow.engine.service.reactive.impl;
 
 import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
 import org.apaas.flow.engine.entity.FlowInstance;
+import org.apaas.flow.engine.entity.FlowTask;
 import org.apaas.flow.engine.repository.reactive.ReactiveFlowInstanceRepository;
 import org.apaas.flow.engine.service.reactive.ReactiveFlowInstanceService;
 import org.apaas.domain.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 响应式流程实例服务实现类
@@ -44,26 +48,46 @@ public class ReactiveFlowInstanceServiceImpl extends BaseServiceImpl<FlowInstanc
     
     @Override
     public Mono<FlowInstance> startInstance(StartInstanceDTO startInstanceDTO) {
-        return null;
+        // 创建新的流程实例
+        FlowInstance instance = FlowInstance.builder().definitionId(startInstanceDTO.getDefinitionId()).title(startInstanceDTO.getTitle()).startUserId(startInstanceDTO.getStarterId()).variables(startInstanceDTO.getVariables() != null ? startInstanceDTO.getVariables().toString() : null).status(1) // 1-运行中
+                .startTime(LocalDateTime.now()).createdTime(LocalDateTime.now()).updatedTime(LocalDateTime.now()).build();
+        
+        // 保存流程实例
+        return repository.save(instance);
     }
     
     @Override
     public Mono<FlowInstance> terminateInstance(Long id) {
-        return null;
+        return repository.findById(id).flatMap(instance -> {
+            instance.setStatus(3); // 3-已终止
+            instance.setEndTime(LocalDateTime.now());
+            instance.setUpdatedTime(LocalDateTime.now());
+            return repository.save(instance);
+        });
     }
     
     @Override
     public Mono<FlowInstance> suspendInstance(Long id) {
-        return null;
+        return repository.findById(id).flatMap(instance -> {
+            instance.setStatus(2); // 2-已暂停
+            instance.setUpdatedTime(LocalDateTime.now());
+            return repository.save(instance);
+        });
     }
     
     @Override
     public Mono<FlowInstance> resumeInstance(Long id) {
-        return null;
+        return repository.findById(id).flatMap(instance -> {
+            instance.setStatus(1); // 1-运行中
+            instance.setUpdatedTime(LocalDateTime.now());
+            return repository.save(instance);
+        });
     }
     
     @Override
-    public Flux<Object> getInstanceTasks(Long id) {
-        return null;
+    public Flux<FlowTask> getInstanceTasks(Long id) {
+        // 这里需要根据流程实例ID查询相关的任务记录
+        // 暂时返回空的Flux，实际开发中需要实现具体的查询逻辑
+        return Flux.empty();
     }
 }

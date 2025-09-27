@@ -24,6 +24,10 @@ import org.apaas.system.domain.dto.DataDictionaryItemDTO;
 import org.apaas.system.entity.DataDictionaryItem;
 import org.apaas.system.repository.DataDictionaryItemRepository;
 import org.apaas.system.service.ReactiveDataDictionaryItemService;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +61,7 @@ public class ReactiveDataDictionaryItemServiceImpl extends BaseServiceImpl<DataD
     }
     
     @Override
+    @Cacheable(value = "dataDictionaryItems", key = "#dictionaryId")
     public Flux<DataDictionaryItem> selectByDictionaryId(Long dictionaryId) {
         return repository.findByDictionaryId(dictionaryId);
     }
@@ -67,16 +72,19 @@ public class ReactiveDataDictionaryItemServiceImpl extends BaseServiceImpl<DataD
     }
     
     @Override
+    @CacheEvict(value = "dataDictionaryItems", key = "#dataDictionaryItem.id")
     public Mono<Boolean> update(DataDictionaryItem dataDictionaryItem) {
         return repository.save(dataDictionaryItem).map(updatedDataDictionaryItem -> true).onErrorReturn(false);
     }
     
     @Override
+    @CacheEvict(value = "dataDictionaryItems", key = "#id")
     public Mono<Boolean> delete(Long id) {
         return repository.deleteById(id).then(Mono.just(true)).onErrorReturn(false);
     }
     
     @Override
+    @CacheEvict(value = "dataDictionaryItems", key = "#id")
     public Mono<Boolean> changeStatus(Long id, Integer status) {
         return repository.findById(id).flatMap(dataDictionaryItem -> {
             dataDictionaryItem.setStatus(status);

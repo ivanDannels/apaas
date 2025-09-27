@@ -16,35 +16,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.flow.engine.service.reactive;
+package org.apaas.core.event;
 
-import org.apaas.domain.service.BaseService;
-import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
-import org.apaas.flow.engine.entity.FlowInstance;
-import org.apaas.flow.engine.entity.FlowTask;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
- * 响应式流程实例服务接口
+ * 基础事件类
+ * @author ivan
  */
-public interface ReactiveFlowInstanceService extends BaseService<FlowInstance, Long> {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class BaseEvent {
     
     /**
-     * 根据流程实例ID获取流程实例
-     *
-     * @param instanceId 流程实例ID
-     * @return 流程实例信息
+     * 事件类型
      */
-    Mono<FlowInstance> getFlowInstanceById(Long instanceId);
+    private String eventType;
     
-    Mono<FlowInstance> startInstance(StartInstanceDTO startInstanceDTO);
+    /**
+     * 事件时间
+     */
+    private LocalDateTime eventTime;
     
-    Mono<FlowInstance> terminateInstance(Long id);
+    /**
+     * 事件源
+     */
+    private String source;
     
-    Mono<FlowInstance> suspendInstance(Long id);
-    
-    Mono<FlowInstance> resumeInstance(Long id);
-    
-    Flux<FlowTask> getInstanceTasks(Long id);
+    public BaseEvent(String eventType, LocalDateTime eventTime) {
+        this.eventType = eventType;
+        this.eventTime = eventTime;
+    }
 }

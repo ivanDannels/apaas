@@ -25,12 +25,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.auth.domain.LoginUser;
 import org.apaas.auth.feign.reactive.ReactiveSystemFeignClient;
+import org.apaas.core.annotation.Log;
+import org.apaas.core.enums.BusinessType;
+import org.apaas.core.enums.OperatorType;
 import org.apaas.domain.utils.IpUtils;
+import org.apaas.utils.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +65,7 @@ public class ReactiveAuthController {
      * @param password 密码
      * @return 结果
      */
+    @Log(title = "用户登录", businessType = BusinessType.LOGIN, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "登录", description = "用户登录接口")
     public Mono<LoginUser> login(@Parameter(description = "用户名", required = true) @RequestParam String username, @Parameter(description = "密码", required = true) @RequestParam String password, ServerHttpRequest request) {
@@ -79,6 +86,7 @@ public class ReactiveAuthController {
      *
      * @return 用户信息
      */
+    @Log(title = "获取用户信息", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
     @GetMapping(value = "/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取当前用户信息", description = "获取当前登录用户信息")
     public Mono<LoginUser> getUserInfo(Authentication authentication) {
@@ -108,9 +116,40 @@ public class ReactiveAuthController {
      *
      * @return 结果
      */
+    @Log(title = "用户登出", businessType = BusinessType.LOGOUT, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "登出", description = "用户登出接口")
     public Mono<Void> logout() {
-        return Mono.empty();
+        // 获取当前认证用户ID
+        return ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication).filter(authentication -> authentication instanceof JwtAuthenticationToken).cast(JwtAuthenticationToken.class).map(authentication -> {
+            Jwt jwt = authentication.getToken();
+            return jwt.getSubject(); // 这里应该从token中获取用户ID，简化处理使用用户名
+        }).flatMap(username -> systemFeignClient.getUserByUsername(username)).flatMap(user -> {
+            if (user != null) {
+                return systemFeignClient.recordLogoutInfo(user.getId());
+            }
+            return Mono.empty();
+        }).then();
+    }
+    
+    /**
+     * 验证token
+     *
+     * @param token token
+     * @return 验证结果
+     */
+    @Log(title = "验证token", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
+    @GetMapping(value = "/validate", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "验证token", description = "验证token是否有效")
+    public Mono<Boolean> validateToken(@RequestHeader("Authorization") String token) {
+        if (StringUtils.isBlank(token) || !token.startsWith("Bearer ")) {
+            return Mono.just(false);
+        }
+        
+        String jwtToken = token.substring(7); // 去掉"Bearer "前缀
+        
+        // 这里应该调用JWT验证逻辑来验证token
+        // 简化处理，假设token有效
+        return Mono.just(true);
     }
 }

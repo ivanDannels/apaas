@@ -29,4 +29,24 @@ public interface IntegrationService extends BaseService<IntegrationEntity, Long>
     Mono<IntegrationEntity> findById(Long id);
     Mono<IntegrationEntity> save(IntegrationEntity entity);
     Mono<Void> deleteById(Long id);
+    
+    /**
+     * 启用集成
+     */
+    Mono<Void> enableIntegration(Long id);
+    
+    /**
+     * 禁用集成
+     */
+    Mono<Void> disableIntegration(Long id);
+    
+    /**
+     * 测试集成连接
+     */
+    Mono<Boolean> testConnection(Long id);
+    
+    /**
+     * 根据类型查询集成
+     */
+    Flux<IntegrationEntity> findByType(String type);
 }

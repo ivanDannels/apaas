@@ -16,35 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.flow.engine.service.reactive;
+package org.apaas.gateway.feign;
 
-import org.apaas.domain.service.BaseService;
-import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
-import org.apaas.flow.engine.entity.FlowInstance;
-import org.apaas.flow.engine.entity.FlowTask;
-import reactor.core.publisher.Flux;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
- * 响应式流程实例服务接口
+ * 用户服务Feign客户端
  */
-public interface ReactiveFlowInstanceService extends BaseService<FlowInstance, Long> {
+@FeignClient(name = "apaas-system", url = "${apaas.system.service.url:http://localhost:8082}")
+public interface UserServiceFeignClient {
     
     /**
-     * 根据流程实例ID获取流程实例
+     * 获取用户权限
      *
-     * @param instanceId 流程实例ID
-     * @return 流程实例信息
+     * @param userId 用户ID
+     * @return 权限列表
      */
-    Mono<FlowInstance> getFlowInstanceById(Long instanceId);
-    
-    Mono<FlowInstance> startInstance(StartInstanceDTO startInstanceDTO);
-    
-    Mono<FlowInstance> terminateInstance(Long id);
-    
-    Mono<FlowInstance> suspendInstance(Long id);
-    
-    Mono<FlowInstance> resumeInstance(Long id);
-    
-    Flux<FlowTask> getInstanceTasks(Long id);
+    @GetMapping("/api/v1/reactive/users/{userId}/permissions")
+    Mono<List<String>> getUserPermissions(@PathVariable("userId") Long userId);
 }

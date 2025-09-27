@@ -32,4 +32,9 @@ public class IntegrationEntity extends BaseEntity {
     
     private String name;
     private String description;
+    private String type; // 集成类型，如：数据库、API、消息队列等
+    private String config; // 配置信息，JSON格式
+    private Integer status; // 0-启用，1-禁用
+    private String endpoint; // 接入点URL
+    
 }

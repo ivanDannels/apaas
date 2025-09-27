@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
         HttpStatus status = code != null && code >= 400 && code < 600 ? HttpStatus.valueOf(code) : HttpStatus.INTERNAL_SERVER_ERROR;
         
         String message = code != null ? e.getMessage() : "服务器内部错误，请联系管理员";
-        String detailMessage = e.getDetailMessage();
+        String detailMessage = e.getMessage(); // 使用getMessage()替代getDetailMessage()
         
         return buildErrorResponse(status, "Service Error", message, detailMessage);
     }

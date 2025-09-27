@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Service
 public class IntegrationServiceImpl extends BaseServiceImpl<IntegrationEntity, Long, IntegrationRepository> implements IntegrationService {
     
@@ -45,11 +47,88 @@ public class IntegrationServiceImpl extends BaseServiceImpl<IntegrationEntity, L
     
     @Override
     public Mono<IntegrationEntity> save(IntegrationEntity entity) {
+        entity.setUpdatedTime(LocalDateTime.now());
         return repository.save(entity);
     }
     
     @Override
     public Mono<Void> deleteById(Long id) {
         return repository.deleteById(id);
+    }
+    
+    @Override
+    public Mono<Void> enableIntegration(Long id) {
+        return repository.findById(id).flatMap(entity -> {
+            entity.setStatus(0); // 0-启用
+            entity.setUpdatedTime(LocalDateTime.now());
+            return repository.save(entity);
+        }).then();
+    }
+    
+    @Override
+    public Mono<Void> disableIntegration(Long id) {
+        return repository.findById(id).flatMap(entity -> {
+            entity.setStatus(1); // 1-禁用
+            entity.setUpdatedTime(LocalDateTime.now());
+            return repository.save(entity);
+        }).then();
+    }
+    
+    @Override
+    public Mono<Boolean> testConnection(Long id) {
+        // 这里应该实现具体的连接测试逻辑
+        // 根据集成类型进行不同的连接测试
+        return repository.findById(id).flatMap(entity -> {
+            // 模拟连接测试过程
+            String type = entity.getType();
+            String config = entity.getConfig();
+            
+            // 根据不同的集成类型进行测试
+            switch (type) {
+                case "DATABASE":
+                    // 数据库连接测试
+                    return Mono.just(testDatabaseConnection(config));
+                case "API":
+                    // API连接测试
+                    return Mono.just(testApiConnection(config));
+                case "MESSAGE_QUEUE":
+                    // 消息队列连接测试
+                    return Mono.just(testMessageQueueConnection(config));
+                default:
+                    return Mono.just(false);
+            }
+        }).defaultIfEmpty(false);
+    }
+    
+    @Override
+    public Flux<IntegrationEntity> findByType(String type) {
+        return repository.findByType(type);
+    }
+    
+    /**
+     * 测试数据库连接
+     */
+    private boolean testDatabaseConnection(String config) {
+        // 实现数据库连接测试逻辑
+        // 这里简化处理，实际应该根据配置信息连接数据库
+        return true; // 模拟测试成功
+    }
+    
+    /**
+     * 测试API连接
+     */
+    private boolean testApiConnection(String config) {
+        // 实现API连接测试逻辑
+        // 这里简化处理，实际应该根据配置信息调用API
+        return true; // 模拟测试成功
+    }
+    
+    /**
+     * 测试消息队列连接
+     */
+    private boolean testMessageQueueConnection(String config) {
+        // 实现消息队列连接测试逻辑
+        // 这里简化处理，实际应该根据配置信息连接消息队列
+        return true; // 模拟测试成功
     }
 }

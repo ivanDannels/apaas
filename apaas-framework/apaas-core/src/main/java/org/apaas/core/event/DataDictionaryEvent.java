@@ -16,84 +16,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.auth.entity;
+package org.apaas.core.event;
 
-import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 
 /**
- * 用户实体类
+ * 数据字典事件
  * @author ivan
  */
 @Data
-@SuperBuilder
-@Table("sys_user")
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public class DataDictionaryEvent extends BaseEvent {
     
     /**
-     * 用户名
+     * 数据字典ID
      */
-    private String username;
+    private Long dictionaryId;
     
     /**
-     * 密码
+     * 数据字典名称
      */
-    private String password;
+    private String dictionaryName;
     
     /**
-     * 昵称
+     * 操作类型
      */
-    private String nickname;
+    private String operationType;
     
     /**
-     * 手机号码
+     * 操作描述
      */
-    private String phone;
+    private String description;
     
-    /**
-     * 邮箱
-     */
-    private String email;
-    
-    /**
-     * 头像
-     */
-    private String avatar;
-    
-    /**
-     * 性别：0-男，1-女
-     */
-    private Integer gender;
-    
-    /**
-     * 状态：0-启用，1-禁用
-     */
-    private Integer status;
-    
-    /**
-     * 登录IP
-     */
-    private String loginIp;
-    
-    /**
-     * 登录时间
-     */
-    private LocalDateTime loginDate;
-    
-    /**
-     * 登出时间
-     */
-    private LocalDateTime logoutDate;
-    
-    /**
-     * 删除标志：0-未删除，1-已删除
-     */
-    private Integer deleted = 0;
+    public DataDictionaryEvent(String eventType, Long dictionaryId, String dictionaryName, String operationType, String description) {
+        super(eventType, LocalDateTime.now());
+        this.dictionaryId = dictionaryId;
+        this.dictionaryName = dictionaryName;
+        this.operationType = operationType;
+        this.description = description;
+    }
 }

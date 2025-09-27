@@ -40,6 +40,11 @@ public class FlowInstance extends BaseEntity {
     private Long definitionId;
     
     /**
+     * 流程实例标题
+     */
+    private String title;
+    
+    /**
      * 流程定义名称
      */
     private String definitionName;
@@ -98,4 +103,9 @@ public class FlowInstance extends BaseEntity {
      * 结束时间
      */
     private LocalDateTime endTime;
+    
+    /**
+     * 流程变量
+     */
+    private String variables;
 }

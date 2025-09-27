@@ -21,6 +21,9 @@ package org.apaas.flow.engine.controller.reactive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apaas.core.annotation.Log;
+import org.apaas.core.enums.BusinessType;
+import org.apaas.core.enums.OperatorType;
 import org.apaas.core.query.Query;
 import org.apaas.domain.rest.ReactiveBaseController;
 import org.apaas.flow.engine.entity.FlowDefinition;
@@ -45,6 +48,7 @@ public class ReactiveFlowDefinitionController extends ReactiveBaseController<Flo
     /**
      * 部署流程定义
      */
+    @Log(title = "部署流程定义", businessType = BusinessType.FLOW_START, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/deploy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "部署流程定义", description = "发布流程定义为可用状态")
     public Mono<FlowDefinition> deploy(@Parameter(description = "流程ID", required = true) @PathVariable Long id) {
@@ -54,6 +58,7 @@ public class ReactiveFlowDefinitionController extends ReactiveBaseController<Flo
     /**
      * 停用流程定义
      */
+    @Log(title = "停用流程定义", businessType = BusinessType.UPDATE, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/disable/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "停用流程定义", description = "将流程定义设置为停用状态")
     public Mono<FlowDefinition> disable(@Parameter(description = "流程ID", required = true) @PathVariable Long id) {
@@ -63,6 +68,7 @@ public class ReactiveFlowDefinitionController extends ReactiveBaseController<Flo
     /**
      * 获取流程版本列表
      */
+    @Log(title = "获取流程版本列表", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
     @GetMapping(value = "/versions/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取流程版本列表", description = "根据流程编码查询所有版本")
     public Flux<FlowDefinition> getVersionsByCode(@Parameter(description = "流程编码", required = true) @PathVariable String code) {

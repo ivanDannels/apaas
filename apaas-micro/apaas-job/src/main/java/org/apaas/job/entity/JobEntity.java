@@ -24,6 +24,8 @@ import lombok.experimental.SuperBuilder;
 import org.apaas.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
+
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
@@ -32,5 +34,10 @@ public class JobEntity extends BaseEntity {
     
     private String name;
     private String cronExpression;
+    private String jobClass;
+    private String description;
+    private Integer status; // 0-启用，1-禁用
+    private String parameters; // 任务参数
+    private LocalDateTime lastTriggerTime; // 最后触发时间
     
 }

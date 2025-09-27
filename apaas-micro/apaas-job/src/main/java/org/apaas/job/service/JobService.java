@@ -29,4 +29,29 @@ public interface JobService extends BaseService<JobEntity, Long> {
     Mono<JobEntity> findById(Long id);
     Mono<JobEntity> save(JobEntity entity);
     Mono<Void> deleteById(Long id);
+    
+    /**
+     * 启用任务
+     */
+    Mono<Void> enableJob(Long id);
+    
+    /**
+     * 禁用任务
+     */
+    Mono<Void> disableJob(Long id);
+    
+    /**
+     * 手动触发任务
+     */
+    Mono<Void> triggerJob(Long id);
+    
+    /**
+     * 暂停任务执行
+     */
+    Mono<Void> pauseJob(Long id);
+    
+    /**
+     * 恢复任务执行
+     */
+    Mono<Void> resumeJob(Long id);
 }

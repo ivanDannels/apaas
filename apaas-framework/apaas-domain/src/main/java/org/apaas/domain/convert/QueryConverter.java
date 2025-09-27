@@ -24,7 +24,6 @@ import org.apaas.core.query.Query;
 import org.apaas.utils.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.objenesis.instantiator.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -46,25 +45,30 @@ public class QueryConverter {
     }
     
     public static <T> T convertToEntity(Query query, Class<T> entityClass) {
-        // 根据 entityClass 得到一个 T的实例
-        T entity = ClassUtils.newInstance(entityClass);
-        Condition[] conditions = query.getConditions();
-        if (conditions != null) {
-            // 循环遍历条件数组, 并处理每个条件转换为实体属性
-            for (Condition condition : conditions) {
-                // 获取实体属性名
-                String fieldName = condition.getField();
-                // 获取实体属性值
-                Object fieldValue = condition.getValue();
-                // 根据实体属性名获取实体属性
-                Field field = ReflectionUtils.findField(entityClass, fieldName);
-                // 设置实体属性值
-                if (Objects.nonNull(field)) {
-                    ReflectionUtils.setField(field, entity, fieldValue);
+        try {
+            // 根据 entityClass 得到一个 T的实例
+            T entity = entityClass.getDeclaredConstructor().newInstance();
+            Condition[] conditions = query.getConditions();
+            if (conditions != null) {
+                // 循环遍历条件数组, 并处理每个条件转换为实体属性
+                for (Condition condition : conditions) {
+                    // 获取实体属性名
+                    String fieldName = condition.getField();
+                    // 获取实体属性值
+                    Object fieldValue = condition.getValue();
+                    // 根据实体属性名获取实体属性
+                    Field field = ReflectionUtils.findField(entityClass, fieldName);
+                    // 设置实体属性值
+                    if (Objects.nonNull(field)) {
+                        ReflectionUtils.makeAccessible(field);
+                        ReflectionUtils.setField(field, entity, fieldValue);
+                    }
                 }
             }
+            return entity;
+        } catch (Exception e) {
+            throw new BusinessException("Failed to convert query to entity", e);
         }
-        return entity;
     }
     
     public static <T> Example<T> convertToExample(Query query, Class<T> entityClass) {
@@ -84,7 +88,7 @@ public class QueryConverter {
             }
             return fieldName;
         } catch (Exception e) {
-            throw BusinessException.of("Failed to get field: " + fieldName);
+            throw new BusinessException("Failed to get field: " + fieldName, e);
         }
     }
 }

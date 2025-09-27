@@ -66,4 +66,9 @@ public interface ReactiveDataDictionaryService extends BaseService<DataDictionar
      * 导入数据字典
      */
     Mono<Boolean> importExcel(byte[] fileData);
+    
+    /**
+     * 根据ID查询数据字典
+     */
+    Mono<DataDictionary> findById(Long id);
 }

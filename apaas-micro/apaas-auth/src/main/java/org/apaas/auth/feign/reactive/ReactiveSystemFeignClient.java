@@ -62,4 +62,13 @@ public interface ReactiveSystemFeignClient {
      */
     @PostExchange("/user/login/record")
     Mono<Void> recordLoginInfo(@RequestParam("username") String username, @RequestParam("ipAddr") String ipAddr);
+    
+    /**
+     * 记录登出信息
+     *
+     * @param userId 用户ID
+     * @return 结果
+     */
+    @PostExchange("/user/logout/record")
+    Mono<Void> recordLogoutInfo(@RequestParam("userId") Long userId);
 }

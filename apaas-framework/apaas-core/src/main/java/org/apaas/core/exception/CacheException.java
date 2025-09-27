@@ -16,48 +16,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.flow.engine.domain.dto;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
-import java.util.Map;
+package org.apaas.core.exception;
 
 /**
- * 启动流程实例DTO
+ * 缓存异常类
+ * @author ivan
  */
-@Data
-public class StartInstanceDTO {
+public class CacheException extends BusinessException {
     
-    /**
-     * 流程定义ID
-     */
-    @NotNull(message = "流程定义ID不能为空")
-    private Long definitionId;
+    public CacheException(String message) {
+        super(500, message);
+    }
     
-    /**
-     * 流程实例标题
-     */
-    private String title;
-    
-    /**
-     * 业务主键
-     */
-    private String businessKey;
-    
-    /**
-     * 业务表单数据
-     */
-    private String businessData;
-    
-    /**
-     * 发起人ID
-     */
-    private Long starterId;
-    
-    /**
-     * 流程变量
-     */
-    private Map<String, Object> variables;
+    public CacheException(String message, Throwable cause) {
+        super(500, message, cause);
+    }
 }

@@ -16,35 +16,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.flow.engine.service.reactive;
+package org.apaas.core.event;
 
-import org.apaas.domain.service.BaseService;
-import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
-import org.apaas.flow.engine.entity.FlowInstance;
-import org.apaas.flow.engine.entity.FlowTask;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
- * 响应式流程实例服务接口
+ * 用户事件
+ * @author ivan
  */
-public interface ReactiveFlowInstanceService extends BaseService<FlowInstance, Long> {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEvent extends BaseEvent {
     
     /**
-     * 根据流程实例ID获取流程实例
-     *
-     * @param instanceId 流程实例ID
-     * @return 流程实例信息
+     * 用户ID
      */
-    Mono<FlowInstance> getFlowInstanceById(Long instanceId);
+    private Long userId;
     
-    Mono<FlowInstance> startInstance(StartInstanceDTO startInstanceDTO);
+    /**
+     * 用户名
+     */
+    private String username;
     
-    Mono<FlowInstance> terminateInstance(Long id);
+    /**
+     * 操作类型
+     */
+    private String operationType;
     
-    Mono<FlowInstance> suspendInstance(Long id);
+    /**
+     * 操作描述
+     */
+    private String description;
     
-    Mono<FlowInstance> resumeInstance(Long id);
-    
-    Flux<FlowTask> getInstanceTasks(Long id);
+    public UserEvent(String eventType, Long userId, String username, String operationType, String description) {
+        super(eventType, LocalDateTime.now());
+        this.userId = userId;
+        this.username = username;
+        this.operationType = operationType;
+        this.description = description;
+    }
 }

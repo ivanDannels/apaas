@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Service
 public class JobServiceImpl extends BaseServiceImpl<JobEntity, Long, JobRepository> implements JobService {
     
@@ -45,11 +47,58 @@ public class JobServiceImpl extends BaseServiceImpl<JobEntity, Long, JobReposito
     
     @Override
     public Mono<JobEntity> save(JobEntity entity) {
+        entity.setUpdatedTime(LocalDateTime.now());
         return repository.save(entity);
     }
     
     @Override
     public Mono<Void> deleteById(Long id) {
         return repository.deleteById(id);
+    }
+    
+    @Override
+    public Mono<Void> enableJob(Long id) {
+        return repository.findById(id).flatMap(entity -> {
+            entity.setStatus(0); // 0-启用
+            entity.setUpdatedTime(LocalDateTime.now());
+            return repository.save(entity);
+        }).then();
+    }
+    
+    @Override
+    public Mono<Void> disableJob(Long id) {
+        return repository.findById(id).flatMap(entity -> {
+            entity.setStatus(1); // 1-禁用
+            entity.setUpdatedTime(LocalDateTime.now());
+            return repository.save(entity);
+        }).then();
+    }
+    
+    @Override
+    public Mono<Void> triggerJob(Long id) {
+        return repository.findById(id).flatMap(entity -> {
+            // 记录手动触发日志
+            entity.setLastTriggerTime(LocalDateTime.now());
+            entity.setUpdatedTime(LocalDateTime.now());
+            return repository.save(entity);
+        }).then();
+    }
+    
+    @Override
+    public Mono<Void> pauseJob(Long id) {
+        return repository.findById(id).flatMap(entity -> {
+            entity.setStatus(2); // 2-暂停
+            entity.setUpdatedTime(LocalDateTime.now());
+            return repository.save(entity);
+        }).then();
+    }
+    
+    @Override
+    public Mono<Void> resumeJob(Long id) {
+        return repository.findById(id).flatMap(entity -> {
+            entity.setStatus(0); // 0-启用
+            entity.setUpdatedTime(LocalDateTime.now());
+            return repository.save(entity);
+        }).then();
     }
 }

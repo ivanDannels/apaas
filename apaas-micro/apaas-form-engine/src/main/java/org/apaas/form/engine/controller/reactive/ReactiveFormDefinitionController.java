@@ -21,6 +21,9 @@ package org.apaas.form.engine.controller.reactive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apaas.core.annotation.Log;
+import org.apaas.core.enums.BusinessType;
+import org.apaas.core.enums.OperatorType;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import org.apaas.domain.rest.ReactiveBaseController;
@@ -49,6 +52,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 获取表单定义列表
      */
+    @Log(title = "获取表单定义列表", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/page", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取表单定义列表", description = "分页查询表单定义信息")
     public Mono<PageResult<FormDefinition>> list(@RequestBody Query query) {
@@ -58,6 +62,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 获取表单定义详情
      */
+    @Log(title = "获取表单定义详情", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
     @Override
     @Operation(summary = "获取表单定义详情", description = "根据ID查询表单定义信息")
     @Parameter(name = "id", description = "表单ID", required = true)
@@ -68,6 +73,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 创建表单定义
      */
+    @Log(title = "创建表单定义", businessType = BusinessType.INSERT, operatorType = OperatorType.MANAGE)
     @Override
     @Operation(summary = "创建表单定义", description = "新增表单定义信息")
     public Mono<FormDefinition> add(@RequestBody FormDefinition formDefinition) {
@@ -77,6 +83,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 更新表单定义
      */
+    @Log(title = "更新表单定义", businessType = BusinessType.UPDATE, operatorType = OperatorType.MANAGE)
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "更新表单定义", description = "修改表单定义信息")
     @Parameter(name = "id", description = "表单ID", required = true)
@@ -88,6 +95,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 发布表单定义
      */
+    @Log(title = "发布表单定义", businessType = BusinessType.UPDATE, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/publish/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "发布表单定义", description = "发布表单定义为可用状态")
     @Parameter(name = "id", description = "表单ID", required = true)
@@ -98,6 +106,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 停用表单定义
      */
+    @Log(title = "停用表单定义", businessType = BusinessType.UPDATE, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/disable/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "停用表单定义", description = "将表单定义设置为停用状态")
     @Parameter(name = "id", description = "表单ID", required = true)
@@ -108,6 +117,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 获取表单版本列表
      */
+    @Log(title = "获取表单版本列表", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
     @GetMapping(value = "/versions/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "获取表单版本列表", description = "根据表单编码查询所有版本")
     @Parameter(name = "code", description = "表单编码", required = true)
@@ -118,6 +128,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 复制表单定义
      */
+    @Log(title = "复制表单定义", businessType = BusinessType.INSERT, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/copy/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "复制表单定义", description = "复制现有表单定义创建新表单")
     @Parameter(name = "id", description = "表单ID", required = true)
@@ -128,6 +139,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 导出表单定义
      */
+    @Log(title = "导出表单定义", businessType = BusinessType.EXPORT, operatorType = OperatorType.MANAGE)
     @GetMapping(value = "/export/{id}")
     @Operation(summary = "导出表单定义", description = "导出表单定义为JSON文件")
     @Parameter(name = "id", description = "表单ID", required = true)
@@ -138,6 +150,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     /**
      * 导入表单定义
      */
+    @Log(title = "导入表单定义", businessType = BusinessType.IMPORT, operatorType = OperatorType.MANAGE)
     @PostMapping(value = "/import", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "导入表单定义", description = "从JSON数据导入表单定义")
     public Mono<Long> importForm(@RequestBody byte[] data) {

@@ -18,8 +18,10 @@
  */
 package org.apaas.gateway.filter;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.utils.StringUtils;
+import org.apaas.gateway.feign.AuthServiceFeignClient;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -38,7 +40,10 @@ import java.util.List;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class AuthFilter implements GlobalFilter, Ordered {
+    
+    private final AuthServiceFeignClient authServiceFeignClient;
     
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String AUTH_HEADER = "Authorization";
@@ -69,16 +74,29 @@ public class AuthFilter implements GlobalFilter, Ordered {
             return response.setComplete();
         }
         
-        // 解析token，这里简化处理，实际应该调用认证服务验证token
-        // 在实际项目中，应该调用认证服务验证token，并获取用户信息
-        // 这里简化处理，假设token有效，并从token中提取用户ID和用户名
-        String userId = "1";
-        String userName = "admin";
-        
-        // 将用户信息添加到请求头中，传递给下游服务
-        ServerHttpRequest newRequest = request.mutate().header(USER_ID_HEADER, userId).header(USER_NAME_HEADER, userName).build();
-        
-        return chain.filter(exchange.mutate().request(newRequest).build());
+        // 调用认证服务验证token
+        return authServiceFeignClient.validateToken(token).flatMap(isValid -> {
+            if (isValid) {
+                // Token有效，解析用户信息
+                // 这里简化处理，实际应该从token中解析用户ID和用户名
+                String userId = "1";
+                String userName = "admin";
+                
+                // 将用户信息添加到请求头中，传递给下游服务
+                ServerHttpRequest newRequest = request.mutate().header(USER_ID_HEADER, userId).header(USER_NAME_HEADER, userName).build();
+                
+                return chain.filter(exchange.mutate().request(newRequest).build());
+            } else {
+                // Token无效
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                return response.setComplete();
+            }
+        }).onErrorResume(throwable -> {
+            // 处理验证过程中的异常
+            log.error("Token validation failed", throwable);
+            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            return response.setComplete();
+        });
     }
     
     @Override

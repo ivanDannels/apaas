@@ -16,35 +16,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.flow.engine.service.reactive;
+package org.apaas.core.event;
 
-import org.apaas.domain.service.BaseService;
-import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
-import org.apaas.flow.engine.entity.FlowInstance;
-import org.apaas.flow.engine.entity.FlowTask;
-import reactor.core.publisher.Flux;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式流程实例服务接口
+ * 事件发布服务
+ * @author ivan
  */
-public interface ReactiveFlowInstanceService extends BaseService<FlowInstance, Long> {
+@Service
+public class EventPublisherService {
+    
+    private final ReactiveRedisTemplate<String, Object> reactiveRedisTemplate;
+    
+    public EventPublisherService(ReactiveRedisTemplate<String, Object> reactiveRedisTemplate) {
+        this.reactiveRedisTemplate = reactiveRedisTemplate;
+    }
     
     /**
-     * 根据流程实例ID获取流程实例
-     *
-     * @param instanceId 流程实例ID
-     * @return 流程实例信息
+     * 发布事件
+     * 
+     * @param topic 事件主题
+     * @param event 事件内容
+     * @return 发布结果
      */
-    Mono<FlowInstance> getFlowInstanceById(Long instanceId);
-    
-    Mono<FlowInstance> startInstance(StartInstanceDTO startInstanceDTO);
-    
-    Mono<FlowInstance> terminateInstance(Long id);
-    
-    Mono<FlowInstance> suspendInstance(Long id);
-    
-    Mono<FlowInstance> resumeInstance(Long id);
-    
-    Flux<FlowTask> getInstanceTasks(Long id);
+    public <T> Mono<Boolean> publishEvent(String topic, T event) {
+        return reactiveRedisTemplate.convertAndSend(topic, event).map(result -> true).onErrorReturn(false);
+    }
 }
