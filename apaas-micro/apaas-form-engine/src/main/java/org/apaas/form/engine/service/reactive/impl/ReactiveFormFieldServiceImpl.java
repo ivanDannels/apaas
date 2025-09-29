@@ -19,7 +19,7 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormField;
 import org.apaas.form.engine.repository.FormFieldRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormFieldService;
@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-public class ReactiveFormFieldServiceImpl extends BaseServiceImpl<FormField, Long, FormFieldRepository> implements ReactiveFormFieldService {
+public class ReactiveFormFieldServiceImpl extends AbstractApplicationService<FormField, Long, FormFieldRepository> implements ReactiveFormFieldService {
     
     public ReactiveFormFieldServiceImpl(FormFieldRepository repository) {
         super(repository);

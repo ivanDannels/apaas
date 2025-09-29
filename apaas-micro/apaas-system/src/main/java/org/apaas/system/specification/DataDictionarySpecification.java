@@ -18,7 +18,7 @@
  */
 package org.apaas.system.specification;
 
-import org.apaas.domain.specification.Specification;
+import org.apaas.domain.domain.specification.Specification;
 import org.apaas.system.entity.DataDictionaryAggregate;
 
 /**

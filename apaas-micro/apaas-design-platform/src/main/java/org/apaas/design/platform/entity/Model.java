@@ -19,7 +19,7 @@
 package org.apaas.design.platform.entity;
 
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.relational.core.mapping.Table;
@@ -28,7 +28,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("model")
-public class Model extends BaseEntity {
+public class Model extends BaseEntity<Long> {
     
     private String name;
     private String description;

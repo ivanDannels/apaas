@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.system.entity.SysConfig;
 import org.apaas.system.service.ReactiveSysConfigService;
 import org.springframework.http.MediaType;

@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
 import org.apaas.flow.engine.entity.FlowInstance;
 import org.apaas.flow.engine.entity.FlowTask;

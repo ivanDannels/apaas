@@ -19,7 +19,8 @@
 package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.domain.domain.service.AbstractDomainService;
 import org.apaas.system.domain.dto.SysConfigDTO;
 import org.apaas.system.entity.SysConfig;
 import org.apaas.system.repository.SysConfigRepository;
@@ -44,7 +45,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class ReactiveSysConfigServiceImpl extends BaseServiceImpl<SysConfig, Long, SysConfigRepository> implements ReactiveSysConfigService {
+public class ReactiveSysConfigServiceImpl extends AbstractApplicationService<SysConfig, Long, SysConfigRepository> implements ReactiveSysConfigService {
     
     public ReactiveSysConfigServiceImpl(SysConfigRepository repository) {
         super(repository);

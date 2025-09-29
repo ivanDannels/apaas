@@ -19,7 +19,7 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Role;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
  * 响应式角色服务接口
  * @author ivan
  */
-public interface ReactiveRoleService extends BaseService<Role, Long> {
+public interface ReactiveRoleService extends ApplicationService<Role, Long> {
     
     /**
      * 根据角色名获取角色

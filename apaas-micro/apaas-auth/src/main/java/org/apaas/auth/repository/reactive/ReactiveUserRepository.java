@@ -19,8 +19,7 @@
 package org.apaas.auth.repository.reactive;
 
 import org.apaas.auth.entity.User;
-import org.apaas.domain.repository.ReactiveBaseRepository;
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import reactor.core.publisher.Mono;
 
 /**

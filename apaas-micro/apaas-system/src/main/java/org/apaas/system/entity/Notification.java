@@ -21,7 +21,7 @@ package org.apaas.system.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @Table("notification")
 @EqualsAndHashCode(callSuper = true)
-public class Notification extends BaseEntity {
+public class Notification extends BaseEntity<Long> {
     
     /**
      * 标题

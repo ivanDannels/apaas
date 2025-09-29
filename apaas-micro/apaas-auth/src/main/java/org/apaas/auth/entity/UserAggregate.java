@@ -21,11 +21,7 @@ package org.apaas.auth.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.AggregateRoot;
-import org.apaas.domain.entity.BaseEntity;
-import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,69 +32,8 @@ import java.util.List;
  */
 @Data
 @SuperBuilder
-@Table("sys_user")
 @EqualsAndHashCode(callSuper = true)
-public class UserAggregate extends BaseEntity implements AggregateRoot<Long> {
-    
-    /**
-     * 用户名
-     */
-    private String username;
-    
-    /**
-     * 密码
-     */
-    private String password;
-    
-    /**
-     * 昵称
-     */
-    private String nickname;
-    
-    /**
-     * 手机号码
-     */
-    private String phone;
-    
-    /**
-     * 邮箱
-     */
-    private String email;
-    
-    /**
-     * 头像
-     */
-    private String avatar;
-    
-    /**
-     * 性别：0-男，1-女
-     */
-    private Integer gender;
-    
-    /**
-     * 状态：0-启用，1-禁用
-     */
-    private Integer status;
-    
-    /**
-     * 登录IP
-     */
-    private String loginIp;
-    
-    /**
-     * 登录时间
-     */
-    private LocalDateTime loginDate;
-    
-    /**
-     * 登出时间
-     */
-    private LocalDateTime logoutDate;
-    
-    /**
-     * 删除标志：0-未删除，1-已删除
-     */
-    private Integer deleted = 0;
+public class UserAggregate extends User {
     
     /**
      * 用户角色列表
@@ -146,8 +81,7 @@ public class UserAggregate extends BaseEntity implements AggregateRoot<Long> {
      * @return 是否有效
      */
     public boolean isValid() {
-        return username != null && !username.trim().isEmpty() &&
-               password != null && !password.trim().isEmpty();
+        return getUsername() != null && !getUsername().trim().isEmpty() && getPassword() != null && !getPassword().trim().isEmpty();
     }
     
     /**
@@ -156,6 +90,6 @@ public class UserAggregate extends BaseEntity implements AggregateRoot<Long> {
      * @return 是否已删除
      */
     public boolean isDeleted() {
-        return deleted != null && deleted == 1;
+        return getDeleted() != null && getDeleted() == 1;
     }
 }

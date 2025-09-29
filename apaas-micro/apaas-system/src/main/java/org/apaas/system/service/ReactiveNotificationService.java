@@ -18,7 +18,7 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * 响应式通知服务接口
  */
-public interface ReactiveNotificationService extends BaseService<Notification, Long> {
+public interface ReactiveNotificationService extends ApplicationService<Notification, Long> {
     
     /**
      * 分页查询通知列表

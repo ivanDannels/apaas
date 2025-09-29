@@ -16,7 +16,7 @@ from common import load_documents, create_vector_store, create_llm, K_INDEX, CON
 selected_files = []
 
 # 文档内容列表
-documents = []
+knowledges = []
 
 # 向量数据库
 vector_store = None
@@ -68,7 +68,7 @@ def chat(query: str = Body(..., embed=True)):
 # 文件上传接口
 @app.post('/upload')
 async def upload_file(file: UploadFile = File(...)):
-    global documents, vector_store
+    global knowledges, vector_store
     
     # 验证文件类型
     if not (file.filename.endswith('.txt') or file.filename.endswith('.md')):
@@ -93,9 +93,9 @@ async def upload_file(file: UploadFile = File(...)):
             selected_files.append(file.filename)
         
         # 加载选择的文件并创建向量数据库
-        documents = load_documents(selected_files)
-        if documents:
-            vector_store = create_vector_store(documents)
+        knowledges = load_documents(selected_files)
+        if knowledges:
+            vector_store = create_vector_store(knowledges)
         
         return JSONResponse(content={'success': True, 'message': '文件上传成功'})
     except Exception as e:
@@ -127,7 +127,7 @@ def get_files():
 # 清空知识库的接口
 @app.post('/clear-knowledge')
 def clear_knowledge():
-    global documents, vector_store, selected_files
+    global knowledges, vector_store, selected_files
     try:
         # 清空选择的文件列表
         selected_files = []
@@ -141,7 +141,7 @@ def clear_knowledge():
                     os.remove(file_path)
         
         # 重新初始化文档和向量数据库
-        documents = []
+        knowledges = []
         vector_store = None
         
         return JSONResponse(content={'success': True, 'message': '知识库已清空'})
@@ -151,7 +151,7 @@ def clear_knowledge():
 # 选择文件的接口 - 支持选择文件和排除单个文件
 @app.post('/select-files')
 async def select_files(request_body: dict = Body(None)):
-    global selected_files, documents, vector_store
+    global selected_files, knowledges, vector_store
     try:
         # 确保request_body存在
         if not request_body:
@@ -173,11 +173,11 @@ async def select_files(request_body: dict = Body(None)):
             selected_files = []
             
         # 加载选择的文件
-        documents = load_documents(selected_files)
+        knowledges = load_documents(selected_files)
         
         # 更新向量数据库
-        if documents:
-            vector_store = create_vector_store(documents)
+        if knowledges:
+            vector_store = create_vector_store(knowledges)
         else:
             vector_store = None
         
@@ -191,7 +191,7 @@ async def select_files(request_body: dict = Body(None)):
 # 删除单个文件的接口
 @app.post('/delete-file')
 def delete_file(filename: str = Query(None)):
-    global documents, vector_store, selected_files
+    global knowledges, vector_store, selected_files
     try:
         if not filename:
             return JSONResponse(status_code=400, content={'error': '文件名不能为空'})
@@ -212,11 +212,11 @@ def delete_file(filename: str = Query(None)):
             selected_files.remove(filename)
         
         # 加载选择的文件
-        documents = load_documents(selected_files)
+        knowledges = load_documents(selected_files)
         
         # 更新向量数据库
-        if documents:
-            vector_store = create_vector_store(documents)
+        if knowledges:
+            vector_store = create_vector_store(knowledges)
         else:
             vector_store = None
         
@@ -227,7 +227,7 @@ def delete_file(filename: str = Query(None)):
 # 批量删除文件的接口
 @app.post('/batch-delete-files')
 def batch_delete_files(file_names: str = Query(None)):
-    global documents, vector_store, selected_files
+    global knowledges, vector_store, selected_files
     try:
         if not file_names:
             return JSONResponse(status_code=400, content={'error': '文件名列表不能为空'})
@@ -246,11 +246,11 @@ def batch_delete_files(file_names: str = Query(None)):
                     selected_files.remove(filename)
         
         # 加载选择的文件
-        documents = load_documents(selected_files)
+        knowledges = load_documents(selected_files)
         
         # 更新向量数据库
-        if documents:
-            vector_store = create_vector_store(documents)
+        if knowledges:
+            vector_store = create_vector_store(knowledges)
         else:
             vector_store = None
         

@@ -22,7 +22,7 @@ import org.apaas.core.query.PageResult;
 import org.apaas.flow.engine.entity.FlowDefinition;
 import org.apaas.flow.engine.repository.reactive.ReactiveFlowDefinitionRepository;
 import org.apaas.flow.engine.service.reactive.ReactiveFlowDefinitionService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -32,7 +32,7 @@ import reactor.core.publisher.Mono;
  * 响应式流程定义服务实现类
  */
 @Service
-public class ReactiveFlowDefinitionServiceImpl extends BaseServiceImpl<FlowDefinition, Long, ReactiveFlowDefinitionRepository> implements ReactiveFlowDefinitionService {
+public class ReactiveFlowDefinitionServiceImpl extends AbstractApplicationService<FlowDefinition, Long, ReactiveFlowDefinitionRepository> implements ReactiveFlowDefinitionService {
     
     public ReactiveFlowDefinitionServiceImpl(ReactiveFlowDefinitionRepository repository) {
         super(repository);

@@ -21,7 +21,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Role;
 import org.apaas.auth.repository.reactive.ReactiveRoleRepository;
 import org.apaas.auth.service.reactive.ReactiveRoleService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 @Service
-public class ReactiveRoleServiceImpl extends BaseServiceImpl<Role, Long, ReactiveRoleRepository> implements ReactiveRoleService {
+public class ReactiveRoleServiceImpl extends AbstractApplicationService<Role, Long, ReactiveRoleRepository> implements ReactiveRoleService {
     
     public ReactiveRoleServiceImpl(ReactiveRoleRepository repository) {
         super(repository);

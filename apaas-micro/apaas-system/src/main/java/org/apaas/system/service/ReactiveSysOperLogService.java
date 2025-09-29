@@ -18,13 +18,13 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.system.entity.SysOperLog;
 
 /**
  * 响应式操作日志服务接口
  * @author ivan
  */
-public interface ReactiveSysOperLogService extends BaseService<SysOperLog, Long> {
+public interface ReactiveSysOperLogService extends ApplicationService<SysOperLog, Long> {
     
 }

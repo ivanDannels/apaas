@@ -19,17 +19,15 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Resource;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 
-import org.apaas.core.query.PageResult;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 
 /**
  * 响应式资源服务接口
  * @author ivan
  */
-public interface ReactiveResourceService extends BaseService<Resource, Long> {
+public interface ReactiveResourceService extends ApplicationService<Resource, Long> {
     
     /**
      * 根据资源名称查询资源

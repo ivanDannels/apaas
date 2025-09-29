@@ -18,12 +18,12 @@
  */
 package org.apaas.flow.execution.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.FlowInstance;
 import reactor.core.publisher.Mono;
 
-public interface FlowRuntimeService extends BaseService<FlowInstance, Long> {
+public interface FlowRuntimeService extends ApplicationService<FlowInstance, Long> {
     
     /**
      * 启动流程实例

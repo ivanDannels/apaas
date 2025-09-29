@@ -20,7 +20,7 @@ package org.apaas.system.entity;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -29,7 +29,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @SuperBuilder
 @Table("files")
-public class Files extends BaseEntity {
+public class Files extends BaseEntity<Long> {
     
     private String fileName;
     private String fileUrl;

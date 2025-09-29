@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 @Service
-public class TestEntityServiceImpl extends BaseServiceImpl<TestEntity, Long, TestEntityRepository> implements TestEntityService {
+public class TestEntityServiceImpl extends AbstractDomainService<TestEntity, Long, TestEntityRepository> implements TestEntityService {
     
     public TestEntityServiceImpl(TestEntityRepository repository) {
         super(repository);

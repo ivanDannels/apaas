@@ -19,14 +19,14 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Organization;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * @author ivan
  */
-public interface ReactiveOrganizationService extends BaseService<Organization, Long> {
+public interface ReactiveOrganizationService extends ApplicationService<Organization, Long> {
     
     /**
      * 获取组织机构树

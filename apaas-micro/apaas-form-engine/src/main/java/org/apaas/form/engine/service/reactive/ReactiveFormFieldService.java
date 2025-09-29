@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.form.engine.entity.FormField;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
@@ -26,8 +26,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * 响应式表单字段服务接口
+ * @author ivan
  */
-public interface ReactiveFormFieldService extends BaseService<FormField, Long> {
+public interface ReactiveFormFieldService extends ApplicationService<FormField, Long> {
     
     /**
      * 分页查询表单字段

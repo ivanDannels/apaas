@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.integration.entity.IntegrationEntity;
 import org.apaas.integration.service.IntegrationService;
 import org.springframework.web.bind.annotation.*;

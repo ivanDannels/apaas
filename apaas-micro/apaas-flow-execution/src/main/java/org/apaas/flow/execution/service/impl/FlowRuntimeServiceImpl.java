@@ -19,7 +19,7 @@
 package org.apaas.flow.execution.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.FlowInstance;
 import org.apaas.flow.execution.repository.FlowInstanceRepository;
@@ -27,9 +27,12 @@ import org.apaas.flow.execution.service.FlowRuntimeService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author ivan
+ */
 @Slf4j
 @Service
-public class FlowRuntimeServiceImpl extends BaseServiceImpl<FlowInstance, Long, FlowInstanceRepository> implements FlowRuntimeService {
+public class FlowRuntimeServiceImpl extends AbstractApplicationService<FlowInstance, Long, FlowInstanceRepository> implements FlowRuntimeService {
     
     public FlowRuntimeServiceImpl(FlowInstanceRepository repository) {
         super(repository);

@@ -18,7 +18,8 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.application.ApplicationService;
+//import org.apaas.domain.service.application.ApplicationService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
 import org.apaas.system.entity.DataDictionaryAggregate;
 import org.springframework.data.domain.Pageable;

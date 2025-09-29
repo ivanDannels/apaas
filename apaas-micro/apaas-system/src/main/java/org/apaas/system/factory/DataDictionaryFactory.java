@@ -18,7 +18,7 @@
  */
 package org.apaas.system.factory;
 
-import org.apaas.domain.factory.EntityFactory;
+import org.apaas.domain.domain.factory.EntityFactory;
 import org.apaas.system.entity.DataDictionaryAggregate;
 import org.apaas.system.entity.DataDictionaryCode;
 import org.apaas.system.entity.DataDictionaryItem;
@@ -49,14 +49,8 @@ public class DataDictionaryFactory implements EntityFactory<DataDictionaryAggreg
         Integer type = (Integer) args[2];
         String description = (String) args[3];
         
-        DataDictionaryAggregate aggregate = DataDictionaryAggregate.builder()
-                .id(id)
-                .name(name)
-                .code(code)
-                .type(type)
-                .status(0) // 默认状态为正常
-                .description(description)
-                .build();
+        DataDictionaryAggregate aggregate = DataDictionaryAggregate.builder().id(id).name(name).code(code).type(type).status(0) // 默认状态为正常
+                .description(description).build();
         
         // 设置编码值对象
         DataDictionaryCode dictionaryCode = new DataDictionaryCode(code);
@@ -72,8 +66,7 @@ public class DataDictionaryFactory implements EntityFactory<DataDictionaryAggreg
      */
     @Override
     public DataDictionaryAggregate create() {
-        return DataDictionaryAggregate.builder()
-                .status(0) // 默认状态为正常
+        return DataDictionaryAggregate.builder().status(0) // 默认状态为正常
                 .build();
     }
     
@@ -85,27 +78,12 @@ public class DataDictionaryFactory implements EntityFactory<DataDictionaryAggreg
      */
     @Override
     public DataDictionaryAggregate createFrom(DataDictionaryAggregate prototype) {
-        DataDictionaryAggregate aggregate = DataDictionaryAggregate.builder()
-                .id(prototype.getId())
-                .name(prototype.getName())
-                .code(prototype.getCode())
-                .type(prototype.getType())
-                .status(prototype.getStatus())
-                .description(prototype.getDescription())
-                .build();
+        DataDictionaryAggregate aggregate = DataDictionaryAggregate.builder().id(prototype.getId()).name(prototype.getName()).code(prototype.getCode()).type(prototype.getType()).status(prototype.getStatus()).description(prototype.getDescription()).build();
         
         // 复制字典项
         if (prototype.getItems() != null) {
             prototype.getItems().forEach(item -> {
-                DataDictionaryItem newItem = DataDictionaryItem.builder()
-                        .id(item.getId())
-                        .dictionaryId(item.getDictionaryId())
-                        .label(item.getLabel())
-                        .value(item.getValue())
-                        .sortOrder(item.getSortOrder())
-                        .status(item.getStatus())
-                        .description(item.getDescription())
-                        .build();
+                DataDictionaryItem newItem = DataDictionaryItem.builder().id(item.getId()).dictionaryId(item.getDictionaryId()).name(item.getName()).value(item.getValue()).sequence(item.getSequence()).status(item.getStatus()).description(item.getDescription()).build();
                 aggregate.addItem(newItem);
             });
         }
@@ -119,18 +97,12 @@ public class DataDictionaryFactory implements EntityFactory<DataDictionaryAggreg
      * @param dictionaryId 字典ID
      * @param label 项标签
      * @param value 项值
-     * @param sortOrder 排序
+     * @param sequence 排序
      * @param description 描述
      * @return 数据字典项对象
      */
-    public DataDictionaryItem createDataDictionaryItem(Long dictionaryId, String label, String value, Integer sortOrder, String description) {
-        return DataDictionaryItem.builder()
-                .dictionaryId(dictionaryId)
-                .label(label)
-                .value(value)
-                .sortOrder(sortOrder)
-                .status(0) // 默认状态为正常
-                .description(description)
-                .build();
+    public DataDictionaryItem createDataDictionaryItem(Long dictionaryId, String label, String value, Integer sequence, String description) {
+        // 默认状态为正常
+        return DataDictionaryItem.builder().dictionaryId(dictionaryId).name(label).value(value).sequence(sequence).status(0).description(description).build();
     }
 }

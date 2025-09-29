@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 
 /**
  * 表单验证规则实体
@@ -31,7 +31,7 @@ import org.apaas.domain.entity.BaseEntity;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("form_validation_rule")
-public class FormValidationRule extends BaseEntity {
+public class FormValidationRule extends BaseEntity<Long> {
     
     /**
      * 表单字段ID

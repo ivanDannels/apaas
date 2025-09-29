@@ -18,7 +18,7 @@
  */
 package org.apaas.job.service.impl;
 
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.job.entity.JobEntity;
 import org.apaas.job.repository.JobRepository;
 import org.apaas.job.service.JobService;
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 
 @Service
-public class JobServiceImpl extends BaseServiceImpl<JobEntity, Long, JobRepository> implements JobService {
+public class JobServiceImpl extends AbstractApplicationService<JobEntity, Long, JobRepository> implements JobService {
     
     public JobServiceImpl(JobRepository repository) {
         super(repository);

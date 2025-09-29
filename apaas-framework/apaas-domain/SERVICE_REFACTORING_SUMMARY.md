@@ -72,7 +72,7 @@ org.apaas.domain.service
 | AbstractDomainService | org.apaas.domain.service.domain | 领域服务抽象基类 |
 | DomainService | org.apaas.domain.service.domain | 领域服务接口 |
 | OrderDomainService | org.apaas.domain.service.domain | 订单领域服务 |
-| ExampleDomainService | org.apaas.domain.service.domain.impl | 示例领域服务实现 |
+| ExampleDomainService | org.apaas.domain.domain.service.impl | 示例领域服务实现 |
 
 ### 4. 依赖关系更新
 
@@ -81,8 +81,8 @@ org.apaas.domain.service
 - `BaseService` → `org.apaas.domain.service.application.BaseService`
 - `ApplicationService` → `org.apaas.domain.service.application.ApplicationService`
 - `AbstractApplicationService` → `org.apaas.domain.service.application.AbstractApplicationService`
-- `DomainService` → `org.apaas.domain.service.domain.DomainService`
-- `AbstractDomainService` → `org.apaas.domain.service.domain.AbstractDomainService`
+- `DomainService` → `org.apaas.domain.domain.service.DomainService`
+- `AbstractDomainService` → `org.apaas.domain.domain.service.AbstractDomainService`
 
 ### 5. 微服务模块适配
 

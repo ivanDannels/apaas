@@ -28,7 +28,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table("test_entity")
-public class TestEntity extends BaseEntity {
+public class TestEntity extends BaseEntity<Long> {
     
     private String name;
     private String description;

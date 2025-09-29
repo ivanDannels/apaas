@@ -18,10 +18,11 @@
  */
 package org.apaas.system.service.impl;
 
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.system.entity.SysOperLog;
 import org.apaas.system.repository.SysOperLogRepository;
 import org.apaas.system.service.ReactiveSysOperLogService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.domain.service.AbstractDomainService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Service;
  * @author ivan
  */
 @Service
-public class ReactiveSysOperLogServiceImpl extends BaseServiceImpl<SysOperLog, Long, SysOperLogRepository> implements ReactiveSysOperLogService {
+public class ReactiveSysOperLogServiceImpl extends AbstractApplicationService<SysOperLog, Long, SysOperLogRepository> implements ReactiveSysOperLogService {
     
     public ReactiveSysOperLogServiceImpl(SysOperLogRepository repository) {
         super(repository);

@@ -21,7 +21,7 @@ package org.apaas.flow.execution.domain.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("flow_instance")
-public class FlowInstance extends BaseEntity {
+public class FlowInstance extends BaseEntity<Long> {
     
     /**
      * 租户ID

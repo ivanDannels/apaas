@@ -18,7 +18,7 @@
  */
 package org.apaas.flow.engine.service.reactive;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.flow.engine.domain.dto.StartInstanceDTO;
 import org.apaas.flow.engine.entity.FlowInstance;
 import org.apaas.flow.engine.entity.FlowTask;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式流程实例服务接口
  */
-public interface ReactiveFlowInstanceService extends BaseService<FlowInstance, Long> {
+public interface ReactiveFlowInstanceService extends ApplicationService<FlowInstance, Long> {
     
     /**
      * 根据流程实例ID获取流程实例

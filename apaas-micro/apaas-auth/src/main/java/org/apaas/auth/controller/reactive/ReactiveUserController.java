@@ -32,7 +32,7 @@ import org.apaas.core.query.Condition;
 import org.apaas.core.query.Operator;
 import org.apaas.core.query.PageRequest;
 import org.apaas.core.query.Query;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;

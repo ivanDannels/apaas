@@ -19,14 +19,14 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Application;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * @author ivan
  */
-public interface ReactiveApplicationService extends BaseService<Application, Long> {
+public interface ReactiveApplicationService extends ApplicationService<Application, Long> {
     
     /**
      * 根据应用名称获取应用

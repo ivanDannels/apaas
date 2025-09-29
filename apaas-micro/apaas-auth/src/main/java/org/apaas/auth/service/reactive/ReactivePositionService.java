@@ -19,14 +19,14 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.Position;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
  * @author ivan
  */
-public interface ReactivePositionService extends BaseService<Position, Long> {
+public interface ReactivePositionService extends ApplicationService<Position, Long> {
     
     /**
      * 根据用户ID获取岗位列表

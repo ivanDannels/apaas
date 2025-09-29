@@ -19,7 +19,7 @@
 package org.apaas.flow.execution.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.WorkflowTask;
 import org.apaas.flow.execution.repository.WorkflowTaskRepository;
@@ -28,9 +28,12 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author ivan
+ */
 @Slf4j
 @Service
-public class TaskManagementServiceImpl extends BaseServiceImpl<WorkflowTask, Long, WorkflowTaskRepository> implements TaskManagementService {
+public class TaskManagementServiceImpl extends AbstractApplicationService<WorkflowTask, Long, WorkflowTaskRepository> implements TaskManagementService {
     
     public TaskManagementServiceImpl(WorkflowTaskRepository repository) {
         super(repository);

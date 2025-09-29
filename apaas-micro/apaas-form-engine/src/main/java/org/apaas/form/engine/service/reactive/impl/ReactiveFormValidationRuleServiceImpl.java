@@ -20,7 +20,7 @@ package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormValidationRule;
 import org.apaas.form.engine.repository.FormValidationRuleRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormValidationRuleService;
@@ -38,7 +38,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class ReactiveFormValidationRuleServiceImpl extends BaseServiceImpl<FormValidationRule, Long, FormValidationRuleRepository> implements ReactiveFormValidationRuleService {
+public class ReactiveFormValidationRuleServiceImpl extends AbstractApplicationService<FormValidationRule, Long, FormValidationRuleRepository> implements ReactiveFormValidationRuleService {
     
     public ReactiveFormValidationRuleServiceImpl(FormValidationRuleRepository repository) {
         super(repository);

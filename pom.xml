@@ -40,10 +40,10 @@
         <reactive-feign.version>4.2.1</reactive-feign.version>
         <redisson.version>3.27.1</redisson.version>
         <revision>1.0.0</revision>
-        <spring-ai.version>1.0.0-M6</spring-ai.version>
         <seata.version>2.0.0</seata.version>
         <skywalking.version>9.1.0</skywalking.version>
         <spotless-maven-plugin.version>2.44.2</spotless-maven-plugin.version>
+        <spring-ai.version>1.0.2</spring-ai.version>
         <spring-boot.version>4.0.0-M3</spring-boot.version>
         <spring-cloud-alibaba.version>2025.0.0.0-preview</spring-cloud-alibaba.version>
         <spring-cloud.version>2025.1.0-M2</spring-cloud.version>
@@ -80,12 +80,20 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            
             <!-- Spring AI -->
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>
                 <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>com.playtika.reactivefeign</groupId>
+                <artifactId>feign-reactor-bom</artifactId>
+                <version>${reactive-feign.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -125,25 +133,25 @@
                 <version>${r2dbc-postgresql.version}</version>
             </dependency>
             
-            <!-- Reactive Feign -->
-            <dependency>
-                <groupId>com.playtika.reactivefeign</groupId>
-                <artifactId>feign-reactor-spring-cloud-starter</artifactId>
-                <version>${reactive-feign.version}</version>
-            </dependency>
-            
-            <!-- 支持 WebFlux 编解码器 -->
-            <dependency>
-                <groupId>com.playtika.reactivefeign</groupId>
-                <artifactId>feign-reactor-webclient</artifactId>
-                <version>${reactive-feign.version}</version>
-            </dependency>
-            
             <!-- SpringDoc OpenAPI -->
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
                 <version>${springdoc.version}</version>
+            </dependency>
+            
+            <!-- Ollama -->
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
+                <version>${spring-ai.version}</version>
+            </dependency>
+            
+            <!-- Transformers -->
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-transformers-spring-boot-starter</artifactId>
+                <version>${spring-ai.version}</version>
             </dependency>
             
             <!-- Spring Security + OAuth2 -->
@@ -456,7 +464,7 @@
     <repositories>
         <repository>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
@@ -466,7 +474,7 @@
     <pluginRepositories>
         <pluginRepository>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>

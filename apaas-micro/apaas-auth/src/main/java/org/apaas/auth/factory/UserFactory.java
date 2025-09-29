@@ -20,7 +20,7 @@ package org.apaas.auth.factory;
 
 import org.apaas.auth.entity.UserAggregate;
 import org.apaas.auth.entity.Username;
-import org.apaas.domain.factory.EntityFactory;
+import org.apaas.domain.domain.factory.EntityFactory;
 
 /**
  * 用户工厂类
@@ -47,12 +47,7 @@ public class UserFactory implements EntityFactory<UserAggregate, Long> {
         String password = (String) args[1];
         String nickname = (String) args[2];
         
-        UserAggregate user = UserAggregate.builder()
-                .id(id)
-                .username(username)
-                .password(password)
-                .nickname(nickname)
-                .status(0) // 默认状态为启用
+        UserAggregate user = UserAggregate.builder().id(id).username(username).password(password).nickname(nickname).status(0) // 默认状态为启用
                 .deleted(0) // 默认未删除
                 .build();
         
@@ -66,8 +61,7 @@ public class UserFactory implements EntityFactory<UserAggregate, Long> {
      */
     @Override
     public UserAggregate create() {
-        return UserAggregate.builder()
-                .status(0) // 默认状态为启用
+        return UserAggregate.builder().status(0) // 默认状态为启用
                 .deleted(0) // 默认未删除
                 .build();
     }
@@ -80,21 +74,7 @@ public class UserFactory implements EntityFactory<UserAggregate, Long> {
      */
     @Override
     public UserAggregate createFrom(UserAggregate prototype) {
-        UserAggregate user = UserAggregate.builder()
-                .id(prototype.getId())
-                .username(prototype.getUsername())
-                .password(prototype.getPassword())
-                .nickname(prototype.getNickname())
-                .phone(prototype.getPhone())
-                .email(prototype.getEmail())
-                .avatar(prototype.getAvatar())
-                .gender(prototype.getGender())
-                .status(prototype.getStatus())
-                .loginIp(prototype.getLoginIp())
-                .loginDate(prototype.getLoginDate())
-                .logoutDate(prototype.getLogoutDate())
-                .deleted(prototype.getDeleted())
-                .build();
+        UserAggregate user = UserAggregate.builder().id(prototype.getId()).username(prototype.getUsername()).password(prototype.getPassword()).nickname(prototype.getNickname()).phone(prototype.getPhone()).email(prototype.getEmail()).avatar(prototype.getAvatar()).gender(prototype.getGender()).status(prototype.getStatus()).loginIp(prototype.getLoginIp()).loginDate(prototype.getLoginDate()).logoutDate(prototype.getLogoutDate()).deleted(prototype.getDeleted()).build();
         
         // 复制关联对象
         user.setRoles(prototype.getRoles());
@@ -118,11 +98,7 @@ public class UserFactory implements EntityFactory<UserAggregate, Long> {
             throw new IllegalArgumentException("只能创建管理员用户");
         }
         
-        return UserAggregate.builder()
-                .username(username)
-                .password(password)
-                .nickname("管理员")
-                .status(0) // 默认状态为启用
+        return UserAggregate.builder().username(username).password(password).nickname("管理员").status(0) // 默认状态为启用
                 .deleted(0) // 默认未删除
                 .build();
     }

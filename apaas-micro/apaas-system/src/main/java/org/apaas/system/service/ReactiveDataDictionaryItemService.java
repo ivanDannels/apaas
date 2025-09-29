@@ -18,7 +18,7 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.system.domain.dto.DataDictionaryItemDTO;
 import org.apaas.system.entity.DataDictionaryItem;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
  * 响应式数据字典项服务接口
  * @author ivan
  */
-public interface ReactiveDataDictionaryItemService extends BaseService<DataDictionaryItem, Long> {
+public interface ReactiveDataDictionaryItemService extends ApplicationService<DataDictionaryItem, Long> {
     
     /**
      * 分页查询数据字典项

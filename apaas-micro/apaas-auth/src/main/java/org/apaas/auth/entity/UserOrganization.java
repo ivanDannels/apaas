@@ -20,7 +20,7 @@ package org.apaas.auth.entity;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**

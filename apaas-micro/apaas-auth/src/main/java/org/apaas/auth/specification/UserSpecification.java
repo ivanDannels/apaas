@@ -18,8 +18,8 @@
  */
 package org.apaas.auth.specification;
 
-import org.apaas.auth.entity.UserAggregate;
-import org.apaas.domain.specification.Specification;
+import org.apaas.auth.entity.User;
+import org.apaas.domain.domain.specification.Specification;
 
 /**
  * 用户规范类
@@ -27,45 +27,56 @@ import org.apaas.domain.specification.Specification;
  *
  * @author ivan
  */
-public class UserSpecification {
+public class UserSpecification implements Specification<User> {
     
     /**
      * 用户名不能为空的规范
      */
-    public static Specification<UserAggregate> nonEmptyUsername() {
+    public static Specification<User> nonEmptyUsername() {
         return user -> user.getUsername() != null && !user.getUsername().trim().isEmpty();
     }
     
     /**
      * 密码不能为空的规范
      */
-    public static Specification<UserAggregate> nonEmptyPassword() {
+    public static Specification<User> nonEmptyPassword() {
         return user -> user.getPassword() != null && !user.getPassword().trim().isEmpty();
     }
     
     /**
      * 用户状态必须有效的规范
      */
-    public static Specification<UserAggregate> validStatus() {
+    public static Specification<User> validStatus() {
         return user -> user.getStatus() != null && (user.getStatus() == 0 || user.getStatus() == 1);
     }
     
     /**
      * 用户未被删除的规范
      */
-    public static Specification<UserAggregate> notDeleted() {
+    public static Specification<User> notDeleted() {
         return user -> user.getDeleted() == null || user.getDeleted() == 0;
     }
     
     /**
      * 管理员用户不能被删除的规范
      */
-    public static Specification<UserAggregate> notAdminUser() {
+    public static Specification<User> notAdminUser() {
         return user -> {
             if (user.getUsername() == null) {
                 return true;
             }
             return !("admin".equals(user.getUsername()) || "administrator".equals(user.getUsername()));
         };
+    }
+    
+    /**
+     * 检查对象是否满足规范
+     *
+     * @param candidate 检查对象
+     * @return 是否满足规范
+     */
+    @Override
+    public boolean isSatisfiedBy(User candidate) {
+        return nonEmptyUsername().and(nonEmptyPassword()).and(validStatus()).and(notDeleted()).and(notAdminUser()).isSatisfiedBy(candidate);
     }
 }

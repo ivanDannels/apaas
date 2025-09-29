@@ -23,10 +23,9 @@ import org.apaas.auth.entity.UserAggregate;
 import org.apaas.auth.repository.reactive.ReactiveUserRepository;
 import org.apaas.auth.service.UserApplicationService;
 import org.apaas.auth.service.reactive.ReactiveUserService;
-import org.apaas.domain.service.application.AbstractApplicationService;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.springframework.data.domain.Pageable;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,31 +40,26 @@ public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Lo
     
     private final UserApplicationService userApplicationService;
     
-    public ReactiveUserServiceImpl(
-            ReactiveUserRepository repository,
-            UserApplicationService userApplicationService) {
+    public ReactiveUserServiceImpl(ReactiveUserRepository repository, UserApplicationService userApplicationService) {
         super(repository);
         this.userApplicationService = userApplicationService;
     }
     
     @Override
     public Mono<User> getUserByUsername(String username) {
-        return userApplicationService.getUserByUsername(username)
-                .map(this::convertToUser);
+        return userApplicationService.getUserByUsername(username);
     }
     
     @Override
     public Mono<User> addUser(User user) {
         UserAggregate userAggregate = convertToUserAggregate(user);
-        return userApplicationService.addUser(userAggregate)
-                .map(this::convertToUser);
+        return userApplicationService.addUser(userAggregate);
     }
     
     @Override
     public Mono<User> updateUser(User user) {
         UserAggregate userAggregate = convertToUserAggregate(user);
-        return userApplicationService.updateUser(userAggregate)
-                .map(this::convertToUser);
+        return userApplicationService.updateUser(userAggregate);
     }
     
     @Override
@@ -95,8 +89,7 @@ public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Lo
     
     @Override
     public Mono<User> login(String username, String password) {
-        return userApplicationService.login(username, password)
-                .map(this::convertToUser);
+        return userApplicationService.login(username, password);
     }
     
     @Override
@@ -106,8 +99,7 @@ public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Lo
     
     @Override
     public Mono<User> getCurrentUser() {
-        return userApplicationService.getCurrentUser()
-                .map(this::convertToUser);
+        return userApplicationService.getCurrentUser();
     }
     
     @Override
@@ -123,26 +115,8 @@ public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Lo
             return null;
         }
         
-        return User.builder()
-                .id(userAggregate.getId())
-                .username(userAggregate.getUsername())
-                .password(userAggregate.getPassword())
-                .nickname(userAggregate.getNickname())
-                .phone(userAggregate.getPhone())
-                .email(userAggregate.getEmail())
-                .avatar(userAggregate.getAvatar())
-                .gender(userAggregate.getGender())
-                .status(userAggregate.getStatus())
-                .loginIp(userAggregate.getLoginIp())
-                .loginDate(userAggregate.getLoginDate())
-                .logoutDate(userAggregate.getLogoutDate())
-                .deleted(userAggregate.getDeleted())
-                .createdTime(userAggregate.getCreatedTime())
-                .updatedTime(userAggregate.getUpdatedTime())
-                .creator(userAggregate.getCreator())
-                .updater(userAggregate.getUpdater())
-                .tenantId(userAggregate.getTenantId())
-                .build();
+        return User.builder().id(userAggregate.getId()).username(userAggregate.getUsername()).password(userAggregate.getPassword()).nickname(userAggregate.getNickname()).phone(userAggregate.getPhone()).email(userAggregate.getEmail()).avatar(userAggregate.getAvatar()).gender(userAggregate.getGender()).status(userAggregate.getStatus()).loginIp(userAggregate.getLoginIp()).loginDate(userAggregate.getLoginDate()).logoutDate(userAggregate.getLogoutDate()).deleted(userAggregate.getDeleted()).createdTime(userAggregate.getCreatedTime()).updatedTime(userAggregate.getUpdatedTime())
+                .creator(userAggregate.getCreator()).updater(userAggregate.getUpdater()).tenantId(userAggregate.getTenantId()).build();
     }
     
     /**
@@ -153,41 +127,19 @@ public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Lo
             return null;
         }
         
-        return UserAggregate.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .nickname(user.getNickname())
-                .phone(user.getPhone())
-                .email(user.getEmail())
-                .avatar(user.getAvatar())
-                .gender(user.getGender())
-                .status(user.getStatus())
-                .loginIp(user.getLoginIp())
-                .loginDate(user.getLoginDate())
-                .logoutDate(user.getLogoutDate())
-                .deleted(user.getDeleted())
-                .createdTime(user.getCreatedTime())
-                .updatedTime(user.getUpdatedTime())
-                .creator(user.getCreator())
-                .updater(user.getUpdater())
-                .tenantId(user.getTenantId())
-                .build();
+        return UserAggregate.builder().id(user.getId()).username(user.getUsername()).password(user.getPassword()).nickname(user.getNickname()).phone(user.getPhone()).email(user.getEmail()).avatar(user.getAvatar()).gender(user.getGender()).status(user.getStatus()).loginIp(user.getLoginIp()).loginDate(user.getLoginDate()).logoutDate(user.getLogoutDate()).deleted(user.getDeleted()).createdTime(user.getCreatedTime()).updatedTime(user.getUpdatedTime()).creator(user.getCreator()).updater(user.getUpdater()).tenantId(user.getTenantId()).build();
     }
     
     @Override
     public Mono<PageResult<User>> selectPage(Query query) {
-        return userApplicationService.selectPage(query)
-                .map(pageResult -> {
-                    PageResult<User> userPageResult = new PageResult<>();
-                    userPageResult.setRecords(pageResult.getRecords().stream()
-                            .map(this::convertToUser)
-                            .toList());
-                    userPageResult.setTotal(pageResult.getTotal());
-                    userPageResult.setCurrent(pageResult.getCurrent());
-                    userPageResult.setSize(pageResult.getSize());
-                    return userPageResult;
-                });
+        return userApplicationService.selectPage(query).map(pageResult -> {
+            PageResult<User> userPageResult = new PageResult<>();
+            userPageResult.setRecords(pageResult.getRecords().stream().toList());
+            userPageResult.setTotal(pageResult.getTotal());
+            userPageResult.setCurrent(pageResult.getCurrent());
+            userPageResult.setSize(pageResult.getSize());
+            return userPageResult;
+        });
     }
     
     @Override

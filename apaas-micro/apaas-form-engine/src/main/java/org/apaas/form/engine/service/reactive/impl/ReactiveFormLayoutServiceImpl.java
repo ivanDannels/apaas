@@ -20,7 +20,7 @@ package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormLayout;
 import org.apaas.form.engine.repository.FormLayoutRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormLayoutService;
@@ -36,7 +36,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-public class ReactiveFormLayoutServiceImpl extends BaseServiceImpl<FormLayout, Long, FormLayoutRepository> implements ReactiveFormLayoutService {
+public class ReactiveFormLayoutServiceImpl extends AbstractApplicationService<FormLayout, Long, FormLayoutRepository> implements ReactiveFormLayoutService {
     
     public ReactiveFormLayoutServiceImpl(FormLayoutRepository repository) {
         super(repository);

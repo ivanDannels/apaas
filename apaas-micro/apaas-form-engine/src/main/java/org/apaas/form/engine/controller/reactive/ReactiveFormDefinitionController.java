@@ -26,7 +26,7 @@ import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
 import org.springframework.http.HttpHeaders;

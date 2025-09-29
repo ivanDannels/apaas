@@ -19,7 +19,8 @@
 package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.domain.domain.service.AbstractDomainService;
 import org.apaas.system.entity.Internationalization;
 import org.apaas.system.repository.InternationalizationRepository;
 import org.apaas.system.service.ReactiveInternationalizationService;
@@ -36,7 +37,7 @@ import java.util.Locale;
  */
 @Slf4j
 @Service
-public class ReactiveInternationalizationServiceImpl extends BaseServiceImpl<Internationalization, Long, InternationalizationRepository> implements ReactiveInternationalizationService {
+public class ReactiveInternationalizationServiceImpl extends AbstractApplicationService<Internationalization, Long, InternationalizationRepository> implements ReactiveInternationalizationService {
     
     private final MessageSource messageSource;
     

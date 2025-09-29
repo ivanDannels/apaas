@@ -18,10 +18,8 @@
  */
 package org.apaas.system.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import org.apaas.domain.entity.BaseValueObject;
+import lombok.Data;
+import org.apaas.domain.domain.vo.BaseValueObject;
 
 /**
  * 数据字典编码值对象
@@ -29,9 +27,7 @@ import org.apaas.domain.entity.BaseValueObject;
  *
  * @author ivan
  */
-@Getter
-@EqualsAndHashCode(callSuper = false)
-@ToString
+@Data
 public class DataDictionaryCode extends BaseValueObject {
     
     /**

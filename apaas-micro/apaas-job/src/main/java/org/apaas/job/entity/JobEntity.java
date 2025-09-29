@@ -21,7 +21,7 @@ package org.apaas.job.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("job_entities")
-public class JobEntity extends BaseEntity {
+public class JobEntity extends BaseEntity<Long> {
     
     private String name;
     private String cronExpression;

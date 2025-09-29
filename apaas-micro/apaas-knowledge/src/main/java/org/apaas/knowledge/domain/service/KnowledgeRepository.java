@@ -16,31 +16,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.entity;
+package org.apaas.knowledge.domain.service;
 
-import java.io.Serializable;
+import org.apaas.knowledge.domain.model.Knowledge;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
- * 聚合根标记接口
- * 聚合根是聚合的入口点，负责维护聚合内部的一致性
- * 聚合根具有全局唯一标识，是唯一可以被外部直接访问的实体
- *
+ * 文档存储库接口，定义对文档的基本操作
  * @author ivan
- * @param <ID> 聚合根标识类型
  */
-public interface AggregateRoot<ID extends Serializable> {
+public interface KnowledgeRepository {
     
     /**
-     * 获取聚合根标识
-     *
-     * @return 聚合根标识
+     * 保存文档
      */
-    ID getId();
+    Knowledge save(Knowledge knowledge);
     
     /**
-     * 设置聚合根标识
-     *
-     * @param id 聚合根标识
+     * 根据文件名获取文档
      */
-    void setId(ID id);
+    Optional<Knowledge> findByFileName(String fileName);
+    
+    /**
+     * 获取所有文档
+     */
+    List<Knowledge> findAll();
+    
+    /**
+     * 删除文档
+     */
+    void deleteByFileName(String fileName);
+    
+    /**
+     * 批量删除文档
+     */
+    void deleteAllByFileNames(List<String> fileNames);
+    
+    /**
+     * 检查文件是否存在
+     */
+    boolean existsByFileName(String fileName);
 }

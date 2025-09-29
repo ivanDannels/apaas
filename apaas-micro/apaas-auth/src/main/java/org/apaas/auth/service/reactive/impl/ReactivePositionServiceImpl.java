@@ -21,7 +21,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Position;
 import org.apaas.auth.repository.reactive.ReactivePositionRepository;
 import org.apaas.auth.service.reactive.ReactivePositionService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 @Service
-public class ReactivePositionServiceImpl extends BaseServiceImpl<Position, Long, ReactivePositionRepository> implements ReactivePositionService {
+public class ReactivePositionServiceImpl extends AbstractApplicationService<Position, Long, ReactivePositionRepository> implements ReactivePositionService {
     
     public ReactivePositionServiceImpl(ReactivePositionRepository repository) {
         super(repository);

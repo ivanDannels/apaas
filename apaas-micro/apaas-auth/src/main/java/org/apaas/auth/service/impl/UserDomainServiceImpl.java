@@ -19,12 +19,12 @@
 package org.apaas.auth.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.auth.entity.UserAggregate;
+import org.apaas.auth.entity.User;
 import org.apaas.auth.repository.reactive.ReactiveUserRepository;
 import org.apaas.auth.service.UserDomainService;
 import org.apaas.auth.specification.UserSpecification;
-import org.apaas.domain.service.domain.AbstractDomainService;
-import org.apaas.domain.specification.Specification;
+import org.apaas.domain.domain.service.AbstractDomainService;
+import org.apaas.domain.domain.specification.Specification;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -38,8 +38,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Service
-public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, Long, ReactiveUserRepository> 
-        implements UserDomainService {
+public class UserDomainServiceImpl extends AbstractDomainService<User, Long, ReactiveUserRepository> implements UserDomainService {
     
     public UserDomainServiceImpl(ReactiveUserRepository repository) {
         super(repository);
@@ -52,19 +51,14 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
      * @return 创建后的用户
      */
     @Override
-    public Mono<UserAggregate> createUser(UserAggregate user) {
+    public Mono<User> createUser(User user) {
         log.info("创建用户: username={}", user.getUsername());
         
         // 定义创建用户的业务规范
-        Specification<UserAggregate> createSpec = 
-                UserSpecification.nonEmptyUsername()
-                        .and(UserSpecification.nonEmptyPassword())
-                        .and(UserSpecification.validStatus());
+        Specification<User> createSpec = UserSpecification.nonEmptyUsername().and(UserSpecification.nonEmptyPassword()).and(UserSpecification.validStatus());
         
         // 验证并保存
-        return validateAndSave(user, createSpec)
-                .doOnSuccess(saved -> log.info("用户创建成功: userId={}, username={}", saved.getId(), saved.getUsername()))
-                .doOnError(error -> log.error("用户创建失败: username={}, error={}", user.getUsername(), error.getMessage()));
+        return validateAndSave(user, createSpec).doOnSuccess(saved -> log.info("用户创建成功: userId={}, username={}", saved.getId(), saved.getUsername())).doOnError(error -> log.error("用户创建失败: username={}, error={}", user.getUsername(), error.getMessage()));
     }
     
     /**
@@ -74,19 +68,14 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
      * @return 更新后的用户
      */
     @Override
-    public Mono<UserAggregate> updateUser(UserAggregate user) {
+    public Mono<User> updateUser(User user) {
         log.info("更新用户: userId={}, username={}", user.getId(), user.getUsername());
         
         // 定义更新用户的业务规范
-        Specification<UserAggregate> updateSpec = 
-                UserSpecification.nonEmptyUsername()
-                        .and(UserSpecification.validStatus())
-                        .and(UserSpecification.notDeleted());
+        Specification<User> updateSpec = UserSpecification.nonEmptyUsername().and(UserSpecification.validStatus()).and(UserSpecification.notDeleted());
         
         // 验证并保存
-        return validateAndSave(user, updateSpec)
-                .doOnSuccess(saved -> log.info("用户更新成功: userId={}, username={}", saved.getId(), saved.getUsername()))
-                .doOnError(error -> log.error("用户更新失败: userId={}, error={}", user.getId(), error.getMessage()));
+        return validateAndSave(user, updateSpec).doOnSuccess(saved -> log.info("用户更新成功: userId={}, username={}", saved.getId(), saved.getUsername())).doOnError(error -> log.error("用户更新失败: userId={}, error={}", user.getId(), error.getMessage()));
     }
     
     /**
@@ -100,21 +89,16 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
         log.info("删除用户: userId={}", userId);
         
         // 定义删除用户的业务规范（管理员用户不能删除）
-        Specification<UserAggregate> deleteSpec = UserSpecification.notAdminUser();
+        Specification<User> deleteSpec = UserSpecification.notAdminUser();
         
-        return repository.findById(userId)
-                .switchIfEmpty(Mono.error(new RuntimeException("用户不存在")))
-                .flatMap(user -> checkSpecification(user, deleteSpec)
-                        .flatMap(satisfied -> {
-                            if (!satisfied) {
-                                return Mono.error(new RuntimeException("管理员用户不能删除"));
-                            }
-                            user.setDeleted(1); // 标记为已删除
-                            user.setUpdatedTime(LocalDateTime.now());
-                            return repository.save(user).thenReturn(true);
-                        }))
-                .doOnSuccess(result -> log.info("用户删除成功: userId={}", userId))
-                .doOnError(error -> log.error("用户删除失败: userId={}, error={}", userId, error.getMessage()));
+        return repository.findById(userId).switchIfEmpty(Mono.error(new RuntimeException("用户不存在"))).flatMap(user -> checkSpecification(user, deleteSpec).flatMap(satisfied -> {
+            if (!satisfied) {
+                return Mono.error(new RuntimeException("管理员用户不能删除"));
+            }
+            user.setDeleted(1); // 标记为已删除
+            user.setUpdatedTime(LocalDateTime.now());
+            return repository.save(user).thenReturn(true);
+        })).doOnSuccess(result -> log.info("用户删除成功: userId={}", userId)).doOnError(error -> log.error("用户删除失败: userId={}, error={}", userId, error.getMessage()));
     }
     
     /**
@@ -128,15 +112,11 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
     public Mono<Boolean> resetPassword(Long userId, String newPassword) {
         log.info("重置用户密码: userId={}", userId);
         
-        return repository.findById(userId)
-                .switchIfEmpty(Mono.error(new RuntimeException("用户不存在")))
-                .flatMap(user -> {
-                    user.setPassword(newPassword); // 实际应用中应该加密密码
-                    user.setUpdatedTime(LocalDateTime.now());
-                    return repository.save(user).thenReturn(true);
-                })
-                .doOnSuccess(result -> log.info("用户密码重置成功: userId={}", userId))
-                .doOnError(error -> log.error("用户密码重置失败: userId={}, error={}", userId, error.getMessage()));
+        return repository.findById(userId).switchIfEmpty(Mono.error(new RuntimeException("用户不存在"))).flatMap(user -> {
+            user.setPassword(newPassword); // 实际应用中应该加密密码
+            user.setUpdatedTime(LocalDateTime.now());
+            return repository.save(user).thenReturn(true);
+        }).doOnSuccess(result -> log.info("用户密码重置成功: userId={}", userId)).doOnError(error -> log.error("用户密码重置失败: userId={}, error={}", userId, error.getMessage()));
     }
     
     /**
@@ -147,21 +127,17 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
      * @return 更新后的用户
      */
     @Override
-    public Mono<UserAggregate> changeStatus(Long userId, Integer status) {
+    public Mono<User> changeStatus(Long userId, Integer status) {
         log.info("修改用户状态: userId={}, status={}", userId, status);
         
-        return repository.findById(userId)
-                .switchIfEmpty(Mono.error(new RuntimeException("用户不存在")))
-                .flatMap(user -> {
-                    user.setStatus(status);
-                    user.setUpdatedTime(LocalDateTime.now());
-                    return repository.save(user);
-                })
-                .doOnSuccess(updated -> {
-                    String statusDesc = status == 0 ? "启用" : "禁用";
-                    log.info("用户状态修改成功: userId={}, username={}, status={}", updated.getId(), updated.getUsername(), statusDesc);
-                })
-                .doOnError(error -> log.error("用户状态修改失败: userId={}, error={}", userId, error.getMessage()));
+        return repository.findById(userId).switchIfEmpty(Mono.error(new RuntimeException("用户不存在"))).flatMap(user -> {
+            user.setStatus(status);
+            user.setUpdatedTime(LocalDateTime.now());
+            return repository.save(user);
+        }).doOnSuccess(updated -> {
+            String statusDesc = status == 0 ? "启用" : "禁用";
+            log.info("用户状态修改成功: userId={}, username={}, status={}", updated.getId(), updated.getUsername(), statusDesc);
+        }).doOnError(error -> log.error("用户状态修改失败: userId={}, error={}", userId, error.getMessage()));
     }
     
     /**
@@ -172,25 +148,23 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
      * @return 登录后的用户
      */
     @Override
-    public Mono<UserAggregate> login(String username, String password) {
+    public Mono<User> login(String username, String password) {
         log.info("用户登录: username={}", username);
         
         // 根据用户名查找用户
-        return repository.findByUsername(username)
-                .switchIfEmpty(Mono.error(new RuntimeException("用户不存在")))
-                .flatMap(user -> {
-                    // 验证密码（实际应用中应该使用加密验证）
-                    if (user.getPassword().equals(password)) {
-                        user.setLoginIp("127.0.0.1"); // 实际应用中应该获取真实IP
-                        user.setLoginDate(LocalDateTime.now());
-                        user.setUpdatedTime(LocalDateTime.now());
-                        log.info("用户登录成功: username={}", username);
-                        return repository.save(user);
-                    } else {
-                        log.warn("用户登录失败-密码错误: username={}", username);
-                        return Mono.error(new RuntimeException("密码错误"));
-                    }
-                });
+        return repository.findByUsername(username).switchIfEmpty(Mono.error(new RuntimeException("用户不存在"))).flatMap(user -> {
+            // 验证密码（实际应用中应该使用加密验证）
+            if (user.getPassword().equals(password)) {
+                user.setLoginIp("127.0.0.1"); // 实际应用中应该获取真实IP
+                user.setLoginDate(LocalDateTime.now());
+                user.setUpdatedTime(LocalDateTime.now());
+                log.info("用户登录成功: username={}", username);
+                return repository.save(user);
+            } else {
+                log.warn("用户登录失败-密码错误: username={}", username);
+                return Mono.error(new RuntimeException("密码错误"));
+            }
+        });
     }
     
     /**
@@ -203,15 +177,11 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
     public Mono<Boolean> logout(Long userId) {
         log.info("用户登出: userId={}", userId);
         
-        return repository.findById(userId)
-                .switchIfEmpty(Mono.error(new RuntimeException("用户不存在")))
-                .flatMap(user -> {
-                    user.setLogoutDate(LocalDateTime.now());
-                    user.setUpdatedTime(LocalDateTime.now());
-                    return repository.save(user).thenReturn(true);
-                })
-                .doOnSuccess(result -> log.info("用户登出成功: userId={}", userId))
-                .doOnError(error -> log.error("用户登出失败: userId={}, error={}", userId, error.getMessage()));
+        return repository.findById(userId).switchIfEmpty(Mono.error(new RuntimeException("用户不存在"))).flatMap(user -> {
+            user.setLogoutDate(LocalDateTime.now());
+            user.setUpdatedTime(LocalDateTime.now());
+            return repository.save(user).thenReturn(true);
+        }).doOnSuccess(result -> log.info("用户登出成功: userId={}", userId)).doOnError(error -> log.error("用户登出失败: userId={}, error={}", userId, error.getMessage()));
     }
     
     /**
@@ -221,7 +191,7 @@ public class UserDomainServiceImpl extends AbstractDomainService<UserAggregate, 
      * @return 处理结果
      */
     @Override
-    public Mono<UserAggregate> execute(UserAggregate domainObject) {
+    public Mono<User> execute(User domainObject) {
         // 默认实现，保存用户
         return repository.save(domainObject);
     }

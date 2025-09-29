@@ -19,7 +19,8 @@
 package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.domain.domain.service.AbstractDomainService;
 import org.apaas.system.entity.Files;
 import org.apaas.system.repository.FilesRepository;
 import org.apaas.system.service.ReactiveFileService;
@@ -37,7 +38,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
-public class ReactiveFileServiceImpl extends BaseServiceImpl<Files, Long, FilesRepository> implements ReactiveFileService {
+public class ReactiveFileServiceImpl extends AbstractApplicationService<Files, Long, FilesRepository> implements ReactiveFileService {
     
     public ReactiveFileServiceImpl(FilesRepository repository) {
         super(repository);

@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.core.query.PageResult;
 import org.apaas.form.engine.entity.FormLayout;
 import reactor.core.publisher.Flux;
@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式表单布局服务接口
  */
-public interface ReactiveFormLayoutService extends BaseService<FormLayout, Long> {
+public interface ReactiveFormLayoutService extends ApplicationService<FormLayout, Long> {
     
     /**
      * 分页查询表单布局

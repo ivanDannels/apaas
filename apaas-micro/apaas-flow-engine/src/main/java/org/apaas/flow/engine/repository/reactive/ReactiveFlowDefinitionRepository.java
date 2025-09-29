@@ -19,7 +19,7 @@
 package org.apaas.flow.engine.repository.reactive;
 
 import org.apaas.flow.engine.entity.FlowDefinition;
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

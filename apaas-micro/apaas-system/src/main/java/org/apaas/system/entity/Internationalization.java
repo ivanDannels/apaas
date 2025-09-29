@@ -21,14 +21,14 @@ package org.apaas.system.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
 @SuperBuilder
 @Table("internationalization")
 @EqualsAndHashCode(callSuper = true)
-public class Internationalization extends BaseEntity {
+public class Internationalization extends BaseEntity<Long> {
     
     private String code;
     private String message;

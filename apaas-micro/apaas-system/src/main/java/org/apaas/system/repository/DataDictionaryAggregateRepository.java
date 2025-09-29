@@ -18,7 +18,7 @@
  */
 package org.apaas.system.repository;
 
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import org.apaas.system.entity.DataDictionaryAggregate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;

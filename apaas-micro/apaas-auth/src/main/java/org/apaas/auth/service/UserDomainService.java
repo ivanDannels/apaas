@@ -18,8 +18,8 @@
  */
 package org.apaas.auth.service;
 
-import org.apaas.auth.entity.UserAggregate;
-import org.apaas.domain.service.domain.DomainService;
+import org.apaas.auth.entity.User;
+import org.apaas.domain.domain.service.DomainService;
 import reactor.core.publisher.Mono;
 
 /**
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  *
  * @author ivan
  */
-public interface UserDomainService extends DomainService<UserAggregate> {
+public interface UserDomainService extends DomainService<User> {
     
     /**
      * 创建用户
@@ -36,7 +36,7 @@ public interface UserDomainService extends DomainService<UserAggregate> {
      * @param user 用户聚合根
      * @return 创建后的用户
      */
-    Mono<UserAggregate> createUser(UserAggregate user);
+    Mono<User> createUser(User user);
     
     /**
      * 更新用户
@@ -44,7 +44,7 @@ public interface UserDomainService extends DomainService<UserAggregate> {
      * @param user 用户聚合根
      * @return 更新后的用户
      */
-    Mono<UserAggregate> updateUser(UserAggregate user);
+    Mono<User> updateUser(User user);
     
     /**
      * 删除用户
@@ -70,7 +70,7 @@ public interface UserDomainService extends DomainService<UserAggregate> {
      * @param status 状态：0-启用，1-禁用
      * @return 更新后的用户
      */
-    Mono<UserAggregate> changeStatus(Long userId, Integer status);
+    Mono<User> changeStatus(Long userId, Integer status);
     
     /**
      * 用户登录
@@ -79,7 +79,7 @@ public interface UserDomainService extends DomainService<UserAggregate> {
      * @param password 密码
      * @return 登录后的用户
      */
-    Mono<UserAggregate> login(String username, String password);
+    Mono<User> login(String username, String password);
     
     /**
      * 用户登出

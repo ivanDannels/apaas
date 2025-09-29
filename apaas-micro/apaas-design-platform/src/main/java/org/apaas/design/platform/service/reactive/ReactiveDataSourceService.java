@@ -18,7 +18,7 @@
  */
 package org.apaas.design.platform.service.reactive;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.design.platform.entity.DataSource;
 
 import org.apaas.core.query.PageResult;
@@ -27,7 +27,8 @@ import reactor.core.publisher.Flux;
 
 /**
  * 响应式数据源服务接口
+ * @author ivan
  */
-public interface ReactiveDataSourceService extends BaseService<DataSource, Long> {
+public interface ReactiveDataSourceService extends ApplicationService<DataSource, Long> {
     
 }

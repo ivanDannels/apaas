@@ -18,7 +18,7 @@
  */
 package org.apaas.integration.service.impl;
 
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.integration.entity.IntegrationEntity;
 import org.apaas.integration.repository.IntegrationRepository;
 import org.apaas.integration.service.IntegrationService;
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 
 @Service
-public class IntegrationServiceImpl extends BaseServiceImpl<IntegrationEntity, Long, IntegrationRepository> implements IntegrationService {
+public class IntegrationServiceImpl extends AbstractApplicationService<IntegrationEntity, Long, IntegrationRepository> implements IntegrationService {
     
     public IntegrationServiceImpl(IntegrationRepository repository) {
         super(repository);

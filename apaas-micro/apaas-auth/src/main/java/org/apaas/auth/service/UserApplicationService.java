@@ -18,9 +18,11 @@
  */
 package org.apaas.auth.service;
 
-import org.apaas.auth.entity.UserAggregate;
+import org.apaas.auth.entity.User;
+import org.apaas.auth.entity.User;
+import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.service.application.ApplicationService;
+import org.apaas.domain.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +32,7 @@ import reactor.core.publisher.Mono;
  *
  * @author ivan
  */
-public interface UserApplicationService extends ApplicationService<UserAggregate, Long> {
+public interface UserApplicationService extends ApplicationService<User, Long> {
     
     /**
      * 根据用户名获取用户
@@ -38,7 +40,7 @@ public interface UserApplicationService extends ApplicationService<UserAggregate
      * @param username 用户名
      * @return 用户信息
      */
-    Mono<UserAggregate> getUserByUsername(String username);
+    Mono<User> getUserByUsername(String username);
     
     /**
      * 添加用户
@@ -46,7 +48,7 @@ public interface UserApplicationService extends ApplicationService<UserAggregate
      * @param user 用户信息
      * @return 添加结果
      */
-    Mono<UserAggregate> addUser(UserAggregate user);
+    Mono<User> addUser(User user);
     
     /**
      * 更新用户
@@ -54,7 +56,7 @@ public interface UserApplicationService extends ApplicationService<UserAggregate
      * @param user 用户信息
      * @return 更新结果
      */
-    Mono<UserAggregate> updateUser(UserAggregate user);
+    Mono<User> updateUser(User user);
     
     /**
      * 删除用户
@@ -99,11 +101,11 @@ public interface UserApplicationService extends ApplicationService<UserAggregate
      */
     Mono<Void> recordLoginInfo(Long userId, String loginIp);
     
-    Mono<UserAggregate> login(String username, String password);
+    Mono<User> login(String username, String password);
     
     Mono<Boolean> updatePassword(String oldPassword, String newPassword);
     
-    Mono<UserAggregate> getCurrentUser();
+    Mono<User> getCurrentUser();
     
     /**
      * 用户登出
@@ -120,5 +122,5 @@ public interface UserApplicationService extends ApplicationService<UserAggregate
      * @return 分页结果
      */
     @Override
-    Mono<org.apaas.core.query.PageResult<UserAggregate>> selectPage(Query query);
+    Mono<PageResult<User>> selectPage(Query query);
 }

@@ -19,7 +19,7 @@
 package org.apaas.form.engine.service.reactive;
 
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.form.engine.entity.FormDynamicRule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式表单动态规则服务接口
  */
-public interface ReactiveFormDynamicRuleService extends BaseService<FormDynamicRule, Long> {
+public interface ReactiveFormDynamicRuleService extends ApplicationService<FormDynamicRule, Long> {
     
     /**
      * 分页查询表单动态规则

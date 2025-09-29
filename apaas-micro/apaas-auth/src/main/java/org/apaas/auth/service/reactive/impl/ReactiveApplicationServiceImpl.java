@@ -21,7 +21,7 @@ package org.apaas.auth.service.reactive.impl;
 import org.apaas.auth.entity.Application;
 import org.apaas.auth.repository.reactive.ReactiveApplicationRepository;
 import org.apaas.auth.service.reactive.ReactiveApplicationService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 @Service
-public class ReactiveApplicationServiceImpl extends BaseServiceImpl<Application, Long, ReactiveApplicationRepository> implements ReactiveApplicationService {
+public class ReactiveApplicationServiceImpl extends AbstractApplicationService<Application, Long, ReactiveApplicationRepository> implements ReactiveApplicationService {
     
     public ReactiveApplicationServiceImpl(ReactiveApplicationRepository repository) {
         super(repository);

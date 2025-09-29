@@ -19,7 +19,7 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormFieldPermission;
 import org.apaas.form.engine.repository.FormFieldPermissionRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormFieldPermissionService;
@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-public class ReactiveFormFieldPermissionServiceImpl extends BaseServiceImpl<FormFieldPermission, Long, FormFieldPermissionRepository> implements ReactiveFormFieldPermissionService {
+public class ReactiveFormFieldPermissionServiceImpl extends AbstractApplicationService<FormFieldPermission, Long, FormFieldPermissionRepository> implements ReactiveFormFieldPermissionService {
     
     public ReactiveFormFieldPermissionServiceImpl(FormFieldPermissionRepository repository) {
         super(repository);

@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.form.engine.entity.FormInstance;
 import reactor.core.publisher.Mono;
 
@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
  * 响应式表单实例服务接口
  * @author ivan
  */
-public interface ReactiveFormInstanceService extends BaseService<FormInstance, Long> {
+public interface ReactiveFormInstanceService extends ApplicationService<FormInstance, Long> {
     
     /**
      * 保存表单实例

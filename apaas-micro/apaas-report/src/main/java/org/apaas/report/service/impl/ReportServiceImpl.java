@@ -18,7 +18,7 @@
  */
 package org.apaas.report.service.impl;
 
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.report.entity.Report;
 import org.apaas.report.repository.ReportRepository;
 import org.apaas.report.service.ReportService;
@@ -27,7 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class ReportServiceImpl extends BaseServiceImpl<Report, Long, ReportRepository> implements ReportService {
+public class ReportServiceImpl extends AbstractApplicationService<Report, Long, ReportRepository> implements ReportService {
     
     public ReportServiceImpl(ReportRepository repository) {
         super(repository);

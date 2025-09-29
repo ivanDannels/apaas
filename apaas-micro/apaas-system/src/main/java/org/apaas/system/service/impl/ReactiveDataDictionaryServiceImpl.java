@@ -19,7 +19,7 @@
 package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.application.AbstractApplicationService;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
 import org.apaas.system.entity.DataDictionaryAggregate;
 import org.apaas.system.repository.DataDictionaryAggregateRepository;
@@ -38,9 +38,7 @@ public class ReactiveDataDictionaryServiceImpl extends AbstractApplicationServic
     
     private final DataDictionaryApplicationService dataDictionaryApplicationService;
     
-    public ReactiveDataDictionaryServiceImpl(
-            DataDictionaryAggregateRepository repository,
-            DataDictionaryApplicationService dataDictionaryApplicationService) {
+    public ReactiveDataDictionaryServiceImpl(DataDictionaryAggregateRepository repository, DataDictionaryApplicationService dataDictionaryApplicationService) {
         super(repository);
         this.dataDictionaryApplicationService = dataDictionaryApplicationService;
     }

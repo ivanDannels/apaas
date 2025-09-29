@@ -19,22 +19,20 @@
 package org.apaas.auth.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.auth.entity.UserAggregate;
+import org.apaas.auth.entity.User;
 import org.apaas.auth.repository.reactive.ReactiveUserRepository;
 import org.apaas.auth.service.UserApplicationService;
 import org.apaas.auth.service.UserDomainService;
-import org.apaas.domain.event.EventPublisherService;
-import org.apaas.domain.event.UserEvent;
-import org.apaas.domain.exception.LockAcquisitionException;
-import org.apaas.domain.log.LogUtil;
-import org.apaas.domain.lock.DistributedLockService;
-import org.apaas.domain.service.application.AbstractApplicationService;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
+import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.domain.domain.event.EventPublisherService;
+import org.apaas.domain.domain.event.UserEvent;
+import org.apaas.domain.domain.exception.LockAcquisitionException;
+import org.apaas.domain.infrastructure.lock.DistributedLockService;
+import org.apaas.domain.infrastructure.log.LogUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -52,18 +50,13 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Service
-public class UserApplicationServiceImpl extends AbstractApplicationService<UserAggregate, Long, ReactiveUserRepository> 
-        implements UserApplicationService {
+public class UserApplicationServiceImpl extends AbstractApplicationService<User, Long, ReactiveUserRepository> implements UserApplicationService {
     
     private final DistributedLockService distributedLockService;
     private final EventPublisherService eventPublisherService;
     private final UserDomainService userDomainService;
     
-    public UserApplicationServiceImpl(
-            ReactiveUserRepository repository,
-            DistributedLockService distributedLockService,
-            EventPublisherService eventPublisherService,
-            UserDomainService userDomainService) {
+    public UserApplicationServiceImpl(ReactiveUserRepository repository, DistributedLockService distributedLockService, EventPublisherService eventPublisherService, UserDomainService userDomainService) {
         super(repository);
         this.distributedLockService = distributedLockService;
         this.eventPublisherService = eventPublisherService;
@@ -72,13 +65,13 @@ public class UserApplicationServiceImpl extends AbstractApplicationService<UserA
     
     @Override
     @Cacheable(value = "users", key = "#username")
-    public Mono<UserAggregate> getUserByUsername(String username) {
+    public Mono<User> getUserByUsername(String username) {
         LogUtil.info(UserApplicationServiceImpl.class, "根据用户名查询用户信息: username={}", username);
         return repository.findByUsername(username);
     }
     
     @Override
-    public Mono<UserAggregate> addUser(UserAggregate user) {
+    public Mono<User> addUser(User user) {
         LogUtil.info(UserApplicationServiceImpl.class, "创建用户: username={}", user.getUsername());
         String lockKey = "user:add:" + user.getUsername();
         return distributedLockService.tryLock(lockKey, 3, 10, TimeUnit.SECONDS).flatMap(locked -> {
@@ -103,7 +96,7 @@ public class UserApplicationServiceImpl extends AbstractApplicationService<UserA
     
     @Override
     @CacheEvict(value = "users", key = "#user.username")
-    public Mono<UserAggregate> updateUser(UserAggregate user) {
+    public Mono<User> updateUser(User user) {
         LogUtil.info(UserApplicationServiceImpl.class, "更新用户信息: userId={}, username={}", user.getId(), user.getUsername());
         String lockKey = "user:update:" + user.getId();
         return distributedLockService.tryLock(lockKey, 3, 10, TimeUnit.SECONDS).flatMap(locked -> {
@@ -226,7 +219,7 @@ public class UserApplicationServiceImpl extends AbstractApplicationService<UserA
     }
     
     @Override
-    public Mono<UserAggregate> login(String username, String password) {
+    public Mono<User> login(String username, String password) {
         LogUtil.info(UserApplicationServiceImpl.class, "用户登录: username={}", username);
         return userDomainService.login(username, password).flatMap(loggedInUser -> {
             // 发布登录事件
@@ -251,11 +244,11 @@ public class UserApplicationServiceImpl extends AbstractApplicationService<UserA
     }
     
     @Override
-    public Mono<UserAggregate> getCurrentUser() {
+    public Mono<User> getCurrentUser() {
         LogUtil.info(UserApplicationServiceImpl.class, "获取当前用户信息");
         // 这里应该从安全上下文中获取当前用户
         // 暂时返回一个示例用户
-        UserAggregate user = UserAggregate.builder().id(1L).username("admin").nickname("管理员").build();
+        User user = User.builder().id(1L).username("admin").nickname("管理员").build();
         return Mono.just(user);
     }
     
@@ -282,21 +275,11 @@ public class UserApplicationServiceImpl extends AbstractApplicationService<UserA
     }
     
     @Override
-    public Mono<PageResult<UserAggregate>> selectPage(Query query) {
+    public Mono<PageResult<User>> selectPage(Query query) {
         Long tenantId = org.apaas.core.context.TenantContext.getTenantId();
         if (tenantId == null) {
             tenantId = 0L;
         }
-        PageRequest pageRequest = PageRequest.of(
-                query.getPageNum() - 1, 
-                query.getPageSize(), 
-                Sort.by(Sort.Direction.DESC, "id")
-        );
-        return repository.findByPage(query, pageRequest)
-                .map(page -> new PageResult<UserAggregate>()
-                        .setRecords(page.getContent())
-                        .setTotal(page.getTotalElements())
-                        .setCurrent(query.getPageNum())
-                        .setSize(query.getPageSize()));
+        return repository.selectPage(tenantId, query);
     }
 }

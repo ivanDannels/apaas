@@ -21,7 +21,7 @@ package org.apaas.form.engine.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 
 /**
  * 表单实例实体
@@ -30,7 +30,7 @@ import org.apaas.domain.entity.BaseEntity;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class FormInstance extends BaseEntity {
+public class FormInstance extends BaseEntity<Long> {
     
     /**
      * 表单定义ID

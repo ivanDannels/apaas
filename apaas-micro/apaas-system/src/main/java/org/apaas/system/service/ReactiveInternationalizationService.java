@@ -18,7 +18,7 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.system.entity.Internationalization;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +28,7 @@ import java.util.Locale;
  * 响应式国际化服务接口
  * @author ivan
  */
-public interface ReactiveInternationalizationService extends BaseService<Internationalization, Long> {
+public interface ReactiveInternationalizationService extends ApplicationService<Internationalization, Long> {
     
     /**
      * 根据消息键获取当前语言的消息

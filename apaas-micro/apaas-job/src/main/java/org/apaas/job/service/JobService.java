@@ -18,12 +18,12 @@
  */
 package org.apaas.job.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.job.entity.JobEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface JobService extends BaseService<JobEntity, Long> {
+public interface JobService extends ApplicationService<JobEntity, Long> {
     
     Flux<JobEntity> findAll();
     Mono<JobEntity> findById(Long id);

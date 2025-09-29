@@ -21,14 +21,15 @@ package org.apaas.design.platform.service.reactive.impl;
 import org.apaas.design.platform.entity.Model;
 import org.apaas.design.platform.repository.ModelRepository;
 import org.apaas.design.platform.service.reactive.ReactiveModelService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 
 /**
  * 响应式模型服务实现类
+ * @author ivan
  */
 @Service
-public class ReactiveModelServiceImpl extends BaseServiceImpl<Model, Long, ModelRepository> implements ReactiveModelService {
+public class ReactiveModelServiceImpl extends AbstractApplicationService<Model, Long, ModelRepository> implements ReactiveModelService {
     
     public ReactiveModelServiceImpl(ModelRepository repository) {
         super(repository);

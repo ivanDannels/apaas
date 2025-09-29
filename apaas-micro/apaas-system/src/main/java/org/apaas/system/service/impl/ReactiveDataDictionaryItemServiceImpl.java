@@ -19,7 +19,8 @@
 package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.domain.domain.service.AbstractDomainService;
 import org.apaas.system.domain.dto.DataDictionaryItemDTO;
 import org.apaas.system.entity.DataDictionaryItem;
 import org.apaas.system.repository.DataDictionaryItemRepository;
@@ -47,7 +48,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Service
-public class ReactiveDataDictionaryItemServiceImpl extends BaseServiceImpl<DataDictionaryItem, Long, DataDictionaryItemRepository> implements ReactiveDataDictionaryItemService {
+public class ReactiveDataDictionaryItemServiceImpl extends AbstractApplicationService<DataDictionaryItem, Long, DataDictionaryItemRepository> implements ReactiveDataDictionaryItemService {
     
     public ReactiveDataDictionaryItemServiceImpl(DataDictionaryItemRepository repository) {
         super(repository);

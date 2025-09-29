@@ -18,12 +18,12 @@
  */
 package org.apaas.report.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.report.entity.Report;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ReportService extends BaseService<Report, Long> {
+public interface ReportService extends ApplicationService<Report, Long> {
     
     Mono<Report> findByName(String name);
     Flux<Report> findByType(String type);

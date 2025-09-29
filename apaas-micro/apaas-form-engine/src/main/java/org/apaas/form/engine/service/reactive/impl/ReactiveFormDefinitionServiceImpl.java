@@ -20,7 +20,7 @@ package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.context.TenantContext;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormDefinition;
 import org.apaas.form.engine.repository.FormDefinitionRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Service
-public class ReactiveFormDefinitionServiceImpl extends BaseServiceImpl<FormDefinition, Long, FormDefinitionRepository> implements ReactiveFormDefinitionService {
+public class ReactiveFormDefinitionServiceImpl extends AbstractApplicationService<FormDefinition, Long, FormDefinitionRepository> implements ReactiveFormDefinitionService {
     
     public ReactiveFormDefinitionServiceImpl(FormDefinitionRepository repository) {
         super(repository);

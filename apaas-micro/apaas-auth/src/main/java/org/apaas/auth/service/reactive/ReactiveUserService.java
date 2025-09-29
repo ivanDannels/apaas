@@ -19,9 +19,7 @@
 package org.apaas.auth.service.reactive;
 
 import org.apaas.auth.entity.User;
-import org.apaas.core.query.PageResult;
-import org.apaas.domain.service.BaseService;
-import org.springframework.data.domain.Pageable;
+import org.apaas.domain.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +27,7 @@ import reactor.core.publisher.Mono;
  * 响应式用户服务接口
  * @author ivan
  */
-public interface ReactiveUserService extends BaseService<User, Long> {
+public interface ReactiveUserService extends ApplicationService<User, Long> {
     
     /**
      * 根据用户名获取用户

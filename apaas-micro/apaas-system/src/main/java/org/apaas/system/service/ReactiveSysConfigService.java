@@ -18,7 +18,7 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.system.domain.dto.SysConfigDTO;
 import org.apaas.system.entity.SysConfig;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +33,7 @@ import java.util.List;
  * 响应式参数配置服务接口
  * @author ivan
  */
-public interface ReactiveSysConfigService extends BaseService<SysConfig, Long> {
+public interface ReactiveSysConfigService extends ApplicationService<SysConfig, Long> {
     
     /**
      * 分页查询参数配置列表

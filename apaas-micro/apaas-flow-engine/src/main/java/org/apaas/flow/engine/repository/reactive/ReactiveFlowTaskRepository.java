@@ -18,7 +18,7 @@
  */
 package org.apaas.flow.engine.repository.reactive;
 
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import org.apaas.flow.engine.entity.FlowTask;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;

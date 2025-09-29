@@ -18,10 +18,8 @@
  */
 package org.apaas.auth.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import org.apaas.domain.entity.BaseValueObject;
+import lombok.Data;
+import org.apaas.domain.domain.vo.BaseValueObject;
 
 /**
  * 用户名值对象
@@ -29,9 +27,7 @@ import org.apaas.domain.entity.BaseValueObject;
  *
  * @author ivan
  */
-@Getter
-@EqualsAndHashCode(callSuper = false)
-@ToString
+@Data
 public class Username extends BaseValueObject {
     
     /**

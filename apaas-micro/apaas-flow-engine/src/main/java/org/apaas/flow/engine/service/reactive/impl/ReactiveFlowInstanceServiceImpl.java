@@ -23,7 +23,7 @@ import org.apaas.flow.engine.entity.FlowInstance;
 import org.apaas.flow.engine.entity.FlowTask;
 import org.apaas.flow.engine.repository.reactive.ReactiveFlowInstanceRepository;
 import org.apaas.flow.engine.service.reactive.ReactiveFlowInstanceService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +35,7 @@ import java.util.List;
  * 响应式流程实例服务实现类
  */
 @Service
-public class ReactiveFlowInstanceServiceImpl extends BaseServiceImpl<FlowInstance, Long, ReactiveFlowInstanceRepository> implements ReactiveFlowInstanceService {
+public class ReactiveFlowInstanceServiceImpl extends AbstractApplicationService<FlowInstance, Long, ReactiveFlowInstanceRepository> implements ReactiveFlowInstanceService {
     
     public ReactiveFlowInstanceServiceImpl(ReactiveFlowInstanceRepository repository) {
         super(repository);

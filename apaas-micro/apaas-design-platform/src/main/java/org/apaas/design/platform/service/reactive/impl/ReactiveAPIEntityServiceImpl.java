@@ -21,14 +21,15 @@ package org.apaas.design.platform.service.reactive.impl;
 import org.apaas.design.platform.entity.APIEntity;
 import org.apaas.design.platform.repository.APIEntityRepository;
 import org.apaas.design.platform.service.reactive.ReactiveAPIEntityService;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 
 /**
  * 响应式API实体服务实现类
+ * @author ivan
  */
 @Service
-public class ReactiveAPIEntityServiceImpl extends BaseServiceImpl<APIEntity, Long, APIEntityRepository> implements ReactiveAPIEntityService {
+public class ReactiveAPIEntityServiceImpl extends AbstractApplicationService<APIEntity, Long, APIEntityRepository> implements ReactiveAPIEntityService {
     
     public ReactiveAPIEntityServiceImpl(APIEntityRepository repository) {
         super(repository);

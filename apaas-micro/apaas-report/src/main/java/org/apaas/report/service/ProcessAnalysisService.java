@@ -18,12 +18,12 @@
  */
 package org.apaas.report.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.report.entity.ProcessAnalysis;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ProcessAnalysisService extends BaseService<ProcessAnalysis, Long> {
+public interface ProcessAnalysisService extends ApplicationService<ProcessAnalysis, Long> {
     
     Mono<ProcessAnalysis> findByProcessName(String processName);
     Flux<ProcessAnalysis> findByProcessId(Long processId);

@@ -18,7 +18,7 @@
  */
 package org.apaas.system.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.system.entity.Files;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.codec.multipart.FilePart;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  * 响应式文件服务接口
  * @author ivan
  */
-public interface ReactiveFileService extends BaseService<Files, Long> {
+public interface ReactiveFileService extends ApplicationService<Files, Long> {
     
     /**
      * 上传文件

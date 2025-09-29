@@ -19,7 +19,8 @@
 package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.domain.domain.service.AbstractDomainService;
 import org.apaas.system.domain.dto.NotificationDTO;
 import org.apaas.system.entity.Notification;
 import org.apaas.system.repository.NotificationRepository;
@@ -37,7 +38,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class ReactiveNotificationServiceImpl extends BaseServiceImpl<Notification, Long, NotificationRepository> implements ReactiveNotificationService {
+public class ReactiveNotificationServiceImpl extends AbstractApplicationService<Notification, Long, NotificationRepository> implements ReactiveNotificationService {
     
     public ReactiveNotificationServiceImpl(NotificationRepository repository) {
         super(repository);

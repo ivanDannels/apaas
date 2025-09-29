@@ -22,7 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import org.apaas.auth.domain.DataScope;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @SuperBuilder
 @Table("sys_role")
 @EqualsAndHashCode(callSuper = true)
-public class Role extends BaseEntity {
+public class Role extends BaseEntity<Long> {
     
     /**
      * 角色名称

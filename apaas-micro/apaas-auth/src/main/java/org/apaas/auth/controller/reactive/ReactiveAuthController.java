@@ -28,7 +28,7 @@ import org.apaas.auth.feign.reactive.ReactiveSystemFeignClient;
 import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
-import org.apaas.domain.utils.IpUtils;
+import org.apaas.domain.infrastructure.utils.IpUtils;
 import org.apaas.utils.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;

@@ -20,7 +20,7 @@ package org.apaas.auth.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -35,7 +35,7 @@ import lombok.Data;
 @SuperBuilder
 @Table("sys_resource")
 @EqualsAndHashCode(callSuper = true)
-public class Resource extends BaseEntity {
+public class Resource extends BaseEntity<Long> {
     
     /**
      * 资源名称

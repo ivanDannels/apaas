@@ -18,7 +18,7 @@
  */
 package org.apaas.report.service.impl;
 
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.report.entity.ProcessAnalysis;
 import org.apaas.report.repository.ProcessAnalysisRepository;
 import org.apaas.report.service.ProcessAnalysisService;
@@ -26,8 +26,11 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author ivan
+ */
 @Service
-public class ProcessAnalysisServiceImpl extends BaseServiceImpl<ProcessAnalysis, Long, ProcessAnalysisRepository> implements ProcessAnalysisService {
+public class ProcessAnalysisServiceImpl extends AbstractApplicationService<ProcessAnalysis, Long, ProcessAnalysisRepository> implements ProcessAnalysisService {
     
     public ProcessAnalysisServiceImpl(ProcessAnalysisRepository repository) {
         super(repository);

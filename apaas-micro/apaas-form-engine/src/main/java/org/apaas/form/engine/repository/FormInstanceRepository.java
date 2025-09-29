@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.repository;
 
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import org.apaas.form.engine.entity.FormInstance;
 import org.springframework.stereotype.Repository;
 

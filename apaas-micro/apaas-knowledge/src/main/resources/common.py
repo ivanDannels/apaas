@@ -21,7 +21,7 @@ def load_documents(file_names=None):
     Returns:
         list: 包含文件内容的列表
     """
-    documents = []
+    knowledges = []
     
     # 只有当提供了文件名列表时才加载文件
     if file_names:
@@ -34,17 +34,17 @@ def load_documents(file_names=None):
                     # 读取文件内容, 以UTF-8 编码读取文件内容
                     with open(file_path, 'r', encoding='utf-8') as f:
                         text = f.read()
-                        documents.append(text)
+                        knowledges.append(text)
     
-    return documents
+    return knowledges
 
-def create_vector_store(documents):
+def create_vector_store(knowledges):
     """创建向量数据库"""
     # 将读取文档中的内容转换为向量 - 嵌入模型
     embedding_model = OllamaEmbeddings(model='bge-m3:567m')
     
     # 创建向量数据库,将内容存储为向量
-    vector_store = FAISS.from_texts(documents, embedding_model)
+    vector_store = FAISS.from_texts(knowledges, embedding_model)
     return vector_store
 
 def create_llm(streaming=False):

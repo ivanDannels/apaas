@@ -19,7 +19,7 @@
 package org.apaas.auth.repository.reactive;
 
 import org.apaas.auth.entity.Organization;
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 
 /**
  * @author ivan

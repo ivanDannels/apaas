@@ -25,7 +25,7 @@ import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
 import org.apaas.core.query.Query;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.flow.engine.entity.FlowDefinition;
 import org.apaas.flow.engine.service.reactive.ReactiveFlowDefinitionService;
 import org.springframework.http.MediaType;

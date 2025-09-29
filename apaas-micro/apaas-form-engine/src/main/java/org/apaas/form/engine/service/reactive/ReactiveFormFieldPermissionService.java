@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.service.reactive;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.form.engine.entity.FormFieldPermission;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式表单字段权限服务接口
  */
-public interface ReactiveFormFieldPermissionService extends BaseService<FormFieldPermission, Long> {
+public interface ReactiveFormFieldPermissionService extends ApplicationService<FormFieldPermission, Long> {
     
     /**
      * 分页查询表单字段权限

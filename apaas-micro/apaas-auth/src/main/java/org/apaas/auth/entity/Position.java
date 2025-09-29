@@ -21,7 +21,7 @@ package org.apaas.auth.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -32,7 +32,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @SuperBuilder
 @Table("sys_position")
 @EqualsAndHashCode(callSuper = true)
-public class Position extends BaseEntity {
+public class Position extends BaseEntity<Long> {
     
     /**
      * 岗位名称

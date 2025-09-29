@@ -20,10 +20,10 @@
         <module>apaas-form-engine</module>
         <module>apaas-integration</module>
         <module>apaas-job</module>
+        <module>apaas-knowledge</module>
         <module>apaas-monitor</module>
         <module>apaas-report</module>
         <module>apaas-system</module>
-        <module>apaas-knowledge</module>
     </modules>
     
     <dependencies>

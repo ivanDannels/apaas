@@ -19,7 +19,7 @@
 package org.apaas.auth.repository.reactive;
 
 import org.apaas.auth.entity.Role;
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Range;
 import reactor.core.publisher.Flux;

@@ -21,7 +21,7 @@ package org.apaas.form.engine.controller.reactive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormData;
 import org.apaas.form.engine.service.reactive.ReactiveFormDataService;
 import org.springframework.http.MediaType;

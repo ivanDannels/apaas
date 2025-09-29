@@ -18,7 +18,7 @@
  */
 package org.apaas.design.platform.service.reactive;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.design.platform.entity.APIEntity;
 
 import org.apaas.core.query.PageResult;
@@ -27,7 +27,8 @@ import reactor.core.publisher.Flux;
 
 /**
  * 响应式API实体服务接口
+ * @author ivan
  */
-public interface ReactiveAPIEntityService extends BaseService<APIEntity, Long> {
+public interface ReactiveAPIEntityService extends ApplicationService<APIEntity, Long> {
     
 }

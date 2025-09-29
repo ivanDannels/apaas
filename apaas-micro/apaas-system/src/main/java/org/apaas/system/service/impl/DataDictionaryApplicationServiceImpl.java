@@ -19,17 +19,17 @@
 package org.apaas.system.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.service.application.AbstractApplicationService;
+import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.domain.domain.event.DataDictionaryEvent;
+import org.apaas.domain.domain.event.EventPublisherService;
+import org.apaas.domain.domain.exception.LockAcquisitionException;
+import org.apaas.domain.infrastructure.lock.DistributedLockService;
+import org.apaas.domain.infrastructure.log.LogUtil;
 import org.apaas.system.domain.dto.DataDictionaryDTO;
 import org.apaas.system.entity.DataDictionaryAggregate;
 import org.apaas.system.repository.DataDictionaryAggregateRepository;
 import org.apaas.system.service.DataDictionaryApplicationService;
 import org.apaas.system.service.DataDictionaryDomainService;
-import org.apaas.domain.event.DataDictionaryEvent;
-import org.apaas.domain.event.EventPublisherService;
-import org.apaas.domain.exception.LockAcquisitionException;
-import org.apaas.domain.log.LogUtil;
-import org.apaas.domain.lock.DistributedLockService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.cache.annotation.CacheEvict;
@@ -61,18 +61,13 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Service
-public class DataDictionaryApplicationServiceImpl extends AbstractApplicationService<DataDictionaryAggregate, Long, DataDictionaryAggregateRepository> 
-        implements DataDictionaryApplicationService {
+public class DataDictionaryApplicationServiceImpl extends AbstractApplicationService<DataDictionaryAggregate, Long, DataDictionaryAggregateRepository> implements DataDictionaryApplicationService {
     
     private final DistributedLockService distributedLockService;
     private final EventPublisherService eventPublisherService;
     private final DataDictionaryDomainService dataDictionaryDomainService;
     
-    public DataDictionaryApplicationServiceImpl(
-            DataDictionaryAggregateRepository repository, 
-            DistributedLockService distributedLockService, 
-            EventPublisherService eventPublisherService,
-            DataDictionaryDomainService dataDictionaryDomainService) {
+    public DataDictionaryApplicationServiceImpl(DataDictionaryAggregateRepository repository, DistributedLockService distributedLockService, EventPublisherService eventPublisherService, DataDictionaryDomainService dataDictionaryDomainService) {
         super(repository);
         this.distributedLockService = distributedLockService;
         this.eventPublisherService = eventPublisherService;
@@ -257,15 +252,7 @@ public class DataDictionaryApplicationServiceImpl extends AbstractApplicationSer
                     for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                         Row row = sheet.getRow(i);
                         if (row != null) {
-                            DataDictionaryAggregate dict = DataDictionaryAggregate.builder()
-                                    .name(getCellValueAsString(row.getCell(1)))
-                                    .code(getCellValueAsString(row.getCell(2)))
-                                    .type(getCellValueAsInteger(row.getCell(3)))
-                                    .status(getCellValueAsInteger(row.getCell(4)))
-                                    .description(getCellValueAsString(row.getCell(5)))
-                                    .createdTime(LocalDateTime.now())
-                                    .updatedTime(LocalDateTime.now())
-                                    .build();
+                            DataDictionaryAggregate dict = DataDictionaryAggregate.builder().name(getCellValueAsString(row.getCell(1))).code(getCellValueAsString(row.getCell(2))).type(getCellValueAsInteger(row.getCell(3))).status(getCellValueAsInteger(row.getCell(4))).description(getCellValueAsString(row.getCell(5))).createdTime(LocalDateTime.now()).updatedTime(LocalDateTime.now()).build();
                             dataList.add(dict);
                         }
                     }
@@ -273,19 +260,15 @@ public class DataDictionaryApplicationServiceImpl extends AbstractApplicationSer
                     workbook.close();
                     
                     // 批量保存数据并发布事件
-                    return Flux.fromIterable(dataList)
-                            .flatMap(dict -> dataDictionaryDomainService.createDictionary(dict).flatMap(createdDict -> {
-                                LogUtil.info(DataDictionaryApplicationServiceImpl.class, "数据字典导入成功: id={}, name={}", createdDict.getId(), createdDict.getName());
-                                // 发布数据字典创建事件
-                                DataDictionaryEvent event = new DataDictionaryEvent("DATA_DICTIONARY_CREATED", createdDict.getId(), createdDict.getName(), "CREATE", "数据字典导入成功");
-                                return eventPublisherService.publishEvent("dataDictionary.events", event).thenReturn(createdDict);
-                            }))
-                            .then(distributedLockService.unlock(lockKey))
-                            .thenReturn(true)
-                            .onErrorResume(throwable -> {
-                                LogUtil.error(DataDictionaryApplicationServiceImpl.class, "数据字典导入失败: error={}", throwable.getMessage(), throwable);
-                                return distributedLockService.unlock(lockKey).then(Mono.error(throwable));
-                            });
+                    return Flux.fromIterable(dataList).flatMap(dict -> dataDictionaryDomainService.createDictionary(dict).flatMap(createdDict -> {
+                        LogUtil.info(DataDictionaryApplicationServiceImpl.class, "数据字典导入成功: id={}, name={}", createdDict.getId(), createdDict.getName());
+                        // 发布数据字典创建事件
+                        DataDictionaryEvent event = new DataDictionaryEvent("DATA_DICTIONARY_CREATED", createdDict.getId(), createdDict.getName(), "CREATE", "数据字典导入成功");
+                        return eventPublisherService.publishEvent("dataDictionary.events", event).thenReturn(createdDict);
+                    })).then(distributedLockService.unlock(lockKey)).thenReturn(true).onErrorResume(throwable -> {
+                        LogUtil.error(DataDictionaryApplicationServiceImpl.class, "数据字典导入失败: error={}", throwable.getMessage(), throwable);
+                        return distributedLockService.unlock(lockKey).then(Mono.error(throwable));
+                    });
                 } catch (IOException e) {
                     LogUtil.error(DataDictionaryApplicationServiceImpl.class, "导入Excel失败: error={}", e.getMessage(), e);
                     return distributedLockService.unlock(lockKey).then(Mono.just(false));

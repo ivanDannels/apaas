@@ -21,7 +21,7 @@ package org.apaas.monitor.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -31,7 +31,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("monitor_entities")
-public class MonitorEntity extends BaseEntity {
+public class MonitorEntity extends BaseEntity<Long> {
     
     private String name;
     private String metrics;

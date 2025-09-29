@@ -19,7 +19,7 @@
 package org.apaas.form.engine.service.reactive;
 
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.form.engine.entity.FormValidationRule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * 响应式表单验证规则服务接口
  */
-public interface ReactiveFormValidationRuleService extends BaseService<FormValidationRule, Long> {
+public interface ReactiveFormValidationRuleService extends ApplicationService<FormValidationRule, Long> {
     
     /**
      * 分页查询表单验证规则

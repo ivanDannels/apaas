@@ -19,7 +19,7 @@
 package org.apaas.system.repository;
 
 import org.apaas.system.entity.SysConfig;
-import org.apaas.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 

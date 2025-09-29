@@ -21,7 +21,7 @@ package org.apaas.domain.service.application;
 import org.apaas.domain.entity.TestEntity;
 import reactor.core.publisher.Mono;
 
-public interface TestEntityService extends BaseService<TestEntity, Long> {
+public interface TestEntityService extends ApplicationService<TestEntity, Long> {
     
     Mono<TestEntity> findByName(String name);
 }

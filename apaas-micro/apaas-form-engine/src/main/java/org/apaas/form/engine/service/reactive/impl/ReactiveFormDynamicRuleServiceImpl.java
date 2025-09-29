@@ -20,7 +20,7 @@ package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.service.impl.BaseServiceImpl;
+import org.apaas.domain.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormDynamicRule;
 import org.apaas.form.engine.repository.FormDynamicRuleRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormDynamicRuleService;
@@ -36,7 +36,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-public class ReactiveFormDynamicRuleServiceImpl extends BaseServiceImpl<FormDynamicRule, Long, FormDynamicRuleRepository> implements ReactiveFormDynamicRuleService {
+public class ReactiveFormDynamicRuleServiceImpl extends AbstractApplicationService<FormDynamicRule, Long, FormDynamicRuleRepository> implements ReactiveFormDynamicRuleService {
     
     public ReactiveFormDynamicRuleServiceImpl(FormDynamicRuleRepository repository) {
         super(repository);

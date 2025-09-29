@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.rest.ReactiveBaseController;
+import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.form.engine.entity.FormValidationRule;
 import org.apaas.form.engine.service.reactive.ReactiveFormValidationRuleService;
 import org.springframework.http.MediaType;

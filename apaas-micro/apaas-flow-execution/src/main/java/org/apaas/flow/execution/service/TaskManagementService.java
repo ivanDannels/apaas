@@ -18,13 +18,13 @@
  */
 package org.apaas.flow.execution.service;
 
-import org.apaas.domain.service.BaseService;
+import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.flow.execution.domain.dto.Result;
 import org.apaas.flow.execution.domain.entity.WorkflowTask;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface TaskManagementService extends BaseService<WorkflowTask, Long> {
+public interface TaskManagementService extends ApplicationService<WorkflowTask, Long> {
     
     /**
      * 查询用户任务列表

@@ -21,7 +21,7 @@ package org.apaas.flow.engine.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.entity.BaseEntity;
+import org.apaas.domain.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -31,7 +31,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Table("flow_definition")
-public class FlowDefinition extends BaseEntity {
+public class FlowDefinition extends BaseEntity<Long> {
     
     /**
      * 流程名称
