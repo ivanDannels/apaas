@@ -1,0 +1,48 @@
+server:
+  port: 9500
+
+spring:
+  application:
+    name: rag-knowledge-base-reactive
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/ragdb
+    username: postgres
+    password: password
+  codec:
+    max-in-memory-size: 10MB
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: deepseek-r1:1.5b
+          temperature: 0.7
+    embedding:
+      transformers:
+        onnx:
+          model: bge-m3
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1024
+        distance-type: COSINE
+
+app:
+  contracts-dir: text_directory
+  k-index: 3
+
+# 配置中心相关配置
+apaas:
+  config:
+    # 是否启用配置中心
+    enabled: true
+
+logging:
+  level:
+    org.springframework.data.r2dbc: DEBUG
+    org.springframework.ai: DEBUG
+    org.jfast: DEBUG

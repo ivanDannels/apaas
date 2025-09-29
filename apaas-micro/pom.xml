@@ -23,6 +23,7 @@
         <module>apaas-monitor</module>
         <module>apaas-report</module>
         <module>apaas-system</module>
+        <module>apaas-knowledge</module>
     </modules>
     
     <dependencies>
