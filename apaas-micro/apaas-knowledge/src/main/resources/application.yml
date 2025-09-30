@@ -3,9 +3,7 @@ server:
 
 spring:
   application:
-    name: apaas-rag-knowledge
-  main:
-    allow-bean-definition-overriding: true # 允许覆盖bean定义
+    name: apaas-knowledge
 
   cloud:
     nacos:  # 单机版本关闭nacos 服务发现和配置管理的能力
@@ -13,20 +11,6 @@ spring:
         enabled: false
       discovery:
         enabled: false
-
-  datasource:
-    hikari:
-      data-source-properties:
-        # 关键参数：启用批量语句重写
-        rewriteBatchedStatements: true
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-    url: jdbc:postgresql://jfast-postgresql:5432/jfast-cloud-knowledge
-    username: postgres
-    password: Postgresql@9527$
-    driver-class-name: org.postgresql.Driver
-    type: com.zaxxer.hikari.HikariDataSource
 
   jdbc:
     template:
@@ -70,30 +54,6 @@ spring:
         options:
           model: bge-m3:567m
           max-tokens: 4096
-
-    vectorstore:
-      type: pgvector
-      pgvector:
-        initialize-schema: true  # 是否自动初始化表结构[1](@ref)
-        schema-name: public      # 模式名，默认为 public[1](@ref)
-        table-name: vector_store # 表名，默认为 vector_store[1](@ref)
-        dimensions: 1024         # 向量维度，需与嵌入模型输出维度匹配[1](@ref)
-        distance-type: COSINE_DISTANCE  # 距离计算方式，可选 COSINE_DISTANCE, L2_DISTANCE, IP_DISTANCE[1](@ref)
-        index-type: HNSW         # 索引类型，可选 HNSW, IVFFLAT[1](@ref)
-        id-type: UUID             # ID 类型，可选 UUID 或 LONG[1](@ref)
-        schema-validation: true   # 是否启用表结构验证[1](@ref)
-        remove-existing-vector-store-table: false  # 是否移除已存在的表（谨慎使用）[1](@ref)
-        max-document-batch-size: 10000  # 最大文档批处理大小[1](@ref)
-
-    mcp:
-      client:
-        sse:
-          connections:
-            server1:
-              url: http://127.0.0.1:8090
-        type: async
-        toolcallback:
-          enabled: false
 
 knowledge:
   file:
