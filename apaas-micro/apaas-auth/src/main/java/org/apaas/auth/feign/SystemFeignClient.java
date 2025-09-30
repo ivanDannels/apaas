@@ -19,16 +19,16 @@
 package org.apaas.auth.feign;
 
 import org.apaas.auth.entity.User;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.service.annotation.HttpExchange;
 
 /**
  * 系统服务Feign客户端
  * @author ivan
  */
-@FeignClient(name = "apaas-system", path = "/system")
+@HttpExchange(url = "/system")
 public interface SystemFeignClient {
     
     /**

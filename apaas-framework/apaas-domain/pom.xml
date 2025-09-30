@@ -44,12 +44,6 @@
             <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
         </dependency>
         
-        <!-- Spring Boot WebClient -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webclient</artifactId>
-        </dependency>
-        
         <!-- Spring Boot Data R2DBC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

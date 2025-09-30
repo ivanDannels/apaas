@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 认证服务Feign客户端
+ * @author ivan
  */
 @FeignClient(name = "apaas-auth", url = "${apaas.auth.service.url:http://localhost:8081}")
 public interface AuthServiceFeignClient {

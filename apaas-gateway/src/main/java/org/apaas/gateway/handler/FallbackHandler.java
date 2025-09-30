@@ -36,6 +36,7 @@ import java.util.Map;
 
 /**
  * 降级处理器
+ * @author ivan
  */
 @Slf4j
 @Component

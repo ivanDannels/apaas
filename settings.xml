@@ -15,6 +15,16 @@
 	</servers>
 	
 	<mirrors>
+        <mirror>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+            <mirrorOf>central,repository.spring.milestone</mirrorOf>
+        </mirror>
+        <mirror>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/snapshot</url>
+            <mirrorOf>!repository.spring.milestone</mirrorOf>
+        </mirror>
 		<mirror>
 			<id>jfast-cloud-jfast-spring-cloud-public</id>
 			<name>jfast-cloud-jfast-spring-cloud-public</name>

@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * 用户服务Feign客户端
+ * @author ivan
  */
 @FeignClient(name = "apaas-system", url = "${apaas.system.service.url:http://localhost:8082}")
 public interface UserServiceFeignClient {

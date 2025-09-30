@@ -27,6 +27,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
 
 /**
  * 跨域配置
+ * @author ivan
  */
 @Configuration
 public class CorsConfig {

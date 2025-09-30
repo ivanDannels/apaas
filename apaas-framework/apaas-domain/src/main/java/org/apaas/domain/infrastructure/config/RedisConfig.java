@@ -20,9 +20,10 @@ package org.apaas.domain.infrastructure.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.data.redis.autoconfigure.RedisReactiveAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
@@ -30,9 +31,17 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * @author ivan
+ */
 @AutoConfiguration
 @AutoConfigureBefore(RedisReactiveAutoConfiguration.class)
 public class RedisConfig {
+    
+    @Bean
+    public ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
+        return new RedissonConnectionFactory();
+    }
     
     @Bean
     public ObjectMapper objectMapper() {
@@ -45,7 +54,6 @@ public class RedisConfig {
     @Bean
     public ReactiveRedisTemplate<String, Object> reactiveRedisTemplate(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
         RedisSerializationContext<String, Object> serializationContext = RedisSerializationContext.<String, Object>newSerializationContext().key(new StringRedisSerializer()).value(new JdkSerializationRedisSerializer()).hashKey(new StringRedisSerializer()).hashValue(new JdkSerializationRedisSerializer()).build();
-        
         return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory, serializationContext);
     }
     

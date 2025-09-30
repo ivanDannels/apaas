@@ -18,12 +18,11 @@
  */
 package org.apaas.knowledge.infrastructure.repository;
 
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.apaas.knowledge.domain.model.Knowledge;
 import org.apaas.knowledge.domain.service.VectorStoreRepository;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.EmbeddingClient;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,50 +37,44 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OllamaVectorStoreRepository implements VectorStoreRepository {
 
-    private final VectorStore vectorStore;
-
-    private final EmbeddingClient embeddingClient;
-
+    
     private boolean vectorStoreCreated = false;
-
+    
     @Override
-    public void createVectorStore(List<Knowledge> knowledges) {
+    public void createVectorStore(List<Knowledge> knowledgeList) {
         // 将自定义Document转换为Spring AI的Document
-        List<Document> aiDocuments = knowledges.stream()
-                .map(doc -> new Document(doc.getContent(), Map.of("fileName", doc.getFileName())))
-                .collect(Collectors.toList());
+        List<Document> aiDocuments = knowledgeList.stream().map(doc -> new Document(doc.getContent(), Map.of("fileName", doc.getFileName()))).collect(Collectors.toList());
         
         // 清空现有向量存储并添加新文档
-        vectorStore.delete(aiDocuments.);
-        vectorStore.add(aiDocuments);
+//        vectorStore.delete(aiDocuments.stream().map(Document::getId).toList());
+//        vectorStore.add(aiDocuments);
         
         vectorStoreCreated = true;
     }
-
+    
     @Override
     public List<Knowledge> searchSimilar(String query, int k) {
         // 搜索相似文档
-        List<Document> similarDocs = vectorStore.similaritySearch(query, k);
+//        List<Document> similarDocs = vectorStore.similaritySearch(query);
         
         // 将Spring AI的Document转换回自定义Document
-        return similarDocs.stream()
-                .map(aiDoc -> {
-                    Knowledge doc = new Knowledge();
-                    doc.setContent(aiDoc.getContent());
-                    doc.setFileName((String) aiDoc.getMetadata().get("fileName"));
-                    return doc;
-                })
-                .collect(Collectors.toList());
+//        return similarDocs.stream().map(aiDoc -> {
+//            Knowledge doc = new Knowledge();
+//            doc.setContent(aiDoc.getFormattedContent());
+//            doc.setFileName((String) aiDoc.getMetadata().get("fileName"));
+//            return doc;
+//        }).toList();
+        return List.of();
     }
-
+    
     @Override
     public boolean hasVectorStore() {
         return vectorStoreCreated;
     }
-
+    
     @Override
     public void clearVectorStore() {
-        vectorStore.deleteAll();
+//        vectorStore.delete(List.of());
         vectorStoreCreated = false;
     }
 }

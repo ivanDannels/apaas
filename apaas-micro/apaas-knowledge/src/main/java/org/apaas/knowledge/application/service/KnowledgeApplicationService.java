@@ -19,7 +19,9 @@
 package org.apaas.knowledge.application.service;
 
 import org.apaas.knowledge.domain.model.Knowledge;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Map;
@@ -74,5 +76,5 @@ public interface KnowledgeApplicationService {
     /**
      * 流式与知识库交互进行问答
      */
-    void chatWithKnowledgeStream(String query, Consumer<String> callback);
+    Flux<ChatResponse> chatWithKnowledgeStream(String query);
 }

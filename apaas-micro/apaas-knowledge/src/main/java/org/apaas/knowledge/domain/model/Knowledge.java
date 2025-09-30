@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 @Data
 public class Knowledge {
-
+    
     // Getters and setters
     private String id;
     private String content;
@@ -47,7 +47,7 @@ public class Knowledge {
         this.lastModifiedTime = lastModifiedTime;
         this.selected = false;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o)

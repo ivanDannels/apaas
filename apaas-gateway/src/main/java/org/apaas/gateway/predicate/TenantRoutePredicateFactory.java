@@ -30,6 +30,7 @@ import java.util.function.Predicate;
 
 /**
  * 租户路由断言工厂
+ * @author ivan
  */
 @Slf4j
 @Component

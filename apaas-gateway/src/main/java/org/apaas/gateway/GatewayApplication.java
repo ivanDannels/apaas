@@ -24,6 +24,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * 网关服务启动类
+ * @author ivan
  */
 @SpringBootApplication
 @EnableFeignClients(basePackages = "org.apaas.gateway.feign")

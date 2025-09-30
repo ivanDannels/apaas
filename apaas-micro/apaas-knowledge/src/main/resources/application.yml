@@ -3,17 +3,61 @@ server:
 
 spring:
   application:
-    name: rag-knowledge-base-reactive
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/ragdb
+    name: apaas-rag-knowledge
+  main:
+    allow-bean-definition-overriding: true # 允许覆盖bean定义
+
+  cloud:
+    nacos:  # 单机版本关闭nacos 服务发现和配置管理的能力
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+
+  datasource:
+    hikari:
+      data-source-properties:
+        # 关键参数：启用批量语句重写
+        rewriteBatchedStatements: true
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+    url: jdbc:postgresql://jfast-postgresql:5432/jfast-cloud-knowledge
     username: postgres
-    password: password
-  codec:
-    max-in-memory-size: 10MB
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+    password: Postgresql@9527$
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+
+  jdbc:
+    template:
+      fetch-size: -1
+      max-rows: 100
+
+  r2dbc:
+    url: r2dbc:postgresql://jfast-postgresql:5432/jfast-cloud-knowledge
+    username: postgres
+    password: Postgresql@9527$
+    # 连接池配置 (可选)
+    pool:
+      max-size: 10
+      max-idle-time: 30m
+      max-acquire-time: 30s
+
+  # 响应式Redis配置
+  data:
+    redis:
+      host: jfast-redis
+      port: 6379
+      password: Redis@9527$ # 如果没有密码，可注释或删除
+      database: 0
+      # 连接池配置 (可选)
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
   ai:
     ollama:
       base-url: http://localhost:11434
@@ -21,25 +65,40 @@ spring:
         options:
           model: deepseek-r1:1.5b
           temperature: 0.7
-    embedding:
-      transformers:
-        onnx:
-          model: bge-m3
+          max-tokens: 4096
+      embedding:
+        options:
+          model: bge-m3:567m
+          max-tokens: 4096
+
     vectorstore:
+      type: pgvector
       pgvector:
-        index-type: HNSW
-        dimensions: 1024
-        distance-type: COSINE
+        initialize-schema: true  # 是否自动初始化表结构[1](@ref)
+        schema-name: public      # 模式名，默认为 public[1](@ref)
+        table-name: vector_store # 表名，默认为 vector_store[1](@ref)
+        dimensions: 1024         # 向量维度，需与嵌入模型输出维度匹配[1](@ref)
+        distance-type: COSINE_DISTANCE  # 距离计算方式，可选 COSINE_DISTANCE, L2_DISTANCE, IP_DISTANCE[1](@ref)
+        index-type: HNSW         # 索引类型，可选 HNSW, IVFFLAT[1](@ref)
+        id-type: UUID             # ID 类型，可选 UUID 或 LONG[1](@ref)
+        schema-validation: true   # 是否启用表结构验证[1](@ref)
+        remove-existing-vector-store-table: false  # 是否移除已存在的表（谨慎使用）[1](@ref)
+        max-document-batch-size: 10000  # 最大文档批处理大小[1](@ref)
 
-app:
-  contracts-dir: text_directory
-  k-index: 3
+    mcp:
+      client:
+        sse:
+          connections:
+            server1:
+              url: http://127.0.0.1:8090
+        type: async
+        toolcallback:
+          enabled: false
 
-# 配置中心相关配置
-apaas:
-  config:
-    # 是否启用配置中心
-    enabled: true
+knowledge:
+  file:
+    storage:
+      path: text_directory
 
 logging:
   level:

@@ -18,25 +18,28 @@
  */
 package org.apaas.knowledge.application.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.apaas.knowledge.application.service.KnowledgeApplicationService;
 import org.apaas.knowledge.domain.model.Knowledge;
 import org.apaas.knowledge.domain.service.KnowledgeRepository;
 import org.apaas.knowledge.domain.service.LLMService;
 import org.apaas.knowledge.domain.service.VectorStoreRepository;
-import org.apaas.knowledge.infrastructure.client.FileStorageClient;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.apaas.knowledge.infrastructure.client.FileStorageClient;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * 知识库应用服务的实现类
+ * @author ivan
  */
 @Service
+@RequiredArgsConstructor
 public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationService {
     
     // 配置存放知识库的目录
@@ -48,17 +51,13 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
     // 用于存储当前选择使用的文件列表
     private final List<String> selectedFiles = new ArrayList<>();
     
-    @Autowired
-    private KnowledgeRepository knowledgeRepository;
+    private final KnowledgeRepository knowledgeRepository;
     
-    @Autowired
-    private VectorStoreRepository vectorStoreRepository;
+    private final VectorStoreRepository vectorStoreRepository;
     
-    @Autowired
-    private LLMService llmService;
+    private final LLMService llmService;
     
-    @Autowired
-    private FileStorageClient fileStorageClient;
+    // private final FileStorageClient fileStorageClient;
     
     @Override
     public Map<String, Object> uploadFile(MultipartFile file) {
@@ -81,7 +80,7 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             }
             
             // 调用远程文件存储服务上传文件
-            fileStorageClient.uploadFile(file, CONTRACTS_DIR);
+            // fileStorageClient.uploadFile(file, CONTRACTS_DIR);
             
             // 读取文件内容
             String content = new String(file.getBytes(), StandardCharsets.UTF_8);
@@ -99,9 +98,9 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             }
             
             // 重新加载选择的文件并创建向量数据库
-            List<Knowledge> knowledges = loadSelectedDocuments();
-            if (!knowledges.isEmpty()) {
-                vectorStoreRepository.createVectorStore(knowledges);
+            List<Knowledge> knowledgeList = loadSelectedDocuments();
+            if (!knowledgeList.isEmpty()) {
+                vectorStoreRepository.createVectorStore(knowledgeList);
             }
             
             result.put("success", true);
@@ -145,20 +144,18 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             }
             
             // 删除文件
-            fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
+            // fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
             knowledgeRepository.deleteByFileName(fileName);
             
             // 如果该文件在已选择列表中，移除它
-            if (selectedFiles.contains(fileName)) {
-                selectedFiles.remove(fileName);
-            }
+            selectedFiles.remove(fileName);
             
             // 重新加载选择的文件
-            List<Knowledge> knowledges = loadSelectedDocuments();
+            List<Knowledge> loadSelectedDocuments = loadSelectedDocuments();
             
             // 更新向量数据库
-            if (!knowledges.isEmpty()) {
-                vectorStoreRepository.createVectorStore(knowledges);
+            if (!loadSelectedDocuments.isEmpty()) {
+                vectorStoreRepository.createVectorStore(loadSelectedDocuments);
             } else {
                 vectorStoreRepository.clearVectorStore();
             }
@@ -189,14 +186,12 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             for (String fileName : fileNames) {
                 if (knowledgeRepository.existsByFileName(fileName) && (fileName.endsWith(".txt") || fileName.endsWith(".md"))) {
                     
-                    fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
+                    // fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
                     knowledgeRepository.deleteByFileName(fileName);
                     deletedCount++;
                     
                     // 如果该文件在已选择列表中，移除它
-                    if (selectedFiles.contains(fileName)) {
-                        selectedFiles.remove(fileName);
-                    }
+                    selectedFiles.remove(fileName);
                 }
             }
             
@@ -232,7 +227,7 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             List<Knowledge> allKnowledges = knowledgeRepository.findAll();
             List<String> fileNames = allKnowledges.stream().map(Knowledge::getFileName).toList();
             
-            fileStorageClient.deleteAllFiles(CONTRACTS_DIR);
+            // fileStorageClient.deleteAllFiles(CONTRACTS_DIR);
             knowledgeRepository.deleteAllByFileNames(fileNames);
             
             // 清空向量存储
@@ -260,17 +255,17 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             }
             
             // 更新文档的选择状态
-            List<Knowledge> allKnowledges = knowledgeRepository.findAll();
-            for (Knowledge knowledge : allKnowledges) {
+            List<Knowledge> knowledgeRepositoryAll = knowledgeRepository.findAll();
+            for (Knowledge knowledge : knowledgeRepositoryAll) {
                 knowledge.setSelected(selectedFiles.contains(knowledge.getFileName()));
             }
             
             // 加载选择的文件
-            List<Knowledge> knowledges = loadSelectedDocuments();
+            List<Knowledge> loadSelectedDocuments = loadSelectedDocuments();
             
             // 更新向量数据库
-            if (!knowledges.isEmpty()) {
-                vectorStoreRepository.createVectorStore(knowledges);
+            if (!loadSelectedDocuments.isEmpty()) {
+                vectorStoreRepository.createVectorStore(loadSelectedDocuments);
             } else {
                 vectorStoreRepository.clearVectorStore();
             }
@@ -296,7 +291,7 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
         
         try {
             // 从已选择列表中移除文件
-            if (fileName != null && selectedFiles.contains(fileName)) {
+            if (fileName != null) {
                 selectedFiles.remove(fileName);
             }
             
@@ -305,11 +300,11 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             documentOpt.ifPresent(document -> document.setSelected(false));
             
             // 加载选择的文件
-            List<Knowledge> knowledges = loadSelectedDocuments();
+            List<Knowledge> loadSelectedDocuments = loadSelectedDocuments();
             
             // 更新向量数据库
-            if (!knowledges.isEmpty()) {
-                vectorStoreRepository.createVectorStore(knowledges);
+            if (!loadSelectedDocuments.isEmpty()) {
+                vectorStoreRepository.createVectorStore(loadSelectedDocuments);
             } else {
                 vectorStoreRepository.clearVectorStore();
             }
@@ -334,24 +329,24 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
     }
     
     @Override
-    public void chatWithKnowledgeStream(String query, Consumer<String> callback) {
+    public Flux<ChatResponse> chatWithKnowledgeStream(String query) {
         // 构建提示词
         String prompt = buildPrompt(query);
         
         // 调用LLM流式生成响应
-        llmService.generateTextStream(prompt, callback);
+        return llmService.generateTextStream(prompt);
     }
     
     /**
      * 加载已选择的文档
      */
     private List<Knowledge> loadSelectedDocuments() {
-        List<Knowledge> knowledges = new ArrayList<>();
+        List<Knowledge> knowledgeList = new ArrayList<>();
         for (String fileName : selectedFiles) {
             Optional<Knowledge> documentOpt = knowledgeRepository.findByFileName(fileName);
-            documentOpt.ifPresent(knowledges::add);
+            documentOpt.ifPresent(knowledgeList::add);
         }
-        return knowledges;
+        return knowledgeList;
     }
     
     /**

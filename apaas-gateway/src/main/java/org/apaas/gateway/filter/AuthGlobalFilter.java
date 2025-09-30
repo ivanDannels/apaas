@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 
 /**
  * 认证全局过滤器
+ * @author ivan
  */
 @Slf4j
 @Component

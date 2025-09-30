@@ -31,7 +31,7 @@ public interface VectorStoreRepository {
     /**
      * 创建向量存储
      */
-    void createVectorStore(List<Knowledge> knowledges);
+    void createVectorStore(List<Knowledge> knowledgeList);
     
     /**
      * 搜索相似文档

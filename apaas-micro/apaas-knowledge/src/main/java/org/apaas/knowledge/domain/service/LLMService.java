@@ -18,10 +18,12 @@
  */
 package org.apaas.knowledge.domain.service;
 
-import java.util.function.Consumer;
+import org.springframework.ai.chat.model.ChatResponse;
+import reactor.core.publisher.Flux;
 
 /**
  * 语言模型服务接口，定义与语言模型交互的操作
+ * @author ivan
  */
 public interface LLMService {
     
@@ -33,5 +35,5 @@ public interface LLMService {
     /**
      * 流式生成文本响应
      */
-    void generateTextStream(String prompt, Consumer<String> callback);
+    Flux<ChatResponse> generateTextStream(String prompt);
 }

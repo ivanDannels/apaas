@@ -13,35 +13,25 @@
     <description>APaaS平台系统服务</description>
     
     <dependencies>
-        
         <!-- Spring Data R2DBC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
         </dependency>
-        
         <!-- MinIO -->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
         </dependency>
-        
         <!-- EasyExcel -->
         <dependency>
             <groupId>cn.idev.excel</groupId>
             <artifactId>fastexcel</artifactId>
         </dependency>
-        
         <!-- Elasticsearch -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-        </dependency>
-        
-        <!-- APaaS Core -->
-        <dependency>
-            <groupId>org.apaas</groupId>
-            <artifactId>apaas-core</artifactId>
         </dependency>
     </dependencies>
     

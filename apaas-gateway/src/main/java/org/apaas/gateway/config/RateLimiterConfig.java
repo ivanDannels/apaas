@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 限流配置
+ * @author ivan
  */
 @Configuration
 public class RateLimiterConfig {

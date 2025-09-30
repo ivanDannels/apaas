@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 路由配置
+ * @author ivan
  */
 @Slf4j
 @Configuration
