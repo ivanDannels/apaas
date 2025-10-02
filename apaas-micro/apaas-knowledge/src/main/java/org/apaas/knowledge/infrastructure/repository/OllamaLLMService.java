@@ -24,7 +24,6 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.ollama.OllamaChatModel;
-import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -40,8 +39,7 @@ import java.util.Map;
 public class OllamaLLMService implements LLMService {
     
     private final OllamaChatModel chatModel;
-
-
+    
     @Override
     public String generateText(String prompt) {
         // 创建提示模板

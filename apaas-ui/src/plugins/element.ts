@@ -1,7 +1,7 @@
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { App } from 'vue'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
-export default function setupElementPlus(app: App<Element>): void {
+export default function setupElementPlus(app: App): void {
   // 注册所有图标
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)

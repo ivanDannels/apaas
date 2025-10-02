@@ -12,11 +12,6 @@ spring:
       discovery:
         enabled: false
 
-  jdbc:
-    template:
-      fetch-size: -1
-      max-rows: 100
-
   r2dbc:
     url: r2dbc:postgresql://jfast-postgresql:5432/jfast-cloud-knowledge
     username: postgres
@@ -54,6 +49,12 @@ spring:
         options:
           model: bge-m3:567m
           max-tokens: 4096
+
+    vectorstore:
+      redis:
+        index-name: jfast-knowledge
+        prefix: 'jfast:knowledge:'
+        initialize-schema: true
 
 knowledge:
   file:

@@ -23,9 +23,13 @@ import org.apaas.knowledge.application.service.KnowledgeApplicationService;
 import org.apaas.knowledge.domain.model.Knowledge;
 import org.apaas.knowledge.domain.service.KnowledgeRepository;
 import org.apaas.knowledge.domain.service.LLMService;
-import org.apaas.knowledge.domain.service.VectorStoreRepository;
-//import org.apaas.knowledge.infrastructure.client.FileStorageClient;
+import org.apaas.knowledge.infrastructure.client.FileStorageClient;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.embedding.Embedding;
+import org.springframework.ai.embedding.EmbeddingRequest;
+import org.springframework.ai.embedding.EmbeddingResponse;
+import org.springframework.ai.model.ollama.autoconfigure.OllamaEmbeddingProperties;
+import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
@@ -50,14 +54,16 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
     
     // 用于存储当前选择使用的文件列表
     private final List<String> selectedFiles = new ArrayList<>();
-    
+
     private final KnowledgeRepository knowledgeRepository;
-    
-    private final VectorStoreRepository vectorStoreRepository;
-    
+
     private final LLMService llmService;
+
+    private final OllamaEmbeddingModel ollamaEmbeddingModel;
+
+    private final OllamaEmbeddingProperties ollamaEmbeddingProperties;
     
-    // private final FileStorageClient fileStorageClient;
+    private final FileStorageClient fileStorageClient;
     
     @Override
     public Map<String, Object> uploadFile(MultipartFile file) {
@@ -80,7 +86,7 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             }
             
             // 调用远程文件存储服务上传文件
-            // fileStorageClient.uploadFile(file, CONTRACTS_DIR);
+            fileStorageClient.uploadFile(file, CONTRACTS_DIR);
             
             // 读取文件内容
             String content = new String(file.getBytes(), StandardCharsets.UTF_8);
@@ -100,7 +106,7 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             // 重新加载选择的文件并创建向量数据库
             List<Knowledge> knowledgeList = loadSelectedDocuments();
             if (!knowledgeList.isEmpty()) {
-                vectorStoreRepository.createVectorStore(knowledgeList);
+                ollamaEmbeddingModel.embed(knowledgeList.stream().map(Knowledge::getContent).toList());
             }
             
             result.put("success", true);
@@ -144,7 +150,7 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             }
             
             // 删除文件
-            // fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
+            fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
             knowledgeRepository.deleteByFileName(fileName);
             
             // 如果该文件在已选择列表中，移除它
@@ -155,9 +161,9 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             
             // 更新向量数据库
             if (!loadSelectedDocuments.isEmpty()) {
-                vectorStoreRepository.createVectorStore(loadSelectedDocuments);
+                ollamaEmbeddingModel.embed(loadSelectedDocuments.stream().map(Knowledge::getContent).toList());
             } else {
-                vectorStoreRepository.clearVectorStore();
+                ollamaEmbeddingModel.dimensions();
             }
             
             result.put("success", true);
@@ -186,7 +192,7 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             for (String fileName : fileNames) {
                 if (knowledgeRepository.existsByFileName(fileName) && (fileName.endsWith(".txt") || fileName.endsWith(".md"))) {
                     
-                    // fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
+                    fileStorageClient.deleteFile(fileName, CONTRACTS_DIR);
                     knowledgeRepository.deleteByFileName(fileName);
                     deletedCount++;
                     
@@ -196,13 +202,13 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             }
             
             // 重新加载选择的文件
-            List<Knowledge> knowledges = loadSelectedDocuments();
+            List<Knowledge> knowledgeList = loadSelectedDocuments();
             
             // 更新向量数据库
-            if (!knowledges.isEmpty()) {
-                vectorStoreRepository.createVectorStore(knowledges);
+            if (!knowledgeList.isEmpty()) {
+                ollamaEmbeddingModel.embed(knowledgeList.stream().map(Knowledge::getContent).toList());
             } else {
-                vectorStoreRepository.clearVectorStore();
+                ollamaEmbeddingModel.dimensions();
             }
             
             result.put("success", true);
@@ -227,11 +233,11 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             List<Knowledge> allKnowledges = knowledgeRepository.findAll();
             List<String> fileNames = allKnowledges.stream().map(Knowledge::getFileName).toList();
             
-            // fileStorageClient.deleteAllFiles(CONTRACTS_DIR);
+            fileStorageClient.deleteAllFiles(CONTRACTS_DIR);
             knowledgeRepository.deleteAllByFileNames(fileNames);
             
             // 清空向量存储
-            vectorStoreRepository.clearVectorStore();
+//            ollamaEmbeddingModel
             
             result.put("success", true);
             result.put("message", "知识库已清空");
@@ -265,9 +271,9 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             
             // 更新向量数据库
             if (!loadSelectedDocuments.isEmpty()) {
-                vectorStoreRepository.createVectorStore(loadSelectedDocuments);
+                ollamaEmbeddingModel.embed(loadSelectedDocuments.stream().map(Knowledge::getContent).toList());
             } else {
-                vectorStoreRepository.clearVectorStore();
+//                vectorStoreRepository.clearVectorStore();
             }
             
             if (!selectedFiles.isEmpty()) {
@@ -304,9 +310,9 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
             
             // 更新向量数据库
             if (!loadSelectedDocuments.isEmpty()) {
-                vectorStoreRepository.createVectorStore(loadSelectedDocuments);
+                ollamaEmbeddingModel.embed(loadSelectedDocuments.stream().map(Knowledge::getContent).toList());
             } else {
-                vectorStoreRepository.clearVectorStore();
+//                vectorStoreRepository.clearVectorStore();
             }
             
             result.put("success", true);
@@ -356,11 +362,19 @@ public class KnowledgeApplicationServiceImpl implements KnowledgeApplicationServ
         StringBuilder promptBuilder = new StringBuilder();
         
         // 只有当用户选择了文件时才使用向量数据库检索
-        if (!selectedFiles.isEmpty() && vectorStoreRepository.hasVectorStore()) {
-            List<Knowledge> similarDocs = vectorStoreRepository.searchSimilar(query, K_INDEX);
-            for (Knowledge doc : similarDocs) {
-                promptBuilder.append(doc.getContent()).append("\n");
-            }
+        if (!selectedFiles.isEmpty()) {
+            EmbeddingRequest embeddingRequest = new EmbeddingRequest(List.of(query), ollamaEmbeddingProperties.getOptions());
+            EmbeddingResponse embeddingResponse = ollamaEmbeddingModel.call(embeddingRequest);
+            List<Embedding> embeddings = embeddingResponse.getResults();
+
+            embeddings.forEach(embedding -> {
+                promptBuilder.append(embedding.getMetadata().getDocumentData());
+            });
+
+//            List<Knowledge> similarDocs = vectorStoreRepository.searchSimilar(query, K_INDEX);
+//            for (Knowledge doc : similarDocs) {
+//                promptBuilder.append(doc.getContent()).append("\n");
+//            }
         }
         
         promptBuilder.append("Question: ").append(query).append("\nAnswer:");

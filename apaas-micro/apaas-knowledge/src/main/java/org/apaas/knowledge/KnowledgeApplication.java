@@ -19,21 +19,21 @@
 package org.apaas.knowledge;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-//import reactivefeign.spring.config.EnableReactiveFeignClients;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import reactivefeign.spring.config.EnableReactiveFeignClients;
 
 /**
  * 知识库服务的Spring Boot应用程序入口
  * @author ivan
  */
-@AutoConfiguration
 @SpringBootApplication
-// @EnableReactiveFeignClients
+@EnableFeignClients(basePackages = "org.apaas.api")
+@EnableReactiveFeignClients(basePackages = "org.apaas.api")
 public class KnowledgeApplication {
     
     public static void main(String[] args) {
         SpringApplication.run(KnowledgeApplication.class, args);
     }
-
+    
 }

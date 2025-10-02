@@ -23,6 +23,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+
+        <!-- 引入Feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!-- 引入ReactiveFeign -->
         <dependency>
             <groupId>com.playtika.reactivefeign</groupId>
