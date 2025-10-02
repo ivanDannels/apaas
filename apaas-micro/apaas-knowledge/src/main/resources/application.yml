@@ -16,7 +16,6 @@ spring:
     url: r2dbc:postgresql://jfast-postgresql:5432/jfast-cloud-knowledge
     username: postgres
     password: Postgresql@9527$
-    # 连接池配置 (可选)
     pool:
       max-size: 10
       max-idle-time: 30m
@@ -37,6 +36,12 @@ spring:
           min-idle: 0
           max-wait: -1ms
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jfast-cloud-knowledge
+    username: postgres
+    password: Postgresql@9527$
+    driver-class-name: org.postgresql.Driver
+
   ai:
     ollama:
       base-url: http://localhost:11434
@@ -51,15 +56,33 @@ spring:
           max-tokens: 4096
 
     vectorstore:
+      pgvector:
+        index-type: HNSW
+        initializeSchema: true
       redis:
         index-name: jfast-knowledge
         prefix: 'jfast:knowledge:'
         initialize-schema: true
 
-knowledge:
-  file:
-    storage:
-      path: text_directory
+app:
+  upload:
+    dir: uploads
+  rag:
+    prompt:
+      template: |
+        你是一个企业知识库助手，请严格根据以下上下文回答问题：
+        {context}
+        
+        问题：{question}
+        
+        回答时需满足：
+        1. 仅基于上下文内容，不编造未知信息；
+        2. 标注来源文档名称和位置（如【财务制度.pdf, P15】）；
+        3. 若上下文无关，回复"未找到相关知识"。
+    search:
+      limit: 5
+    timeout:
+      seconds: 10
 
 logging:
   level:

@@ -13,6 +13,11 @@
     <description>APaaS报表服务</description>
     
     <dependencies>
+        <!-- 领域模块 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-domain</artifactId>
+        </dependency>
         <!-- FastExcel -->
         <dependency>
             <groupId>cn.idev.excel</groupId>

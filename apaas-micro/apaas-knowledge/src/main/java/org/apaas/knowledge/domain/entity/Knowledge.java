@@ -16,50 +16,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.knowledge.domain.model;
+package org.apaas.knowledge.domain.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 /**
- * 文档模型，表示知识库中的单个文档
  * @author ivan
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "knowledges")
 public class Knowledge {
     
-    // Getters and setters
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false)
+    private String title;
+    
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
-    private String fileName;
-    private long fileSize;
-    private long lastModifiedTime;
-    private boolean selected;
     
-    public Knowledge() {
+    @Column(name = "file_path")
+    private String filePath;
+    
+    @Column(name = "file_type")
+    private String fileType;
+    
+    @Column(name = "created_time")
+    private LocalDateTime createdTime;
+    
+    @Column(name = "updated_time")
+    private LocalDateTime updatedTime;
+    
+    @PrePersist
+    protected void onCreate() {
+        createdTime = LocalDateTime.now();
+        updatedTime = LocalDateTime.now();
     }
     
-    public Knowledge(String content, String fileName, long fileSize, long lastModifiedTime) {
-        this.content = content;
-        this.fileName = fileName;
-        this.fileSize = fileSize;
-        this.lastModifiedTime = lastModifiedTime;
-        this.selected = false;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        Knowledge knowledge = (Knowledge) o;
-        return Objects.equals(fileName, knowledge.fileName);
-    }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(fileName);
+    @PreUpdate
+    protected void onUpdate() {
+        updatedTime = LocalDateTime.now();
     }
 }

@@ -18,10 +18,10 @@
  */
 package org.apaas.api.inner;
 
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.Map;
 
@@ -29,7 +29,7 @@ import java.util.Map;
  * 文件存储服务接口，用于远程调用apaas-system中的文件存储服务
  * @author ivan
  */
-@FeignClient(name = "fileStorageApi", url = "http://localhost:9500", path = "/api/system/file")
+@HttpExchange(url = "http://localhost:9500api/system/file")
 public interface FileStorageApi {
     
     /**

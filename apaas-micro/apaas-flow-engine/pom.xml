@@ -13,6 +13,11 @@
     <description>APaaS平台流程引擎模块</description>
     
     <dependencies>
+        <!-- 领域模块 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-domain</artifactId>
+        </dependency>
         <!-- 响应式数据库相关依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -16,24 +16,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.knowledge.domain.service;
+package org.apaas.knowledge.domain;
 
-import org.springframework.ai.chat.model.ChatResponse;
-import reactor.core.publisher.Flux;
+import org.apaas.knowledge.domain.entity.Knowledge;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
- * 语言模型服务接口，定义与语言模型交互的操作
  * @author ivan
  */
-public interface LLMService {
+@Repository
+public interface KnowledgeRepository extends JpaRepository<Knowledge, Long> {
     
-    /**
-     * 生成文本响应
-     */
-    String generateText(String prompt);
+    @Query("SELECT k FROM Knowledge k WHERE LOWER(k.content) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Knowledge> findByContentContainingIgnoreCase(@Param("keyword") String keyword);
     
-    /**
-     * 流式生成文本响应
-     */
-    Flux<ChatResponse> generateTextStream(String prompt);
+    List<Knowledge> findByTitleContainingIgnoreCase(String title);
+    
+    List<Knowledge> findByFileType(String fileType);
 }
