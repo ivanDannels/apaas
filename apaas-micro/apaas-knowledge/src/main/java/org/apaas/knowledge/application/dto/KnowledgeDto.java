@@ -16,46 +16,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.knowledge.domain.service;
+package org.apaas.knowledge.application.dto;
 
-import org.apaas.knowledge.domain.model.Knowledge;
+import lombok.Data;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 /**
- * 文档存储库接口，定义对文档的基本操作
  * @author ivan
  */
-public interface KnowledgeRepository {
+@Data
+public class KnowledgeDto {
     
-    /**
-     * 保存文档
-     */
-    Knowledge save(Knowledge knowledge);
+    private Long id;
     
-    /**
-     * 根据文件名获取文档
-     */
-    Optional<Knowledge> findByFileName(String fileName);
+    private String title;
     
-    /**
-     * 获取所有文档
-     */
-    List<Knowledge> findAll();
+    private String content;
     
-    /**
-     * 删除文档
-     */
-    void deleteByFileName(String fileName);
+    private String filePath;
     
-    /**
-     * 批量删除文档
-     */
-    void deleteAllByFileNames(List<String> fileNames);
+    private String fileType;
     
-    /**
-     * 检查文件是否存在
-     */
-    boolean existsByFileName(String fileName);
+    private LocalDateTime createdTime;
+    
+    private LocalDateTime updatedTime;
+    
 }

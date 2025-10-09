@@ -23,6 +23,7 @@ import org.apaas.api.inner.dto.ProcessDefinitionDTO;
 import org.apaas.api.inner.dto.ProcessInstanceDTO;
 import org.apaas.api.inner.dto.ProcessTaskDTO;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.HttpExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  * 流程引擎服务API
  */
-@RequestMapping("/inner/process-engine")
+@HttpExchange(value = "http://localhost:9500/inner")
 public interface ProcessEngineApi {
     
     /**

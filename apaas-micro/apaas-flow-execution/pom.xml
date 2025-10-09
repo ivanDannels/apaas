@@ -13,6 +13,11 @@
     <description>流程执行服务</description>
     
     <dependencies>
+        <!-- 领域模块 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-domain</artifactId>
+        </dependency>
         <!-- 引入流程引擎相关依赖 -->
         <dependency>
             <groupId>org.apaas</groupId>

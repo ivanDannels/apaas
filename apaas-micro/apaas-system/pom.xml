@@ -13,6 +13,11 @@
     <description>APaaS平台系统服务</description>
     
     <dependencies>
+        <!-- 领域模块 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-domain</artifactId>
+        </dependency>
         <!-- Spring Data R2DBC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

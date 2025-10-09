@@ -13,6 +13,11 @@
     <description>开发平台服务</description>
     
     <dependencies>
+        <!-- 领域模块 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-domain</artifactId>
+        </dependency>
         <!-- 引入表单引擎相关依赖 -->
         <dependency>
             <groupId>org.apaas</groupId>
