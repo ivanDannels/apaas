@@ -2,9 +2,59 @@
 
 ## 一、系统概述
 
-基于企业级智能审批、业务动态处理场景构建的分布式任务处理、审批、有向无环图流程引擎，支持在线 API 开发、数据模型设计得低代码平台，支持多租户隔离、多语言适配、高并发处理和全流程可视化管理。系统采用 DDD 架构设计，前后端分离架构，确保可扩展性、可靠性和易用性。
+定位为面向企业的云原生智能应用构建、业务流程审批、业务动态处理、数据可视化处理的分布式智能平台，核心支持分布式任务处理、审批流、有向无环图流程引擎，具备在线 API 开发、数据模型设计、数据集成、治理、分析和应用构建能力。采用 DDD 架构与前后端分离模式，满足多租户隔离、多语言适配、高并发处理及全流程可视化管理需求，保障可扩展性、可靠性与易用性。
+
+### **1.1. 文档目的**
+
+本⽂档旨在为"新一待企业级智能应用云平台 (APaaS)"项⽬提供全⾯、详细的设计⽅案，作为开发团队进⾏编码、测试和部署的主要依据。本文档详细描述了系统架构、领域模型、接⼝设计、数据结构和核⼼业务流程，确保开发⼯作的⼀致性、规范性和⾼效率。
+
+### **1.2. 项目背景与愿景**
+
+新一待企业级智能应用云平台 (APaaS) 是一个面向企业的云原生智能应用平台，通过零代码/低代码方式，帮助企业快速构建数据驱动的业务应用。平台提供统一的数据调度、集成、治理、分析、应用；业务流程引擎动态驱动，构建智能化应用服务平台，支持多租户、高并发、高可用的企业级应用场景。
+
+### **1.3. 设计范围**
+
+本设计覆盖了APaaS平台的平台概述、架构设计、技术栈选型、数据管理、安全体系、运维监控、用户体验及非功能性需求。
+
+#### **1.4. 设计原则**
+
+1. **云原生优先**：所有服务容器化，支持Kubernetes编排
+2. **领域驱动设计**：基于DDD划分微服务边界
+3. **事件驱动架构**：服务间通过领域事件解耦
+4. **前后端分离**：独立开发、部署、扩展
+5. **安全优先**：零信任安全模型，全链路加密
+6. **可观测性**：全面的监控、日志、链路追踪，确保系统运行透明、可调试
+7. **可扩展性**：采用微服务架构，支持水平扩展与服务替换
+8. **高可用**：关键组件采用高可用配置，如主备切换、负载均衡
+9. **易维护**：代码质量高、注释完善、文档详尽，方便后续维护与升级
+
+### **1.5. 术语表**
+
+| 术语 | 英文 | 解释 |
+| :--- | :--- | :--- |
+| 租户 | Tenant | 系统的独立使用实例，拥有隔离的用户、项目和数据 |
+| 项目 | Project | 租户内的一个逻辑工作空间，用于隔离和管理资源 |
+| 应用 | Application | 基于零代码平台构建的业务应用 |
+| 工作流 | Workflow | 由用户定义的自动化业务流程 |
+| RBAC | Role-Based Access Control | 基于角色的访问控制 |
+| DDD | Domain-Driven Design | 领域驱动设计 |
+| 限界上下文 | Bounded Context | DDD术语，一个清晰的业务边界 |
+| 聚合根 | Aggregate Root | 聚合的主要入口实体 |
+| DTO | Data Transfer Object | 数据传输对象 |
+| API | Application Programming Interface | 应用程序接口 |
 
 ## 二、系统功能设计
+
+按服务模块划分核心功能，涵盖9大核心服务：
+1. **系统基础服务**：含数据字典（系统/业务字典管理）、参数配置（系统/业务参数管理）、国际化多语言（多语言切换与翻译）、通知与提醒（多渠道通知、模板与订阅管理）。
+2. **权限中心服务**：包括系统资源管理（目录/菜单/按钮等资源的树形结构与权限控制）、角色与权限管理（RBAC模型与数据权限控制）、多租户管理（租户生命周期与资源分配）、组织机构与用户管理（组织树、岗位及用户认证授权）。
+3. **系统监控服务**：覆盖操作审计（全链路追踪与敏感操作记录）、流程追踪（可视化与深度分析）、异常监控（智能检测与多维度告警）、日志分析（结构化与预测分析）等。
+4. **流程引擎服务**：支持流程设计（审批流/DAG图建模、节点类型与版本控制）、表单引擎（多字段类型、校验规则与动态布局）。
+5. **流程执行服务**：负责流程运行控制（实例管理、任务分配与异常处理）、审批与会签（审批操作、会签模式与电子签名）。
+6. **调度任务服务**：含任务调度管理（多类型任务与生命周期）、调度引擎（策略与分布式调度）、任务执行与错误处理（执行模式与重试机制）、监控与编排。
+7. **集成服务**：支持API、表单、认证及业务系统集成。
+8. **报表服务**：提供流程/任务/用户分析、自定义报表与大屏监控。
+9. **开发平台服务**：涵盖元数据管理、模型设计、代码生成、多数据源管理、API接口定义与数据安全等低代码能力。
 
 ### 2.1 系统基础服务
 
@@ -416,6 +466,12 @@
 
 ## 三、系统架构设计
 
+1. **整体架构**：分为展示层（统一门户、设计器等）、接口层（API网关）、服务层（9大核心服务及下属模块）、数据层（各服务对应数据库）。
+2. **服务拆分**：明确10个核心服务的端口、职责、功能模块与数据实体（如系统服务负责基础配置，权限中心负责认证授权等）。
+3. **服务通信**：采用RESTful API，支持版本控制与安全校验（HTTPS、签名验证），定义关键业务时序（如流程启动、带审计的登录）。
+4. **分层架构**：微服务内部分为接口层（请求处理）、应用层（业务编排）、领域层（领域模型）、基础设施层（数据持久化）；前端基于Vue 3等技术栈，分框架核心、UI组件、核心服务、视图层等。
+5. **技术栈选型**：后端采用JDK 25、Spring Boot 3.5.6等，前端采用Vue 3.5.18、Element Plus等，中间件含PostgreSQL、Redis、RabbitMQ等，部署依赖Docker、Jenkins等工具。
+
 ### 3.1. 整体架构
 
 ```mermaid
@@ -473,20 +529,37 @@ graph TD
 采用 DDD+微服务架构，分为以下核心服务：
 | **服务名称** | **端口** | **核心职责** | **功能模块** | **数据模型实体** |
 |--------------|----------|--------------|--------------|------------------|
-| **系统服务** | 5081 | 系统基础配置管理 | 1. 数据字典管理<br>2. 系统参数配置<br>3. 多语言管理 <br>4.消息通知管理<br>5. 多通道通知<br>6. 模板管理<br>7. 订阅配置 | DataDictionary, DataDictionaryItem, SystemConfig, Locale、MessageTemplate, MessageChannel, MessageSubscription |
+| **系统基础服务** | 5081 | 系统基础配置管理 | 1. 数据字典管理<br>2. 系统参数配置<br>3. 多语言管理 <br>4.消息通知管理<br>5. 多通道通知<br>6. 模板管理<br>7. 订阅配置 | DataDictionary, DataDictionaryItem, SystemConfig, Locale、MessageTemplate, MessageChannel, MessageSubscription |
 | **权限中心服务** | 5082 | 认证授权与访问控制 | 1. 资源管理<br>2. 角色管理<br>3. 数据权限管理<br>4. 多租户管理<br>5. 组织管理<br>6. 岗位管理<br>7. 用户管理 | Resource, Role, RoleResource, DataPermission, Tenant, Organization, Position, User, UserRole |
 | **系统监控服务** | 5083 | 系统监控与审计 | 1. 操作审计<br>2. 流程追踪<br>3. 异常监控<br>4. 日志分析 | OperationLog, FlowTrace, ExceptionRecord, LogAnalysis |
 | **流程引擎服务** | 5084 | 流程建模与表单设计 | 1. 流程版本管理<br>2. 表单引擎<br>3. 模板市场 | FlowDefinition, FlowModelVersion, FormTemplate, NodeTemplate |
 | **流程执行服务** | 5085 | 流程实例运行控制 | 1. 流程运行与控制<br>2. 任务管理<br>3. 审批控制<br>4. 异常处理 | FlowInstance, WorkflowTask, ActivityInstance, FlowVariable |
-| **调度任务服务** | 5086 | 调度任务服务 | 1. 调度任务管理<br>2. 调度触发<br>3. 任务执行<br>4. 错误重试 <br>5.任务状态查询 <br>6. 任务日志查询 | SchedulerTask, SchedulerTrigger, TaskExecution, TaskLog |
-| **集成服务** | 5087 | 系统集成与连接 | 1. API 集成<br>2. 表单集成<br>3. 认证集成<br>4. 业务系统对接 | IntegrationEndpoint, Connector, IntegrationMapping, ApiAccessLog |
-| **报表服务** | 5088 | 数据分析可视化 | 1. 流程分析<br>2. 用户分析<br>3. 自定义报表 | AnalysisTask, ReportDefinition, AnalysisResult, DashboardConfig |
-| **开发平台服务** | 5089 | 低代码开发支持 | 1. 元数据管理<br>2. 代码生成<br>3. 数据管理 | Metadata, CodeTemplate, DataSource, DataSyncTask |
-| **API 网关服务** | 5090 | API 网关服务 | 1.请求路由<br/>2.限流熔断<br/>（基于令牌桶算法，支持按租户/接口粒度配置 QPS）<br/>3.认证鉴权<br>4. 请求监控 | ApiRoute, RateLimit, Auth, AccessLog |
+| **数据引擎服务** | 5086 | 数据调度、治理、应用 | 1. 数据源管理<br>2. 元数据采集<br>3. 数据血缘<br>4. 数据资产<br>5. 数据治理 <br>5. 数据应用 | DatasourceConfig, Metadata, MetadataCollection, MetadataLineage, DataAsset, DataGovernance, DataApplication |
+| **调度任务服务** | 5087 | 调度任务服务 | 1. 调度任务管理<br>2. 调度触发<br>3. 任务执行<br>4. 错误重试 <br>5.任务状态查询 <br>6. 任务日志查询 | SchedulerTask, SchedulerTrigger, TaskExecution, TaskLog |
+| **集成服务** | 5088 | 系统集成与连接 | 1. API 集成<br>2. 表单集成<br>3. 认证集成<br>4. 业务系统对接 | IntegrationEndpoint, Connector, IntegrationMapping, ApiAccessLog |
+| **报表服务** | 5089 | 数据分析可视化 | 1. 流程分析<br>2. 用户分析<br>3. 自定义报表 | AnalysisTask, ReportDefinition, AnalysisResult, DashboardConfig |
+| **开发平台服务** | 5090 | 低代码开发支持 | 1. 元数据管理<br>2. 代码生成<br>3. 数据管理 | Metadata, CodeTemplate, DataSource, DataSyncTask |
+| **API 网关服务** | 5091 | API 网关服务 | 1.请求路由<br/>2.限流熔断<br/>（基于令牌桶算法，支持按租户/接口粒度配置 QPS）<br/>3.认证鉴权<br>4. 请求监控 | ApiRoute, RateLimit, Auth, AccessLog |
+| **单体应用服务** | 5092 | 单体应用服务 | 除网关外、将其他所有的服务集成到一个工程里面进行打包 | 无 |
 
 #### 3.1.2 服务间通信设计
 
-##### 3.1.2.1 流程启动时序图
+##### 3.1.2.1 服务依赖矩阵
+| 依赖方 \ 被依赖方 | 系统服务 | 权限中心 | 日志服务 | 流程引擎 | 流程执行 | 数据引擎 | 调度任务 | 集成服务 | 报表服务 | 开发平台 |
+|-------------------|----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|
+| **系统服务**      | -        | ✅        | ✅        |          |       |          |          |          |          | ✅        |
+| **权限中心**      | ✅        | -        | ✅        |          |       |          |          |          |          | ✅        |
+| **日志服务**      |          |          | -        |          |       |          |          |          |          | ✅        |
+| **流程引擎**      | ✅        | ✅        | ✅        | -        |       |          |          |          |          | ✅        |
+| **流程执行**      |          | ✅        | ✅        | ✅        | -     | ✅        | ✅        |          |          | ✅        |
+| **数据引擎**      |          |          | ✅        |          | ✅     | -        | ✅        |          |          | ✅        |
+| **调度任务**      |          |          | ✅        |          | ✅     | -        | ✅        |          |          | ✅        |
+| **集成服务**      | ✅        | ✅        | ✅        |          |       |          | -        |          |          | ✅        |
+| **报表服务**      |          |          | ✅        |          | ✅     | ✅        |          | -        |          | ✅        |
+| **开发平台**      | ✅        | ✅        | ✅        |          |       |          | ✅        |          | -        | ✅        |
+
+
+##### 3.1.2.2 流程启动时序图
 
 ```mermaid
 sequenceDiagram
@@ -507,18 +580,47 @@ sequenceDiagram
     Gateway-->>UI: 返回启动结果
 ```
 
-##### 3.1.2.2 服务间通信协议
+##### 3.1.2.3 服务间通信协议
 
 - 采用 RESTful API 设计
 - 接口版本控制（如 `/api/v1/processes`）
 - 接口文档（Swagger/OpenAPI）
 - 接口安全（HTTPS、签名验证）
+- 统一响应与异常处理
 
-##### 3.1.2.3 服务间通信安全
+**基础规范**
+- **协议**：HTTPS
+- **基础路径**：`https://domain.com/api/v1`
+- **版本管理**：URL路径版本控制
+- **命名规范**：
+    - 使用小写字母和连字符
+    - 资源使用复数名词：`/users`, `/projects`
+    - 动词使用HTTP方法：GET, POST, PUT, DELETE, PATCH
+
+**HTTP状态码规范**
+| 状态码 | 场景 | 响应格式 |
+| --- | --- | --- |
+| 200 | 成功 | `{code: 0, message: "Success", data: {...}}` |
+| 201 | 创建成功 | `{code: 0, message: "Created", data: {...}}` |
+| 400 | 参数错误 | `{code: 400, message: "Invalid parameters", data: null}` |
+| 401 | 未认证 | `{code: 401, message: "Unauthorized", data: null}` |
+| 403 | 无权限 | `{code: 403, message: "Forbidden", data: null}` |
+| 404 | 资源不存在 | `{code: 404, message: "Not found", data: null}` |
+| 500 | 服务器错误 | `{code: 500, message: "Internal server error", data: null}` |
+
+##### 3.1.2.4 服务间通信安全
 
 - 采用 HTTPS 协议
 - 接口签名验证
 - 接口限流与防护
+- 认证与授权机制
+
+**认证流程**
+1. 用户登录：`POST /api/v1/iam/auth/login`
+2. 返回JWT：包含access_token和refresh_token
+3. 后续请求：在Header中添加 `Authorization: Bearer <token>`
+4. 网关验证：统一在API网关层验证JWT
+5. 权限传递：将用户信息透传给下游服务
 
 #### 3.1.3. 系统用例图
 
@@ -706,13 +808,11 @@ sequenceDiagram
 
 ### 3.2. 微服务内分层架构
 
-每个微服务遵循统一分层结构：
-微服务采用 Spring WebFlux 的非阻塞响应式编程模型
-
-- **接口层（Resource）**：请求处理、参数校验、响应封装，采用 Spring WebFlux 的非阻塞响应式编程模型
-- **应用层（Service）**：业务流程编排、事务管理
-- **领域层（Domain）**：领域模型、领域服务、领域事件
-- **基础设施层（Infrastructure）**：数据持久化、缓存、消息、外部系统集成
+每个后端微服务遵循统一分层结构：
+- **领域层（domain）**：业务核心（它包含业务的本质和规则、该层不依赖于任何其他层），领域模型、领域服务、领域资源库接口、领域事件
+- **应用层（application）**：业务用例协调（应用层负责协调领域对象来完成一个特定的业务用例，它是对领域层操作的封装和组合）业务逻辑处理，命令对象 - CQS模式；查询对象 - CQS模式；事件处理器；应用服务
+- **基础设施层（infrastructure）**：技术实现（基础设施层提供技术支撑，实现领域层和应用层定义的抽象接口）数据持久化、缓存、消息、领域模型转换、外部系统集成、通用工具类
+- **接口层（interfaces）**：外部交互适配（负责与外部系统进行交互，包括 API、消息监听等）请求处理、参数校验、响应封装，例如、RESTful API、 Spring WebFlux 的非阻塞响应式编程模型、Kafka/MQ 消息消费者、将领域对象与DTO相互转换
 
 ### 3.3. 前端分成架构
 
@@ -824,32 +924,37 @@ flowchart LR
 
 #### 3.7.1. 后端技术栈
 
-- **JDK**：OpenJDK 21
-- **核心框架**：Spring Boot 3.5.4
-- **微服务框架**：Spring Cloud 2025.0.0、Spring Cloud Alibaba 2023.0.3.3
+- **JDK**：OpenJDK 25
+- **核心框架**：Spring Boot 3.5.6
+- **微服务框架**：Spring Cloud 2025.0.0、Spring Cloud Alibaba 2025.0.0.0-preview
 - **服务注册发现**：Nacos 3.2
-- **分布式事务**：Spring Cloud Starter Alibaba Seata 2023.0.3.3
-- **ORM 框架**： spring-boot-starter-data-r2dbc 3.5.4
-- **数据库**：PostgreSQL 16.1
+- **分布式事务**：Spring Cloud Starter Alibaba Seata 2025.0.0.0-preview
+- **数据访问**：Spring Data JPA, MyBatis-Plus, Spring Data Redis、 Hibernate 6.x, R2DBC 42.7.2
+- **数据库**：PostgreSQL 16.1 (主库)
 - **缓存**：Redis 7.2.4
 - **分布式锁**：Redisson 3.24.0
 - **消息队列**：RabbitMQ 3.12.11
-- **API 文档**：SpringDoc-OpenAPI 2.8.9 (Swagger UI)
-- **安全框架**：spring-boot-starter-security 3.5.4 + OAuth2
-- **分布式追踪**：SkyWalking 9.7.0
-- **任务调度**：XXL-Job 3.1.1
+- **API 文档**：SpringDoc-OpenAPI 2.8.13 (Swagger UI)
+- **安全框架**：spring-boot-starter-security 3.5.6 + OAuth2
+- **链路追踪**：OpenTelemetry + Jaeger, SkyWalking 9.1.0
+- **分布式事务**：Seata 2.0.0
+- **任务调度**：XXL-Job 3.2.0
 - **日志框架**：Logback + ELK Stack 8.11.3
+- **监控**：Micrometer + Prometheus + Grafana 
+- **对象存储**：MinIO 8.5.17
+- **工具库**：Spring core, Lombok
 
 #### 3.7.2. 前端技术栈
 
-- **核心框架**：Vue 3.5.18
-- **构建工具**：Vite 5.0.11
-- **UI 组件库**：Element Plus 2.10.4
+- **核心框架**：Vue 3.5.18 + TypeScript 5.x
+- **构建工具**：Vite 7.x
+- **UI 组件库**：Element Plus 2.11.4
 - **状态管理**：Pinia 3.0.3
 - **路由管理**：Vue Router 4.5.2
-- **HTTP 客户端**：Axios 1.11.0
+- **HTTP 客户端**：Axios 1.12.2
 - **多语言**：Vue I18n 11.1.11
 - **图表库**：ECharts 5.4.3
+- **多主题**：Element Plus 深浅色主题
 
 #### 3.7.3. 中间件技术
 
@@ -858,10 +963,11 @@ flowchart LR
 - Elasticsearch：日志、全文检索
 - MinIO：附件存储
 
-#### 3.7.4. 部署与运维
+#### 3.7.4. 基础设置（运维与部署）
 
+- **代码质量**：SonarQube 9.1.0
 - **容器化**：Docker 25.0.0（支持镜像漏洞自动扫描和供应链安全增强）
-- **编排工具**：Docker Compose 2.24.5
+- **编排工具**：Docker Compose 2.24.5, Kubernetes 1.28+
 - **CI/CD**：Jenkins 2.450.0（支持 Pipeline-as-Code 默认启用和 AI 辅助错误诊断）
 - **监控系统**：Prometheus 2.45.0 + Grafana 10.2.3
 - **反向代理**：Nginx 1.25.3
@@ -909,29 +1015,13 @@ flowchart LR
 
 ---
 
-##### 5.1.1.2. 参数配置管理 (Parameter Configuration Management)
+##### 5.1.1.2. 系统配置管理 (System Configuration Management)
 
-###### `sys_param_type` (系统参数类型表 - System Parameter Type Table)
-
-| 字段名称       | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释                |
-| :------------- | :------- | :--- | :------- | :------- | :---------------------- |
-| `id`           | BIGINT   |      | 是       | 是       | 主键 ID                 |
-| `type_code`    | VARCHAR  | 64   | 是       | 是       | 参数类型编码 (唯一)     |
-| `type_name`    | VARCHAR  | 128  | 是       | 否       | 参数类型名称            |
-| `description`  | VARCHAR  | 255  | 否       | 否       | 描述                    |
-| `status`       | TINYINT  | 1    | 是       | 否       | 状态 (1: 正常, 0: 停用) |
-| `creator`      | VARCHAR  | 64   | 否       | 否       | 创建人                  |
-| `created_time` | DATETIME |      | 否       | 否       | 创建时间                |
-| `updater`      | VARCHAR  | 64   | 否       | 否       | 更新人                  |
-| `updated_time` | DATETIME |      | 否       | 否       | 更新时间                |
-| `deleted`      | TINYINT  | 1    | 是       | 否       | 是否删除 (1: 是, 0: 否) |
-
-###### `sys_param_item` (系统参数项表 - System Parameter Item Table)
+###### `sys_config` (系统配置表 - System Configuration Table)
 
 | 字段名称        | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释                               |
 | :-------------- | :------- | :--- | :------- | :------- | :------------------------------------- |
 | `id`            | BIGINT   |      | 是       | 是       | 主键 ID                                |
-| `param_type_id` | BIGINT   |      | 是       | 否       | 参数类型 ID (外键 `sys_param_type.id`) |
 | `param_key`     | VARCHAR  | 64   | 是       | 否       | 参数键 (用于管理端设置)                |
 | `param_code`    | VARCHAR  | 64   | 是       | 否       | 参数编码 (用于前端获取)                |
 | `param_name`    | VARCHAR  | 128  | 是       | 否       | 参数名称                               |
@@ -1602,6 +1692,9 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 
 ---
 
+#### 5.1.6. 数据引擎服务 (Data Engine Services)
+
+
 #### 5.1.6. 调度任务服务 (Scheduling Task Services)
 
 ##### 5.1.6.1. 任务调度管理 (Task Scheduling Management)
@@ -2199,6 +2292,7 @@ apaas (父工程)
 │   ├── apaas-monitor (监控服务)
 │   ├── apaas-flow-engine (流程引擎服务)
 │   ├── apaas-flow-execution (流程执行服务)
+│   ├── apaas-data (数据引擎服务)
 │   ├── apaas-job (调度任务服务)
 │   ├── apaas-integration (集成服务)
 │   ├── apaas-report (报表服务)
@@ -3243,14 +3337,49 @@ graph LR
 
 ## 十三、部署与运维
 
-##### 1. 环境规划
+### **1. 部署架构**
+
+```yaml
+# 部署架构图（概念）
+Internet
+    |
+    v
+[Load Balancer (Nginx)]
+    |
+    v
+[API Gateway (udap-gateway)]
+    |
+    +---> [Microservices Cluster]
+    |       ├── udap-iam-service
+    |       ├── udap-project-service
+    |       ├── udap-integration-service
+    |       ├── udap-workflow-service
+    |       └── ...
+    |
+    +---> [Data Layer]
+    |       ├── PostgreSQL (HA)
+    |       ├── Redis Cluster
+    |       └── MongoDB ReplicaSet
+    |
+    +---> [Message Queue]
+    |       └── Kafka Cluster
+    |       └── RabbitMQ Cluster
+    |
+    +---> [Monitoring]
+        ├── Prometheus
+        ├── Grafana
+        └── Jaeger
+```
+
+
+### 2. 环境规划
 
 - 开发环境（dev）
 - 测试环境（test）
 - 预发布环境（staging）
 - 生产环境（prod）
 
-### 2. 部署流程
+### 3. 部署流程
 
 - 代码管理：GitLab
 - 持续集成：自动化构建、测试
@@ -3268,21 +3397,9 @@ graph LR
   ```
 - 配置管理：Nacos 配置中心
 
-##### 3. 监控告警
+### 4. 监控告警
 
 - 系统监控：CPU、内存、磁盘、网络
 - 应用监控：响应时间、错误率、吞吐量
 - 业务监控：流程数量、任务数量、活跃用户
 - 告警策略：多级别、多渠道、告警升级
-
-### 2. 交付物清单
-
-- 系统概要设计文档
-- 系统详细设计文档
-- 系统数据库设计文档
-- 源代码及构建脚本
-- 数据库脚本
-- 部署文档
-- 用户手册
-- 测试报告
-- 运维手册

@@ -37,7 +37,6 @@
         <minio.version>8.5.17</minio.version>
         <postgresql.version>42.7.2</postgresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
         <rabbitmq.version>5.20.0</rabbitmq.version>
         <reactive-feign.version>4.2.1</reactive-feign.version>
