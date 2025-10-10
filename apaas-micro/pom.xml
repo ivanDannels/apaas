@@ -13,8 +13,10 @@
     <description>APaaS平台微服务模块</description>
     
     <modules>
+        <module>apaas-assistant</module>
         <module>apaas-auth</module>
-        <module>apaas-design-platform</module>
+        <module>apaas-data</module>
+        <module>apaas-design</module>
         <module>apaas-flow-engine</module>
         <module>apaas-flow-execution</module>
         <module>apaas-form-engine</module>

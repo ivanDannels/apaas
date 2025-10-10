@@ -16,7 +16,7 @@
 
 本设计覆盖了APaaS平台的平台概述、架构设计、技术栈选型、数据管理、安全体系、运维监控、用户体验及非功能性需求。
 
-#### **1.4. 设计原则**
+### **1.4. 设计原则**
 
 1. **云原生优先**：所有服务容器化，支持Kubernetes编排
 2. **领域驱动设计**：基于DDD划分微服务边界
@@ -66,16 +66,16 @@
 - **数据字典项操作**：创建、查询、更新、删除、停用/启用
 - **数据字典项导入导出**：支持 JSON 格式批量导入导出
 
-#### 2.1.2.参数配置管理
+#### 2.1.2.系统配置管理
 
-- **参数类型**：系统参数、业务参数
-- **参数编名称**：每个参数类型下有多个参数项，每个参数项有唯一的编码、名称、值、描述等属性
-- **参数键**: 用于管理端设置每一个参数的 Key
-- **参数编码**: 用于前端直接根据 code 编码获取当前配置详情
-- **参数值**: 用于管理端设置每一个参数的值
-- **参数项状态**：正常、停用
-- **参数项操作**：创建、查询、更新、删除、停用/启用
-- **参数项导入导出**：支持 JSON 格式批量导入导出
+- **配置类型**：系统参数、业务参数
+- **配置称**：每个参数类型下有多个参数项，每个参数项有唯一的编码、名称、值、描述等属性
+- **配置键**: 用于管理端设置每一个参数的 Key
+- **配置编码**: 用于前端直接根据 code 编码获取当前配置详情
+- **配置值**: 用于管理端设置每一个参数的值
+- **配置状态**：正常、停用
+- **配置操作**：创建、查询、更新、删除、停用/启用
+- **配置导入导出**：支持 JSON 格式批量导入导出
 
 #### 2.1.3. 国际化多语言
 
@@ -152,6 +152,12 @@
 - **用户认证**：支持 LDAP、OAuth2.0、SAML 等认证方式
 - **用户授权**：基于角色的访问控制（RBAC）
 - **用户管理**：用户列表、用户详情、用户操作（重置密码、锁定/解锁、删除等）
+
+#### 2.2.8. 岗位管理
+
+- **岗位定义**：岗位名称、岗位描述、岗位权限
+- **岗位成员管理**：添加/删除岗位成员
+- **岗位权限管理**：为岗位分配角色权限，支持精细化权限控制
 
 ### 2.3 系统监控服务
 
@@ -298,9 +304,43 @@
 - **审批策略**：代理审批、逐级审批、越级审批、终审设置
 - **电子签名**：支持手写签名、CA 证书签名
 
-### 2.6. 调度任务服务
+### 2.6. 数据引擎服务
 
-#### 2.6.1. 任务调度管理
+#### 2.6.1 数据采集与调度
+
+- **数据源支持**：数据库（MySQL、PostgreSQL、MongoDB、Redis 等）、消息队列（Kafka、RabbitMQ 等）、文件系统（HDFS、S3 等）、API 接口等
+- **采集模式**：全量采集、增量采集、定时采集
+- **数据采集任务**：创建、启动、暂停、恢复、终止、重启
+- **采集策略**：并发采集数、采集间隔、数据缓存策略等
+
+#### 2.6.2. 数据处理与存储
+
+- **数据模型**：支持关系型数据库（MySQL、PostgreSQL）、NoSQL 数据库（MongoDB、Redis）、文件系统（HDFS）等
+- **数据导入导出**：支持批量导入导出，支持增量更新
+- **数据转换**：支持数据格式转换（如 CSV、JSON、XML 等）
+- **数据加密**：支持字段级加密存储，如密码、个人隐私等
+
+#### 2.6.3. 数据治理与查询
+
+- **数据质量监控**：
+  - 数据完整性检查
+  - 数据一致性验证
+  - 数据时效性监控
+- **数据查询**：
+  - 支持 SQL、NoSQL 查询语句
+  - 可视化查询构建器
+  - 报表模板市场
+
+#### 2.6.4. 数据资产管理  
+
+- **资产注册**：支持数据资产的注册、分类、标签、描述等信息
+- **资产查询**：支持根据条件查询数据资产，如资产名称、资产类型、资产状态等
+- **资产授权**：支持对数据资产进行授权，如读写权限、查询权限等
+- **资产监控**：支持对数据资产的使用情况进行监控，如访问次数、访问时间等
+
+### 2.7. 调度任务服务
+
+#### 2.7.1. 任务调度管理
 
 - **任务类型支持**：
 
@@ -323,7 +363,7 @@
   - 超时控制：任务执行超时阈值
   - 优先级设置：任务执行优先级
 
-#### 2.6.2. 调度引擎
+#### 2.7.2. 调度引擎
 
 - **调度策略**：
 
@@ -342,7 +382,7 @@
   - 手动触发：管理员手动执行任务
   - 调度日志：记录调度决策过程
 
-#### 2.6.3. 任务执行
+#### 2.7.3. 任务执行
 
 - **执行模式**：
 
@@ -362,7 +402,7 @@
   - 脚本执行器：Groovy/Python 脚本
   - 消息执行器：发送 MQ 消息
 
-#### 2.6.4. 错误处理与重试
+#### 2.7.4. 错误处理与重试
 
 - **错误检测**：
 
@@ -381,7 +421,7 @@
   - 告警通知：管理员干预提醒
   - 手动重试：管理员手动处理
 
-#### 2.6.5. 任务监控
+#### 2.7.5. 任务监控
 
 - **实时监控**：
 
@@ -400,7 +440,7 @@
   - 超时告警：任务执行超时通知
   - 堆积告警：任务队列积压预警
 
-#### 2.6.6. 任务编排
+#### 2.7.6. 任务编排
 
 - **工作流支持**：
 
@@ -413,7 +453,7 @@
   - 结果引用：引用前置任务结果
   - 动态参数：运行时参数注入
 
-#### 2.6.7. 可视化控制台
+#### 2.7.7. 可视化控制台
 
 - **任务看板**：
   - 任务列表：所有任务概览
@@ -428,7 +468,7 @@
   - 性能分析：执行耗时分布
   - 资源监控：集群资源使用
 
-### 2.7. 集成服务
+### 2.8. 集成服务
 
 - **API 集成**：RESTful API、WebHook、SDK
 - **表单集成**：支持外部表单系统集成
@@ -436,7 +476,7 @@
 - **业务系统集成**：支持与 OA、ERP、HR 系统数据同步
 - **文档管理**：与企业网盘/文档系统集成
 
-### 15. **报表服务**
+### 2.9. **报表服务**
 
 - **流程分析**：流程耗时分析、节点效率分析、瓶颈识别
 - **任务分析**：待办任务统计、处理效率分析、超时统计
@@ -444,7 +484,7 @@
 - **自定义报表**：拖拽式报表设计，支持数据导出
 - **大屏监控**：实时监控系统运行状态、关键指标
 
-### 16. **开发平台服务**
+### 3.0. **开发平台服务**
 
 - **元数据管理**：支持元数据的定义、管理、查询、导入导出，与 JAVA 类型的映射
 - **模型设计**：支持数据模型的设计，包括实体类、关联关系、索引、视图等
@@ -464,13 +504,41 @@
 - **数据安全**：支持数据加密、数据脱敏、数据备份、数据恢复等
 - **业务大屏**：支持自定义业务大屏，如报表、图表、地图等
 
+### 3.1. **企业人工智能助手**
+
+#### 3.1.1 **RAG大模型智能检索增强服务**
+
+- **RAG模型**：基于Retrieval-Augmented Generation（RAG）模型，支持从外部知识库中检索相关信息，增强大模型的回答准确性。
+- **知识库管理**：支持知识库的创建、管理、查询、导入导出，与外部文档系统（如 Confluence、SharePoint 等）集成。
+- **智能检索**：支持基于用户输入的智能检索，如基于关键词的检索、基于语义的检索等。
+- **回答生成**：基于检索到的信息，利用大模型生成准确、有逻辑的回答。
+- **自定义配置**：支持自定义RAG模型的参数，如检索器、生成器、后处理等。
+
+#### 3.1.2 **企业级大模型服务**
+
+- **模型管理**：支持企业级大模型的创建、管理、查询、导入导出，与外部模型服务（如 OpenAI、Azure OpenAI 等）集成。
+- **模型推理**：支持对企业级大模型的推理调用，如文本生成、文本分类、命名实体识别等。
+- **自定义模型**：支持企业根据业务需求自定义大模型，如基于企业数据的模型训练。
+
+#### 3.1.3. **企业级MCP应用服务**
+
+- **应用管理**：支持企业级MCP应用的创建、管理、查询、导入导出，与外部应用系统（如 Salesforce、ServiceNow 等）集成。
+- **应用部署**：支持企业级MCP应用的部署到企业级容器平台（如 Kubernetes、OpenShift 等），并提供应用监控、日志分析等功能。
+- **应用扩展**：支持企业根据业务需求自定义MCP应用，如基于企业数据的应用开发。
+
+#### 3.1.4. **企业级Agent智能体引擎**
+
+- **智能体管理**：支持企业级Agent智能体的创建、管理、查询、导入导出，与外部智能体系统（如 Watson、Azure Cognitive Services 等）集成。
+- **智能体推理**：支持对企业级Agent智能体的推理调用，如文本生成、文本分类、命名实体识别等。
+- **自定义智能体**：支持企业根据业务需求自定义Agent智能体，如基于企业数据的智能体开发。
+
 ## 三、系统架构设计
 
 1. **整体架构**：分为展示层（统一门户、设计器等）、接口层（API网关）、服务层（9大核心服务及下属模块）、数据层（各服务对应数据库）。
 2. **服务拆分**：明确10个核心服务的端口、职责、功能模块与数据实体（如系统服务负责基础配置，权限中心负责认证授权等）。
 3. **服务通信**：采用RESTful API，支持版本控制与安全校验（HTTPS、签名验证），定义关键业务时序（如流程启动、带审计的登录）。
 4. **分层架构**：微服务内部分为接口层（请求处理）、应用层（业务编排）、领域层（领域模型）、基础设施层（数据持久化）；前端基于Vue 3等技术栈，分框架核心、UI组件、核心服务、视图层等。
-5. **技术栈选型**：后端采用JDK 25、Spring Boot 3.5.6等，前端采用Vue 3.5.18、Element Plus等，中间件含PostgreSQL、Redis、RabbitMQ等，部署依赖Docker、Jenkins等工具。
+5. **技术栈选型**：后端采用JDK 25、Spring Boot 3.5.6等，前端采用Vue 3.5.22、Element Plus等，中间件含PostgreSQL、Redis、RabbitMQ等，部署依赖Docker、Jenkins等工具。
 
 ### 3.1. 整体架构
 
@@ -539,8 +607,9 @@ graph TD
 | **集成服务** | 5088 | 系统集成与连接 | 1. API 集成<br>2. 表单集成<br>3. 认证集成<br>4. 业务系统对接 | IntegrationEndpoint, Connector, IntegrationMapping, ApiAccessLog |
 | **报表服务** | 5089 | 数据分析可视化 | 1. 流程分析<br>2. 用户分析<br>3. 自定义报表 | AnalysisTask, ReportDefinition, AnalysisResult, DashboardConfig |
 | **开发平台服务** | 5090 | 低代码开发支持 | 1. 元数据管理<br>2. 代码生成<br>3. 数据管理 | Metadata, CodeTemplate, DataSource, DataSyncTask |
-| **API 网关服务** | 5091 | API 网关服务 | 1.请求路由<br/>2.限流熔断<br/>（基于令牌桶算法，支持按租户/接口粒度配置 QPS）<br/>3.认证鉴权<br>4. 请求监控 | ApiRoute, RateLimit, Auth, AccessLog |
-| **单体应用服务** | 5092 | 单体应用服务 | 除网关外、将其他所有的服务集成到一个工程里面进行打包 | 无 |
+| **智能助手服务** | 5091 | 智能助手服务 | 1. 智能问答<br>2. 企业内部知识库<br>3. 文档生成<br>4.智能问数<br>5.智能报表<br>6.智能流程审批 | SmartAssistant, CodeInterpreter, DocumentationGenerator |
+| **API 网关服务** | 5092 | API 网关服务 | 1.请求路由<br/>2.限流熔断<br/>（基于令牌桶算法，支持按租户/接口粒度配置 QPS）<br/>3.认证鉴权<br>4. 请求监控 | ApiRoute, RateLimit, Auth, AccessLog |
+| **单体应用服务** | 5093 | 单体应用服务 | 除网关外、将其他所有的服务集成到一个工程里面进行打包 | 无 |
 
 #### 3.1.2 服务间通信设计
 
@@ -819,18 +888,18 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     subgraph 框架核心
-        A[Vue 3.5.18] --> B[Vite 5.0.11]
+        A[Vue 3.5.22] --> B[Vite 7.1.9]
         A --> C[Pinia 3.0.3]
-        A --> D[Vue Router 4.5.2]
+        A --> D[Vue Router 4.5.1]
     end
 
     subgraph UI组件层
-        E[Element Plus 2.10.4]
+        E[Element Plus 2.11.4]
     end
 
     subgraph 核心服务
-        F[Axios 1.11.0] --> G[HTTP请求拦截器]
-        H[Vue I18n 11.1.11]
+        F[Axios 1.12.2] --> G[HTTP请求拦截器]
+        H[Vue I18n 11.1.12]
     end
 
     subgraph 视图层
@@ -843,7 +912,7 @@ flowchart TD
     end
 
     subgraph 图表可视化
-        O[ECharts 5.4.3]
+        O[ECharts 6.0.0]
     end
 
     A -.应用核心.-> E
@@ -946,14 +1015,14 @@ flowchart LR
 
 #### 3.7.2. 前端技术栈
 
-- **核心框架**：Vue 3.5.18 + TypeScript 5.x
+- **核心框架**：Vue 3.5.22 + TypeScript 5.x
 - **构建工具**：Vite 7.x
 - **UI 组件库**：Element Plus 2.11.4
 - **状态管理**：Pinia 3.0.3
-- **路由管理**：Vue Router 4.5.2
+- **路由管理**：Vue Router 4.5.1
 - **HTTP 客户端**：Axios 1.12.2
-- **多语言**：Vue I18n 11.1.11
-- **图表库**：ECharts 5.4.3
+- **多语言**：Vue I18n 11.1.12
+- **图表库**：ECharts 6.0.0
 - **多主题**：Element Plus 深浅色主题
 
 #### 3.7.3. 中间件技术
@@ -1694,10 +1763,179 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 
 #### 5.1.6. 数据引擎服务 (Data Engine Services)
 
+##### 5.1.6.1 数据采集与调度
 
-#### 5.1.6. 调度任务服务 (Scheduling Task Services)
+###### 数据源配置表 (data_source_config)
 
-##### 5.1.6.1. 任务调度管理 (Task Scheduling Management)
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `source_name` | VARCHAR | 128 | 是 | 否 | 数据源名称 |
+| `source_type` | VARCHAR | 32 | 是 | 否 | 数据源类型 (DB, MQ, FS, API) |
+| `db_type` | VARCHAR | 32 | 否 | 否 | 数据库类型 (MySQL, PostgreSQL, MongoDB, Redis) |
+| `mq_type` | VARCHAR | 32 | 否 | 否 | 消息队列类型 (Kafka, RabbitMQ) |
+| `fs_type` | VARCHAR | 32 | 否 | 否 | 文件系统类型 (HDFS, S3) |
+| `connection_url` | VARCHAR | 255 | 是 | 否 | 连接地址 |
+| `username` | VARCHAR | 64 | 否 | 否 | 用户名 |
+| `password` | VARCHAR | 128 | 否 | 否 | 密码 |
+| `config_json` | TEXT | | 否 | 否 | 其他配置信息(JSON格式) |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用, 2:测试中) |
+| `description` | VARCHAR | 255 | 否 | 否 | 描述 |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 数据采集任务表 (data_collection_task)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `task_name` | VARCHAR | 128 | 是 | 否 | 任务名称 |
+| `source_id` | BIGINT | | 是 | 否 | 数据源ID |
+| `collection_mode` | VARCHAR | 32 | 是 | 否 | 采集模式 (FULL:全量, INCREMENTAL:增量, SCHEDULED:定时) |
+| `schedule_cron` | VARCHAR | 64 | 否 | 否 | 定时采集表达式 |
+| `concurrent_count` | INT | | 否 | 否 | 并发采集数 |
+| `collection_interval` | INT | | 否 | 否 | 采集间隔(秒) |
+| `cache_policy` | VARCHAR | 32 | 否 | 否 | 缓存策略 |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:运行中, 0:停止, 2:暂停, 3:完成, 4:失败) |
+| `last_run_time` | DATETIME | | 否 | 否 | 最后运行时间 |
+| `next_run_time` | DATETIME | | 否 | 否 | 下次运行时间 |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+##### 5.1.6.2 数据处理与存储
+
+###### 数据存储配置表 (data_storage_config)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `storage_name` | VARCHAR | 128 | 是 | 否 | 存储名称 |
+| `storage_type` | VARCHAR | 32 | 是 | 否 | 存储类型 (RDB, NOSQL, FS) |
+| `db_type` | VARCHAR | 32 | 否 | 否 | 数据库类型 (MySQL, PostgreSQL) |
+| `nosql_type` | VARCHAR | 32 | 否 | 否 | NoSQL类型 (MongoDB, Redis) |
+| `fs_type` | VARCHAR | 32 | 否 | 否 | 文件系统类型 (HDFS) |
+| `connection_url` | VARCHAR | 255 | 是 | 否 | 连接地址 |
+| `username` | VARCHAR | 64 | 否 | 否 | 用户名 |
+| `password` | VARCHAR | 128 | 否 | 否 | 密码 |
+| `config_json` | TEXT | | 否 | 否 | 其他配置信息(JSON格式) |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `description` | VARCHAR | 255 | 否 | 否 | 描述 |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 数据转换规则表 (data_transform_rule)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `rule_name` | VARCHAR | 128 | 是 | 否 | 规则名称 |
+| `source_format` | VARCHAR | 32 | 是 | 否 | 源数据格式 (CSV, JSON, XML) |
+| `target_format` | VARCHAR | 32 | 是 | 否 | 目标数据格式 (CSV, JSON, XML) |
+| `mapping_json` | TEXT | | 否 | 否 | 字段映射规则(JSON格式) |
+| `encryption_fields` | TEXT | | 否 | 否 | 加密字段列表(JSON数组) |
+| `encryption_algorithm` | VARCHAR | 32 | 否 | 否 | 加密算法 |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `description` | VARCHAR | 255 | 否 | 否 | 描述 |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+##### 5.1.6.3 数据治理与查询
+
+###### 数据质量规则表 (data_quality_rule)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `rule_name` | VARCHAR | 128 | 是 | 否 | 规则名称 |
+| `rule_type` | VARCHAR | 32 | 是 | 否 | 规则类型 (COMPLETENESS:完整性, CONSISTENCY:一致性, TIMELINESS:时效性) |
+| `check_sql` | TEXT | | 否 | 否 | 检查SQL |
+| `check_params` | TEXT | | 否 | 否 | 检查参数(JSON格式) |
+| `threshold` | DECIMAL | 10,2 | 否 | 否 | 阈值 |
+| `severity` | TINYINT | 1 | 是 | 否 | 严重程度 (1:低, 2:中, 3:高) |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `description` | VARCHAR | 255 | 否 | 否 | 描述 |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+##### 5.1.6.4 数据资产管理
+
+###### 数据资产表 (data_asset)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `asset_name` | VARCHAR | 128 | 是 | 否 | 资产名称 |
+| `asset_type` | VARCHAR | 32 | 是 | 否 | 资产类型 (TABLE, VIEW, FILE, API) |
+| `storage_id` | BIGINT | | 否 | 否 | 存储配置ID |
+| `location` | VARCHAR | 255 | 否 | 否 | 位置信息 |
+| `category` | VARCHAR | 64 | 否 | 否 | 分类 |
+| `tags` | VARCHAR | 255 | 否 | 否 | 标签(逗号分隔) |
+| `description` | TEXT | | 否 | 否 | 描述 |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:可用, 0:不可用) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 数据资产权限表 (data_asset_permission)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `asset_id` | BIGINT | | 是 | 否 | 资产ID |
+| `user_id` | BIGINT | | 否 | 否 | 用户ID |
+| `role_id` | BIGINT | | 否 | 否 | 角色ID |
+| `permission_type` | VARCHAR | 32 | 是 | 否 | 权限类型 (READ:读, WRITE:写, QUERY:查询, ADMIN:管理) |
+| `start_time` | DATETIME | | 否 | 否 | 授权开始时间 |
+| `end_time` | DATETIME | | 否 | 否 | 授权结束时间 |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:有效, 0:无效) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 数据资产访问日志表 (data_asset_access_log)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `asset_id` | BIGINT | | 是 | 否 | 资产ID |
+| `user_id` | BIGINT | | 否 | 否 | 用户ID |
+| `access_time` | DATETIME | | 是 | 否 | 访问时间 |
+| `operation_type` | VARCHAR | 32 | 是 | 否 | 操作类型 (READ:读, WRITE:写, QUERY:查询) |
+| `duration` | INT | | 否 | 否 | 操作时长(毫秒) |
+| `result` | VARCHAR | 32 | 否 | 否 | 操作结果 (SUCCESS:成功, FAILED:失败) |
+| `ip_address` | VARCHAR | 64 | 否 | 否 | 访问IP地址 |
+| `user_agent` | VARCHAR | 255 | 否 | 否 | 用户代理信息 |
+
+#### 5.1.7. 调度任务服务 (Scheduling Task Services)
+
+##### 5.1.7.1. 任务调度管理 (Task Scheduling Management)
 
 ###### `job_definition` (任务定义表 - Job Definition Table)
 
@@ -1746,7 +1984,7 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 
 ---
 
-##### 5.1.6.2. 调度引擎 &任务执行 &错误处理与重试
+##### 5.1.7.2. 调度引擎 &任务执行 &错误处理与重试
 
 ###### `job_execution_log` (任务执行日志表 - Job Execution Log Table)
 
@@ -1772,9 +2010,9 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 
 ---
 
-#### 5.1.7. 集成服务 (Integration Services)
+#### 5.1.8. 集成服务 (Integration Services)
 
-##### 5.1.7.1. API 集成 (API Integration)
+##### 5.1.8.1. API 集成 (API Integration)
 
 ###### `sys_api_integration_config` (API 集成配置表 - API Integration Configuration Table)
 
@@ -1833,7 +2071,7 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 
 ---
 
-#### 5.1.8. 报表服务 (Reporting Services)
+#### 5.1.9. 报表服务 (Reporting Services)
 
 ###### `rpt_report_definition` (报表定义表 - Report Definition Table)
 
@@ -1844,6 +2082,8 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 | `report_code`        | VARCHAR  | 128  | 是       | 是       | 报表编码 (唯一)                                |
 | `report_name`        | VARCHAR  | 128  | 是       | 否       | 报表名称                                       |
 | `report_type`        | VARCHAR  | 32   | 是       | 否       | 报表类型 (e.g., LIST, CHART, DASHBOARD)        |
+| `category`           | VARCHAR  | 64   | 否       | 否       | 分类 |
+| `tags`               | VARCHAR  | 255  | 否       | 否       | 标签(逗号分隔) |
 | `description`        | VARCHAR  | 255  | 否       | 否       | 描述                                           |
 | `data_source_id`     | BIGINT   |      | 否       | 否       | 数据源 ID (外键 `design_datasource_config.id`) |
 | `query_sql`          | LONGTEXT |      | 否       | 否       | 查询 SQL 或数据集定义                          |
@@ -1858,7 +2098,7 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 
 ---
 
-#### 5.1.9. 开发平台服务 (Design Platform Services)
+#### 5.1.10. 开发平台服务 (Design Platform Services)
 
 ###### `design_metadata` (元数据表 - Metadata Table)
 
@@ -1984,6 +2224,183 @@ _This table would be for more structured/filtered logs if not using a dedicated 
 | `updater`            | VARCHAR  | 64   | 否       | 否       | 更新人                                             |
 | `updated_time`       | DATETIME |      | 否       | 否       | 更新时间                                           |
 | `deleted`            | TINYINT  | 1    | 是       | 否       | 是否删除 (1: 是, 0: 否)                            |
+
+
+#### 5.1.11. 企业人工智能助手服务 (Enterprise AI Assistant Services) 
+
+##### 5.1.11.1 RAG大模型智能检索增强服务
+
+###### 知识库表 (knowledge_base)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `kb_name` | VARCHAR | 128 | 是 | 否 | 知识库名称 |
+| `kb_type` | VARCHAR | 32 | 是 | 否 | 知识库类型 (INTERNAL, CONFLUENCE, SHAREPOINT) |
+| `connection_url` | VARCHAR | 255 | 否 | 否 | 连接地址 |
+| `access_token` | VARCHAR | 255 | 否 | 否 | 访问令牌 |
+| `config_json` | TEXT | | 否 | 否 | 配置信息(JSON格式) |
+| `description` | TEXT | | 否 | 否 | 描述 |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### RAG配置表 (rag_config)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `config_name` | VARCHAR | 128 | 是 | 否 | 配置名称 |
+| `kb_id` | BIGINT | | 是 | 否 | 知识库ID |
+| `retriever_type` | VARCHAR | 32 | 是 | 否 | 检索器类型 (KEYWORD, SEMANTIC) |
+| `generator_type` | VARCHAR | 32 | 是 | 否 | 生成器类型 |
+| `post_processor` | VARCHAR | 32 | 否 | 否 | 后处理器 |
+| `config_json` | TEXT | | 否 | 否 | 详细配置(JSON格式) |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 检索日志表 (retrieval_log)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `rag_config_id` | BIGINT | | 是 | 否 | RAG配置ID |
+| `user_query` | TEXT | | 是 | 否 | 用户查询 |
+| `retrieval_type` | VARCHAR | 32 | 是 | 否 | 检索类型 (KEYWORD, SEMANTIC) |
+| `retrieved_docs` | TEXT | | 否 | 否 | 检索到的文档(JSON格式) |
+| `generated_answer` | TEXT | | 否 | 否 | 生成的回答 |
+| `user_feedback` | TEXT | | 否 | 否 | 用户反馈 |
+| `duration` | INT | | 否 | 否 | 处理时长(毫秒) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+##### 5.1.11.2 企业级大模型服务
+
+###### 大模型表 (llm_model)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `model_name` | VARCHAR | 128 | 是 | 否 | 模型名称 |
+| `model_type` | VARCHAR | 32 | 是 | 否 | 模型类型 (OPENAI, AZURE, CUSTOM) |
+| `model_version` | VARCHAR | 32 | 是 | 否 | 模型版本 |
+| `endpoint_url` | VARCHAR | 255 | 否 | 否 | 端点URL |
+| `api_key` | VARCHAR | 255 | 否 | 否 | API密钥 |
+| `training_data` | TEXT | | 否 | 否 | 训练数据信息 |
+| `capabilities` | VARCHAR | 255 | 是 | 否 | 能力列表 (TEXT_GEN, CLASSIFICATION, NER) |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 模型推理日志表 (model_inference_log)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `model_id` | BIGINT | | 是 | 否 | 模型ID |
+| `input_data` | TEXT | | 是 | 否 | 输入数据 |
+| `output_data` | TEXT | | 是 | 否 | 输出数据 |
+| `task_type` | VARCHAR | 32 | 是 | 否 | 任务类型 (TEXT_GEN, CLASSIFICATION, NER) |
+| `duration` | INT | | 否 | 否 | 推理时长(毫秒) |
+| `accuracy` | DECIMAL | 5,2 | 否 | 否 | 准确率 |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+##### 5.1.11.3 企业级MCP应用服务
+
+###### MCP应用表 (mcp_application)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `app_name` | VARCHAR | 128 | 是 | 否 | 应用名称 |
+| `app_type` | VARCHAR | 32 | 是 | 否 | 应用类型 (SALESFORCE, SERVICENOW, CUSTOM) |
+| `integration_config` | TEXT | | 否 | 否 | 集成配置(JSON格式) |
+| `deployment_target` | VARCHAR | 32 | 是 | 否 | 部署目标 (KUBERNETES, OPENSHIFT) |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 应用部署表 (application_deployment)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `app_id` | BIGINT | | 是 | 否 | 应用ID |
+| `deployment_time` | DATETIME | | 是 | 否 | 部署时间 |
+| `deployment_status` | VARCHAR | 32 | 是 | 否 | 部署状态 (SUCCESS, FAILED, PENDING) |
+| `container_config` | TEXT | | 否 | 否 | 容器配置(JSON格式) |
+| `monitoring_url` | VARCHAR | 255 | 否 | 否 | 监控URL |
+| `log_url` | VARCHAR | 255 | 否 | 否 | 日志URL |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+##### 5.1.11.4 企业级Agent智能体引擎
+
+###### 智能体表 (agent)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `agent_name` | VARCHAR | 128 | 是 | 否 | 智能体名称 |
+| `agent_type` | VARCHAR | 32 | 是 | 否 | 智能体类型 (WATSON, AZURE, CUSTOM) |
+| `capabilities` | VARCHAR | 255 | 是 | 否 | 能力列表 (TEXT_GEN, CLASSIFICATION, NER) |
+| `integration_config` | TEXT | | 否 | 否 | 集成配置(JSON格式) |
+| `training_data` | TEXT | | 否 | 否 | 训练数据信息 |
+| `status` | TINYINT | 1 | 是 | 否 | 状态 (1:启用, 0:禁用) |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
+
+###### 智能体推理日志表 (agent_inference_log)
+
+| 字段名称 | 字段类型 | 长度 | 是否必填 | 是否主键 | 中文注释 |
+|---------|---------|------|---------|---------|---------|
+| `id` | BIGINT | | 是 | 是 | 主键ID |
+| `tenant_id` | BIGINT | | 否 | 否 | 租户ID |
+| `agent_id` | BIGINT | | 是 | 否 | 智能体ID |
+| `input_data` | TEXT | | 是 | 否 | 输入数据 |
+| `output_data` | TEXT | | 是 | 否 | 输出数据 |
+| `task_type` | VARCHAR | 32 | 是 | 否 | 任务类型 (TEXT_GEN, CLASSIFICATION, NER) |
+| `duration` | INT | | 否 | 否 | 推理时长(毫秒) |
+| `accuracy` | DECIMAL | 5,2 | 否 | 否 | 准确率 |
+| `creator` | VARCHAR | 64 | 否 | 否 | 创建人 |
+| `created_time` | DATETIME | | 是 | 否 | 创建时间 |
+| `updater` | VARCHAR | 64 | 否 | 否 | 更新人 |
+| `updated_time` | DATETIME | | 是 | 否 | 更新时间 |
+| `deleted` | TINYINT | 1 | 是 | 否 | 是否删除 (1:是, 0:否) |
 
 ---
 
@@ -2274,8 +2691,8 @@ erDiagram
 
 系统采用前后端工程分离：
 
-- 后端：Spring Boot + Spring Cloud + MyBatis Plus + PostgreSQL + Redis + RabbitMQ
-- 前端：Vue 3 + Element Plus + Axios + ECharts
+- 后端：Maven + Spring Boot + Spring Cloud + MyBatis Plus + PostgreSQL + Redis + RabbitMQ
+- 前端：Vite + Vue 3 + TypeScript + Element Plus + Axios + ECharts
   前端工程名称：apaas-ui
   后端工程名：apaas
   基础包名：org.apaas
@@ -2284,7 +2701,10 @@ erDiagram
 
 ```
 apaas (父工程)
-├── apaas-core (核心模块)
+├── apaas-framework (核心框架模块)
+│   ├── apaas-core (核心库)
+│   ├── apaas-domain (领域模型基础库)
+│   └── apaas-utils (常用用据库)
 ├── apaas-gateway (网关服务)
 ├── apaas-micro (微服务模块)
 │   ├── apaas-system (系统服务)
@@ -2296,7 +2716,8 @@ apaas (父工程)
 │   ├── apaas-job (调度任务服务)
 │   ├── apaas-integration (集成服务)
 │   ├── apaas-report (报表服务)
-│   └── apaas-design-platform (开发平台服务)
+│   ├── apaas-design (开发平台服务)
+│   └── apaas-assistant (人工智能助手服务)
 ├── apaas-api (API模块)
 │   ├── apaas-core (API需要公共的实体、DTO、对象等)
 │   ├── apaas-inner-api (对内提供远程调用服务API)
@@ -2323,7 +2744,7 @@ apaas (父工程)
     <packaging>pom</packaging>
 
     <modules>
-        <module>apaas-core</module>
+        <module>apaas-framework</module>
         <module>apaas-gateway</module>
         <module>apaas-micro</module>
         <module>apaas-api</module>
@@ -2331,10 +2752,10 @@ apaas (父工程)
     </modules>
 
     <properties>
-        <java.version>21</java.version>
-        <spring-boot.version>3.5.4</spring-boot.version>
+        <java.version>25</java.version>
+        <spring-boot.version>3.5.6</spring-boot.version>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
-        <spring-cloud-alibaba.version>2023.0.3.3</spring-cloud-alibaba.version>
+        <spring-cloud-alibaba.version>2025.0.0.0-preview</spring-cloud-alibaba.version>
     </properties>
 
     <dependencyManagement>
@@ -2386,47 +2807,26 @@ apaas (父工程)
 
 ---
 
-##### 2. 核心模块 (`apaas-core/`)
+##### 2. 核心框架模块 (`apaas-core/`)
 
-```markdown
-src/
-├── main/
-│ ├── java/org/apaas/core/
-│ │ ├── annotation/
-│ │ │ ├── DataPermission.java
-│ │ │ └── OperationLog.java
-│ │ ├── config/
-│ │ │ ├── MybatisPlusConfig.java
-│ │ │ ├── RedisConfig.java
-│ │ │ └── WebConfig.java
-│ │ ├── domain/
-│ │ │ ├── BaseEntity.java
-│ │ │ └── TenantContext.java
-│ │ ├── exception/
-│ │ │ ├── GlobalExceptionHandler.java
-│ │ │ └── ServiceException.java
-│ │ ├── security/
-│ │ │ ├── JwtTokenProvider.java
-│ │ │ └── SecurityUtils.java
-│ │ ├── util/
-│ │ │ ├── ExcelUtil.java
-│ │ │ ├── JsonUtil.java
-│ │ │ └── SnowflakeIdWorker.java
-│ │ └── web/
-│ │ ├── domain/
-│ │ │ ├── AjaxResult.java
-│ │ │ └── PageResult.java
-│ │ └── filter/
-│ │ ├── RepeatSubmitFilter.java
-│ │ └── TenantContextFilter.java
-│ └── resources/
-│ └── i18n/
-│ ├── messages.properties
-│ ├── messages_en.properties
-│ └── messages_ja.properties
-└── test/
-└── java/org/apaas/core/
-└── util/JsonUtilTest.java
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <parent>
+        <artifactId>apaas</artifactId>
+        <groupId>org.apaas</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>apaas-framework</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>apaas-core</module>
+        <module>apaas-domain</module>
+        <module>apaas-utils</module>
+    </modules>
+</project>
 ```
 
 ---
@@ -2473,10 +2873,13 @@ src/
         <module>apaas-monitor</module>
         <module>apaas-flow-engine</module>
         <module>apaas-flow-execution</module>
+        <module>apaas-form-engine</module>
+        <module>apaas-data</module>
         <module>apaas-job</module>
         <module>apaas-integration</module>
         <module>apaas-report</module>
-        <module>apaas-design-platform</module>
+        <module>apaas-design</module>
+        <module>apaas-assistant</module>
     </modules>
 </project>
 ```
@@ -2770,7 +3173,7 @@ src/
 └── test/
 ```
 
-##### 13. 开发平台服务 (`apaas-micro/apaas-design-platform/`)
+##### 13. 开发平台服务 (`apaas-micro/apaas-design/`)
 
 ```markdown
 src/
@@ -3070,17 +3473,19 @@ src/
 
 ### 12.1 服务依赖矩阵
 
-| 依赖方 \ 被依赖方 | 系统服务 | 权限中心 | 日志服务 | 流程引擎 | 流程执行 | 调度任务 | 集成服务 | 报表服务 | 开发平台 |
-| ----------------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
-| **系统服务**      | -        | ✅       | ✅       |          |          |          |          |          |          |
-| **权限中心**      | ✅       | -        | ✅       |          |          |          |          |          |          |
-| **日志服务**      |          |          | -        |          |          |          |          |          |          |
-| **流程引擎**      | ✅       | ✅       | ✅       | -        |          |          |          |          |          |
-| **流程执行**      |          | ✅       | ✅       | ✅       | -        | ✅       | ✅       |          |          |
-| **调度任务**      |          |          | ✅       |          | ✅       | -        | ✅       |          |          |
-| **集成服务**      | ✅       | ✅       | ✅       |          |          |          | -        |          |          |
-| **报表服务**      |          |          | ✅       |          | ✅       | ✅       |          | -        |          |
-| **开发平台**      | ✅       | ✅       | ✅       |          |          |          | ✅       |          | -        |
+| 依赖方 \ 被依赖方 | 系统服务 | 权限中心 | 日志服务 | 流程引擎 | 流程执行 | 数据服务 | 调度任务 | 集成服务 | 报表服务 | 开发平台 | 智能助手 |
+| ----------------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | ----------------- | ----------------- |
+| **系统服务**      | -        | ✅       | ✅       |          |          |          |          |          |          |          |          |
+| **权限中心**      | ✅       | -        | ✅       |          |          |          |          |          |          |          |          |
+| **日志服务**      |          |          | -        |          |          |          |          |          |          |          |          |
+| **流程引擎**      | ✅       | ✅       | ✅       | -        |          |          |          |          |          |          |          |
+| **流程执行**      |          | ✅       | ✅       | ✅       | -        |        | ✅       | ✅       |          |          |          |
+| **数据服务** | ✅ | ✅ | ✅ |  |  |  | ✅ | ✅ | | | |
+| **调度任务**      |          |          | ✅       |          | ✅       |         | -        | ✅       |          |          |          |
+| **集成服务**      | ✅       | ✅       | ✅       |          |          |          |          | -        |          |          |          |
+| **报表服务**      |          |          | ✅       |          | ✅       |        | ✅       |          | -        |          |          |
+| **开发平台**      | ✅       | ✅       | ✅       |          |          | ✅ | ✅ | ✅       |          | -        |         |
+| **智能助手** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |  |
 
 ### 12.2 详细依赖关系说明
 

@@ -8,8 +8,8 @@
         <version>${revision}</version>
     </parent>
     
-    <artifactId>apaas-design-platform</artifactId>
-    <name>apaas-design-platform</name>
+    <artifactId>apaas-design</artifactId>
+    <name>apaas-design</name>
     <description>开发平台服务</description>
     
     <dependencies>

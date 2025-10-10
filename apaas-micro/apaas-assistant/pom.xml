@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.apaas</groupId>
+        <artifactId>apaas-micro</artifactId>
+        <version>${revision}</version>
+    </parent>
+    
+    <artifactId>apaas-assistant</artifactId>
+    <packaging>jar</packaging>
+    <description>APaaS平台-人工智能助手服务引擎</description>
+    
+    <dependencies>
+        <!-- 领域模块 -->
+        <dependency>
+            <groupId>org.apaas</groupId>
+            <artifactId>apaas-domain</artifactId>
+        </dependency>
+    </dependencies>
+    
+</project>
