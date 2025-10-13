@@ -18,6 +18,7 @@
  */
 package org.apaas.interfaces.rest;
 
+import cn.idev.excel.FastExcel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,18 @@ import org.apaas.application.service.ApplicationService;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
+import org.apaas.domain.exception.BusinessException;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 响应式控制器基类
@@ -143,18 +150,28 @@ public abstract class BaseRest<D extends BaseDTO<ID>, ID extends Serializable, S
      * @return 导出结果
      */
     @PostMapping("/export")
-    public Mono<byte[]> export(@RequestBody Query query) {
-        return service.export(query);
+    public Mono<Resource> export(@RequestBody Query query) {
+        return service.export(query).map(this::exportToResource);
     }
     
     /**
      * 导入实体
      *
-     * @param data 导入数据
+     * @param file 导入文件
      * @return 导入结果
      */
     @PostMapping("/import")
-    public Mono<Void> importData(@RequestBody byte[] data) {
-        return service.importData(data);
+    public Mono<Void> importData(@RequestPart("file") FilePart file) {
+        if (Objects.isNull(file)) {
+            return Mono.error(new BusinessException("上传文件不能为空"));
+        }
+        return service.importData(file);
+    }
+
+    private Resource exportToResource(List<D> data) {
+        // 5. 转换为字节数组
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        FastExcel.write(outputStream, service.getDtoClass()).sheet().doWrite(data);
+        return new ByteArrayResource(outputStream.toByteArray());
     }
 }

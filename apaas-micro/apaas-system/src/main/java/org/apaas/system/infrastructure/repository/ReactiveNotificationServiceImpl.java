@@ -211,8 +211,8 @@ public class ReactiveNotificationServiceImpl extends AbstractApplicationService<
     }
     
     @Override
-    public Flux<Notification> saveBatch(Flux<Notification> notifications) {
-        return super.saveBatch(notifications);
+    public Flux<Notification> saveBatch(Flux<Notification> dtoList) {
+        return super.saveBatch(dtoList);
     }
     
     @Override

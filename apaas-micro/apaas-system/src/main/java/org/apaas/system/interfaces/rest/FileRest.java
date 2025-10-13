@@ -18,6 +18,7 @@
  */
 package org.apaas.system.interfaces.rest;
 
+import org.apaas.domain.exception.BusinessException;
 import org.apaas.interfaces.rest.BaseRest;
 import org.apaas.system.domain.model.Files;
 import org.apaas.system.application.service.ReactiveFileService;
@@ -70,7 +71,7 @@ public class FileRest extends BaseRest<Files, Long, ReactiveFileService> {
     @Operation(summary = "上传文件", description = "上传文件并返回访问URL")
     public Mono<String> upload(@Parameter(description = "文件", required = true) @RequestPart("file") FilePart file) {
         if (Objects.isNull(file)) {
-            return Mono.error(new IllegalArgumentException("上传文件不能为空"));
+            return Mono.error(new BusinessException("上传文件不能为空"));
         }
         return service.uploadFile(file);
     }

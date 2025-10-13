@@ -18,16 +18,19 @@
  */
 package org.apaas.infrastructure.convert;
 
+import org.apaas.core.query.Direction;
 import org.apaas.domain.exception.BusinessException;
 import org.apaas.core.query.Condition;
 import org.apaas.core.query.Query;
 import org.apaas.utils.StringUtils;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -73,6 +76,11 @@ public class QueryConverter {
     
     public static <T> Example<T> convertToExample(Query query, Class<T> entityClass) {
         return Example.of(convertToEntity(query, entityClass));
+    }
+
+    public static <T> Sort convertToSort(Query query, Class<T> entityClass) {
+        List<Sort.Order> orders = Arrays.stream(query.getSorts()).map(order -> Sort.Order.by(getColumnByFieldName(entityClass, order.getField())).with(order.getDirection() == Direction.ASC ? Sort.Direction.ASC : Sort.Direction.DESC)).toList();
+        return Sort.by(orders);
     }
     
     private static <T> String getColumnByFieldName(Class<T> entityClass, String fieldName) {

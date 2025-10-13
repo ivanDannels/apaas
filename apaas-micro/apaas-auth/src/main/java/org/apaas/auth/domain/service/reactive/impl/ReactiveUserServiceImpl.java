@@ -18,6 +18,8 @@
  */
 package org.apaas.auth.domain.service.reactive.impl;
 
+import org.apaas.auth.application.assembler.UserAssembler;
+import org.apaas.auth.application.dto.UserDTO;
 import org.apaas.auth.domain.aggregate.UserAggregate;
 import org.apaas.auth.domain.entity.User;
 import org.apaas.auth.domain.repository.reactive.UserRepository;
@@ -36,12 +38,15 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 @Service
-public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Long, UserRepository> implements ReactiveUserService {
+public class ReactiveUserServiceImpl extends AbstractApplicationService<User, UserDTO, Long, UserRepository> implements ReactiveUserService {
     
     private final UserApplicationService userApplicationService;
+
+    private final UserAssembler assembler;
     
-    public ReactiveUserServiceImpl(UserRepository repository, UserApplicationService userApplicationService) {
-        super(repository);
+    public ReactiveUserServiceImpl(UserApplicationService userApplicationService, UserAssembler assembler, UserRepository repository) {
+        super(userApplicationService,  assembler);
+        this.assembler = assembler;
         this.userApplicationService = userApplicationService;
     }
     
@@ -142,14 +147,5 @@ public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Lo
         return User.builder().id(userAggregate.getId()).username(userAggregate.getUsername()).password(userAggregate.getPassword()).nickname(userAggregate.getNickname()).phone(userAggregate.getPhone()).email(userAggregate.getEmail()).avatar(userAggregate.getAvatar()).gender(userAggregate.getGender()).status(userAggregate.getStatus()).loginIp(userAggregate.getLoginIp()).loginDate(userAggregate.getLoginDate()).logoutDate(userAggregate.getLogoutDate()).deleted(userAggregate.getDeleted()).createdTime(userAggregate.getCreatedTime()).updatedTime(userAggregate.getUpdatedTime())
                 .creator(userAggregate.getCreator()).updater(userAggregate.getUpdater()).tenantId(userAggregate.getTenantId()).build();
     }
-    
-    @Override
-    public Mono<byte[]> export(Query query) {
-        return userApplicationService.export(query);
-    }
-    
-    @Override
-    public Mono<Void> importData(byte[] data) {
-        return userApplicationService.importData(data);
-    }
+
 }

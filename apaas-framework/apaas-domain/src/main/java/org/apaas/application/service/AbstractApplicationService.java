@@ -18,6 +18,9 @@
  */
 package org.apaas.application.service;
 
+import cn.idev.excel.FastExcel;
+import cn.idev.excel.event.AnalysisEventListener;
+import cn.idev.excel.event.SyncReadListener;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.application.assembler.BaseAssembler;
 import org.apaas.application.dto.BaseDTO;
@@ -27,11 +30,20 @@ import org.apaas.domain.exception.BusinessException;
 import org.apaas.domain.repository.BaseRepository;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
+import org.apaas.infrastructure.convert.QueryConverter;
+import org.apaas.interfaces.event.listener.ExcelListener;
+import org.apaas.utils.FileUtils;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.Repository;
+import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -49,6 +61,19 @@ public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D ext
     
     protected final R repository;
     protected final BaseAssembler<T, D, ID> assembler;
+
+
+    private static final Path UPLOAD_DIR = Paths.get("uploads");
+
+    static {
+        // 确保上传目录存在
+        try {
+            Files.createDirectories(UPLOAD_DIR);
+        } catch (Exception e) {
+            throw new BusinessException("无法创建上传目录", e);
+        }
+    }
+
     
     protected AbstractApplicationService(R repository, BaseAssembler<T, D, ID> assembler) {
         this.repository = repository;
@@ -72,6 +97,13 @@ public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D ext
     public Flux<D> findAll() {
         return repository.findAll()
                 .map(assembler::toDTO);
+    }
+
+    @Override
+    public Flux<D> findAll(Query query) {
+        Example<T> example = QueryConverter.convertToExample(query, repository.getEntityClass());
+        Sort sort = QueryConverter.convertToSort(query, repository.getEntityClass());
+        return repository.findAll(example, sort).map(assembler::toDTO);
     }
     
     @Override
@@ -123,15 +155,22 @@ public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D ext
     }
     
     @Override
-    public Mono<byte[]> export(Query query) {
-        // 默认实现，子类可以重写
-        return Mono.error(new BusinessException("导出功能未实现"));
+    public Mono<List<D>> export(Query query) {
+        return findAll(query).collectList();
     }
     
     @Override
-    public Mono<Void> importData(byte[] data) {
-        // 默认实现，子类可以重写
-        return Mono.error(new BusinessException("导入功能未实现"));
+    public Mono<Void> importData(FilePart file) {
+        try {
+            Path filePath = FileUtils.getTempPath().resolve(file.filename());
+            ExcelListener<D> excelListener = new ExcelListener<>();
+            FastExcel.read(FileUtils.toInputStream(filePath), getDtoClass(), excelListener).sheet().doRead();
+            List<D> dataList = excelListener.getDataList();
+            return saveAll(dataList).then();
+        } catch (Exception e) {
+            log.error("导入数据失败", e);
+            return Mono.error(new BusinessException("导入数据失败"));
+        }
     }
     
     @Override

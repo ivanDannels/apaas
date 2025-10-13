@@ -21,11 +21,14 @@ package org.apaas.application.service;
 import org.apaas.application.dto.BaseDTO;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
+import org.apaas.utils.ClassUtils;
 import org.springframework.data.repository.Repository;
+import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 应用服务接口
@@ -59,6 +62,14 @@ public interface ApplicationService<D extends BaseDTO<ID>, ID extends Serializab
      * @return DTO对象列表
      */
     Flux<D> findAll();
+
+    /**
+     * 分页查询
+     *
+     * @param query 查询条件
+     * @return 分页结果
+     */
+    Flux<D> findAll(Query query);
     
     /**
      * 根据ID删除实体
@@ -70,26 +81,26 @@ public interface ApplicationService<D extends BaseDTO<ID>, ID extends Serializab
     /**
      * 批量保存实体
      *
-     * @param dtos DTO对象列表
+     * @param dtoList DTO对象列表
      * @return 保存后的DTO列表
      */
-    Flux<D> saveAll(Iterable<D> dtos);
+    Flux<D> saveAll(Iterable<D> dtoList);
     
     /**
      * 批量保存实体(响应式)
      *
-     * @param dtos DTO对象流
+     * @param dtoList DTO对象流
      * @return 保存后的DTO流
      */
-    Flux<D> saveBatch(Flux<D> dtos);
+    Flux<D> saveBatch(Flux<D> dtoList);
     
     /**
      * 批量更新实体
      *
-     * @param dtos DTO对象流
+     * @param dtoList DTO对象流
      * @return 更新后的DTO流
      */
-    Flux<D> updateBatch(Flux<D> dtos);
+    Flux<D> updateBatch(Flux<D> dtoList);
     
     /**
      * 批量删除实体
@@ -113,15 +124,15 @@ public interface ApplicationService<D extends BaseDTO<ID>, ID extends Serializab
      * @param query 查询条件
      * @return 导出的字节数据
      */
-    Mono<byte[]> export(Query query);
+    Mono<List<D>> export(Query query);
     
     /**
      * 导入数据
      *
-     * @param data 导入的字节数据
+     * @param file 导入的文件
      * @return 导入结果
      */
-    Mono<Void> importData(byte[] data);
+    Mono<Void> importData(FilePart file);
     
     /**
      * 获取Repository
@@ -129,4 +140,8 @@ public interface ApplicationService<D extends BaseDTO<ID>, ID extends Serializab
      * @return Repository对象
      */
     Repository<?, ID> getRepository();
+
+    default Class<D> getDtoClass() {
+        return (Class<D>) ClassUtils.getGenericType(getClass(), 0);
+    }
 }

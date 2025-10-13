@@ -18,6 +18,7 @@
  */
 package org.apaas.auth.domain.service;
 
+import org.apaas.auth.application.dto.UserDTO;
 import org.apaas.auth.domain.entity.User;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
@@ -31,7 +32,7 @@ import reactor.core.publisher.Mono;
  *
  * @author ivan
  */
-public interface UserApplicationService extends ApplicationService<User, Long> {
+public interface UserApplicationService extends ApplicationService<UserDTO, Long> {
     
     /**
      * 根据用户名获取用户
@@ -39,7 +40,7 @@ public interface UserApplicationService extends ApplicationService<User, Long> {
      * @param username 用户名
      * @return 用户信息
      */
-    Mono<User> getUserByUsername(String username);
+    Mono<UserDTO> getUserByUsername(String username);
     
     /**
      * 添加用户
@@ -47,7 +48,7 @@ public interface UserApplicationService extends ApplicationService<User, Long> {
      * @param user 用户信息
      * @return 添加结果
      */
-    Mono<User> addUser(User user);
+    Mono<UserDTO> addUser(User user);
     
     /**
      * 更新用户
@@ -55,7 +56,7 @@ public interface UserApplicationService extends ApplicationService<User, Long> {
      * @param user 用户信息
      * @return 更新结果
      */
-    Mono<User> updateUser(User user);
+    Mono<UserDTO> updateUser(User user);
     
     /**
      * 删除用户
@@ -100,11 +101,11 @@ public interface UserApplicationService extends ApplicationService<User, Long> {
      */
     Mono<Void> recordLoginInfo(Long userId, String loginIp);
     
-    Mono<User> login(String username, String password);
+    Mono<UserDTO> login(String username, String password);
     
     Mono<Boolean> updatePassword(String oldPassword, String newPassword);
     
-    Mono<User> getCurrentUser();
+    Mono<UserDTO> getCurrentUser();
     
     /**
      * 用户登出
@@ -114,12 +115,4 @@ public interface UserApplicationService extends ApplicationService<User, Long> {
      */
     Mono<Boolean> logout(Long userId);
     
-    /**
-     * 分页查询
-     *
-     * @param query 查询条件
-     * @return 分页结果
-     */
-    @Override
-    Mono<PageResult<User>> selectPage(Query query);
 }

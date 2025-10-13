@@ -22,6 +22,7 @@ import org.apaas.domain.entity.BaseEntity;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import org.apaas.infrastructure.convert.PageConverter;
+import org.apaas.utils.ClassUtils;
 import org.springframework.data.domain.*;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -29,6 +30,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * 响应式基础仓库接口
@@ -130,5 +133,13 @@ public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializabl
      * @return 响应式实体对象流
      */
     Mono<Boolean> existsByIdAndTenantId(ID id, Long tenantId);
-    
+
+    /**
+     * 获取实体类型
+     * @return 实体类型
+     */
+    default Class<T> getEntityClass() {
+        return (Class<T>) ClassUtils.getGenericType(getClass(), 0);
+    }
+
 }
