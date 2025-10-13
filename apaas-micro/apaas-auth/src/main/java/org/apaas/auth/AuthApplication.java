@@ -30,7 +30,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"org.apaas"})
+@ComponentScan(basePackages = {"org.apaas.auth"})
 public class AuthApplication {
     
     public static void main(String[] args) {

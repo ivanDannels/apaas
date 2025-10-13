@@ -32,11 +32,13 @@
         <logback.version>1.5.18</logback.version>
         <!-- maven 插件依赖版本 -->
         <mapstruct.version>1.6.3</mapstruct.version>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <minio.version>8.5.17</minio.version>
         <postgresql.version>42.7.2</postgresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
         <rabbitmq.version>5.20.0</rabbitmq.version>
         <reactive-feign.version>4.2.1</reactive-feign.version>

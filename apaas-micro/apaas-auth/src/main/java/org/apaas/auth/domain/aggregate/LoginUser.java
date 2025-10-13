@@ -1,0 +1,95 @@
+/*
+ * Copyright (c) 2012-2025, ivan (ivan.dannels@gmail.com).
+ * <p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * <p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apaas.auth.domain.aggregate;
+
+import lombok.*;
+import org.apaas.auth.domain.entity.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serial;
+import java.util.Collection;
+
+/**
+ * 登录用户
+ * @author ivan
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginUser implements UserDetails {
+    
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
+    /**
+     * 用户信息
+     */
+    private User user;
+    
+    private String token;
+    
+    private String[] permissions;
+    
+    /**
+     * 权限列表
+     */
+    private Collection<? extends GrantedAuthority> authorities;
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+    
+    @Override
+    public String getPassword() {
+        return user != null ? user.getPassword() : null;
+    }
+    
+    @Override
+    public String getUsername() {
+        return user != null ? user.getUsername() : null;
+    }
+    
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    
+    @Override
+    public boolean isEnabled() {
+        return user != null && user.getStatus() != null && user.getStatus() == 0;
+    }
+    
+    // 添加setter方法
+    public void setPermissions(String[] permissions) {
+        this.permissions = permissions;
+    }
+}

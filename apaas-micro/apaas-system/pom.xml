@@ -18,6 +18,11 @@
             <groupId>org.apaas</groupId>
             <artifactId>apaas-domain</artifactId>
         </dependency>
+        <!-- SpringDoc OpenAPI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+        </dependency>
         <!-- Spring Data R2DBC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

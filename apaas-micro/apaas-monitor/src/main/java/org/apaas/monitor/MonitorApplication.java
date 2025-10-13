@@ -26,7 +26,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(basePackages = "org.apaas")
+@ComponentScan(basePackages = "org.apaas.monitor")
 public class MonitorApplication {
     
     public static void main(String[] args) {

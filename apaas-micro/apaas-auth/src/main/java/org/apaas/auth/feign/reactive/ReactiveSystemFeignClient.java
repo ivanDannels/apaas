@@ -18,7 +18,7 @@
  */
 package org.apaas.auth.feign.reactive;
 
-import org.apaas.auth.entity.User;
+import org.apaas.auth.domain.entity.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +28,7 @@ import org.springframework.web.service.annotation.PostExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式系统服务Feign客户端
+ * 响应式系统服务Feign客户��?
  * @author ivan
  */
 @Component
@@ -36,9 +36,9 @@ import reactor.core.publisher.Mono;
 public interface ReactiveSystemFeignClient {
     
     /**
-     * 根据用户名获取用户信息
+     * 根据用户名获取用户信��?
      *
-     * @param username 用户名
+     * @param username 用户��?
      * @return 用户信息
      */
     @GetExchange("/user/username/{username}")
