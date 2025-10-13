@@ -21,7 +21,7 @@ package org.apaas.form.engine.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.apaas.domain.domain.entity.BaseEntity;
+import org.apaas.domain.entity.BaseEntity;
 
 /**
  * 表单实例实体

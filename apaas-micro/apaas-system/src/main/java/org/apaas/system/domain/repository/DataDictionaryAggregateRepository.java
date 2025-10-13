@@ -18,7 +18,7 @@
  */
 package org.apaas.system.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Flux;
  * 数据数字典聚合根Repository接口
  */
 @Repository
-public interface DataDictionaryAggregateRepository extends ReactiveBaseRepository<DataDictionaryAggregate, Long> {
+public interface DataDictionaryAggregateRepository extends BaseRepository<DataDictionaryAggregate, Long> {
     
     /**
      * 根据名称、类型和状态分页查询数据字典

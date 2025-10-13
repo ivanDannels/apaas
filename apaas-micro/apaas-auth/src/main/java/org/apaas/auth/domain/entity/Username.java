@@ -19,7 +19,7 @@
 package org.apaas.auth.domain.entity;
 
 import lombok.Data;
-import org.apaas.domain.domain.vo.BaseValueObject;
+import org.apaas.domain.vo.BaseValueObject;
 
 /**
  * 用户名值对象

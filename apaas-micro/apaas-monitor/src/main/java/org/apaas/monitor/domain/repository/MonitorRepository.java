@@ -18,7 +18,7 @@
  */
 package org.apaas.monitor.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.monitor.domain.entity.MonitorEntity;
 import org.springframework.stereotype.Repository;
 
@@ -26,5 +26,5 @@ import org.springframework.stereotype.Repository;
  * @author ivan
  */
 @Repository
-public interface MonitorRepository extends ReactiveBaseRepository<MonitorEntity, Long> {
+public interface MonitorRepository extends BaseRepository<MonitorEntity, Long> {
 }

@@ -19,9 +19,9 @@
 package org.apaas.job.domain.repository;
 
 import org.apaas.job.domain.model.JobEntity;
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JobRepository extends ReactiveBaseRepository<JobEntity, Long> {
+public interface JobRepository extends BaseRepository<JobEntity, Long> {
 }

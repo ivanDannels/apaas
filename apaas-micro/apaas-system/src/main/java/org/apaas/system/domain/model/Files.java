@@ -19,8 +19,9 @@
 package org.apaas.system.domain.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.domain.entity.BaseEntity;
+import org.apaas.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -29,6 +30,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @SuperBuilder
 @Table("files")
+@EqualsAndHashCode(callSuper = true)
 public class Files extends BaseEntity<Long> {
     
     private String fileName;

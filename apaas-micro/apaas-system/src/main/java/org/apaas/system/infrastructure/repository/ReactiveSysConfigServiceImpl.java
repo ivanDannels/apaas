@@ -1,7 +1,7 @@
 package org.apaas.system.infrastructure.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.system.domain.model.SysConfig;
 import org.apaas.system.domain.repository.SysConfigRepository;
 import org.apaas.system.application.service.ReactiveSysConfigService;

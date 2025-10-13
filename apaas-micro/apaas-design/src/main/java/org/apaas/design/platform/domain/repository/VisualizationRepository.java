@@ -18,7 +18,7 @@
  */
 package org.apaas.design.platform.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.design.platform.domain.model.Visualization;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +27,6 @@ import org.springframework.stereotype.Repository;
  * @author ivan
  */
 @Repository
-public interface VisualizationRepository extends ReactiveBaseRepository<Visualization, Long> {
+public interface VisualizationRepository extends BaseRepository<Visualization, Long> {
     
 }

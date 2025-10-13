@@ -18,7 +18,6 @@
  */
 package org.apaas.flow.engine.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.flow.engine.application.dto.StartInstanceDTO;
 import org.apaas.flow.engine.application.dto.FlowInstanceDTO;
 import reactor.core.publisher.Flux;
@@ -27,7 +26,7 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式流程实例服务接口
  */
-public interface ReactiveFlowInstanceService extends ApplicationService<FlowInstanceDTO, Long> {
+public interface ReactiveFlowInstanceService {
     
     /**
      * 根据流程实例ID获取流程实例

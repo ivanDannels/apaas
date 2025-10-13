@@ -24,8 +24,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
-import org.apaas.core.query.Query;
-import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.flow.engine.application.dto.FlowDefinitionDTO;
 
 import org.apaas.flow.engine.application.service.ReactiveFlowDefinitionService;
@@ -40,10 +38,12 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/flow/definition")
 @Tag(name = "响应式流程定义管理", description = "响应式流程定义CRUD及部署操作")
-public class ReactiveFlowDefinitionController extends ReactiveBaseController<FlowDefinitionDTO, Long, ReactiveFlowDefinitionService> {
+public class ReactiveFlowDefinitionController {
+    
+    protected final ReactiveFlowDefinitionService service;
     
     public ReactiveFlowDefinitionController(ReactiveFlowDefinitionService service) {
-        super(service);
+        this.service = service;
     }
     
     /**

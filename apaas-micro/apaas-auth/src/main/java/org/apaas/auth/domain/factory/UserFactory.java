@@ -19,8 +19,7 @@
 package org.apaas.auth.domain.factory;
 
 import org.apaas.auth.domain.aggregate.UserAggregate;
-import org.apaas.auth.domain.entity.Username;
-import org.apaas.domain.domain.factory.EntityFactory;
+import org.apaas.domain.factory.EntityFactory;
 
 /**
  * 用户工厂类

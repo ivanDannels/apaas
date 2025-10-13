@@ -18,7 +18,7 @@
  */
 package org.apaas.flow.engine.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.flow.engine.domain.model.FlowTask;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;

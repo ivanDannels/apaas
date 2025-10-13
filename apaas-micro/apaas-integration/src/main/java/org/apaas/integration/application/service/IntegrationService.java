@@ -18,7 +18,7 @@
  */
 package org.apaas.integration.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.integration.application.dto.IntegrationDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

@@ -18,7 +18,7 @@
  */
 package org.apaas.design.platform.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.design.platform.domain.model.CodeTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +26,6 @@ import org.springframework.stereotype.Repository;
  * @author ivan
  */
 @Repository
-public interface CodeTemplateRepository extends ReactiveBaseRepository<CodeTemplate, Long> {
+public interface CodeTemplateRepository extends BaseRepository<CodeTemplate, Long> {
     
 }

@@ -18,14 +18,14 @@
  */
 package org.apaas.form.engine.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.form.engine.domain.model.FormField;
 import reactor.core.publisher.Flux;
 
 /**
  * 响应式表单字段仓库接口
  */
-public interface FormFieldRepository extends ReactiveBaseRepository<FormField, Long> {
+public interface FormFieldRepository extends BaseRepository<FormField, Long> {
     
     /**
      * 根据表单ID查询字段列表

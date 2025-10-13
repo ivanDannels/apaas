@@ -16,10 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.form.engine.service.reactive;
+package org.apaas.form.engine.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.form.engine.application.dto.FormDefinitionDTO;
+import org.apaas.form.engine.domain.model.FormDefinition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +33,7 @@ public interface ReactiveFormDefinitionService extends ApplicationService<FormDe
     /**
      * 保存表单定义
      *
-     * @param formDefinition 表单定义
+     * @param formDefinitionDTO 表单定义DTO
      * @return 保存的表单定义ID
      */
     Mono<Long> saveFormDefinition(FormDefinitionDTO formDefinitionDTO);
@@ -40,7 +41,7 @@ public interface ReactiveFormDefinitionService extends ApplicationService<FormDe
     /**
      * 更新表单定义
      *
-     * @param formDefinition 表单定义
+     * @param formDefinitionDTO 表单定义DTO
      * @return 更新结果
      */
     Mono<Boolean> updateFormDefinition(FormDefinitionDTO formDefinitionDTO);

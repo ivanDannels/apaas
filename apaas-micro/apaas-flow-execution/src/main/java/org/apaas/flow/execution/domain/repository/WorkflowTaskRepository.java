@@ -18,10 +18,10 @@
  */
 package org.apaas.flow.execution.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.flow.execution.domain.entity.WorkflowTask;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WorkflowTaskRepository extends ReactiveBaseRepository<WorkflowTask, Long> {
+public interface WorkflowTaskRepository extends BaseRepository<WorkflowTask, Long> {
 }

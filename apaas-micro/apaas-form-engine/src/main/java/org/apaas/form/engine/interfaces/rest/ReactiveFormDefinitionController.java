@@ -26,9 +26,8 @@ import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.form.engine.application.dto.FormDefinitionDTO;
-import org.apaas.form.engine.service.reactive.ReactiveFormDefinitionService;
+import org.apaas.form.engine.application.service.ReactiveFormDefinitionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,10 +42,12 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/form-definitions")
 @Tag(name = "响应式表单定义管理", description = "响应式表单定义相关操作")
-public class ReactiveFormDefinitionController extends ReactiveBaseController<FormDefinitionDTO, Long, ReactiveFormDefinitionService> {
+public class ReactiveFormDefinitionController {
+    
+    protected final ReactiveFormDefinitionService service;
     
     public ReactiveFormDefinitionController(ReactiveFormDefinitionService service) {
-        super(service);
+        this.service = service;
     }
     
     /**
@@ -63,21 +64,21 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
      * 获取表单定义详情
      */
     @Log(title = "获取表单定义详情", businessType = BusinessType.OTHER, operatorType = OperatorType.MANAGE)
-    @Override
     @Operation(summary = "获取表单定义详情", description = "根据ID查询表单定义信息")
     @Parameter(name = "id", description = "表单ID", required = true)
+    @GetMapping("/{id}")
     public Mono<FormDefinitionDTO> get(@PathVariable Long id) {
-        return super.get(id);
+        return service.findById(id);
     }
     
     /**
      * 创建表单定义
      */
     @Log(title = "创建表单定义", businessType = BusinessType.INSERT, operatorType = OperatorType.MANAGE)
-    @Override
     @Operation(summary = "创建表单定义", description = "新增表单定义信息")
+    @PostMapping
     public Mono<FormDefinitionDTO> add(@RequestBody FormDefinitionDTO formDefinitionDTO) {
-        return service.saveFormDefinition(formDefinitionDTO).then(super.add(formDefinitionDTO));
+        return service.saveFormDefinition(formDefinitionDTO).then(Mono.empty());
     }
     
     /**
@@ -88,7 +89,7 @@ public class ReactiveFormDefinitionController extends ReactiveBaseController<For
     @Operation(summary = "更新表单定义", description = "修改表单定义信息")
     @Parameter(name = "id", description = "表单ID", required = true)
     public Mono<FormDefinitionDTO> update(@PathVariable Long id, @RequestBody FormDefinitionDTO formDefinitionDTO) {
-        return service.updateFormDefinition(formDefinitionDTO).then(super.update(formDefinitionDTO));
+        return service.updateFormDefinition(formDefinitionDTO).then(Mono.empty());
     }
     
     /**

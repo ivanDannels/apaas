@@ -18,8 +18,8 @@
  */
 package org.apaas.system.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.system.domain.model.Internationalization;
 
-public interface InternationalizationRepository extends ReactiveBaseRepository<Internationalization, Long> {
+public interface InternationalizationRepository extends BaseRepository<Internationalization, Long> {
 }

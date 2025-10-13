@@ -19,9 +19,9 @@
 package org.apaas.form.engine.infrastructure.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.form.engine.domain.model.FormField;
-import org.apaas.form.engine.domain.repository.FormFieldRepository;
+import org.apaas.form.engine.repository.FormFieldRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormFieldService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

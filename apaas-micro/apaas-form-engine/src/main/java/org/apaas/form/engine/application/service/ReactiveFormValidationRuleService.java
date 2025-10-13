@@ -16,10 +16,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.form.engine.service.reactive;
+package org.apaas.form.engine.application.service;
 
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.form.engine.entity.FormValidationRule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +27,8 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * 响应式表单验证规则服务接��?
+ * 响应式表单验证规则服务接口
+ * @author ivan
  */
 public interface ReactiveFormValidationRuleService extends ApplicationService<FormValidationRule, Long> {
     

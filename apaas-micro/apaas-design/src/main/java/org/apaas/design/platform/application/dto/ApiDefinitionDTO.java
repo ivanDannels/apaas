@@ -18,7 +18,12 @@
  */
 package org.apaas.design.platform.application.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.apaas.application.dto.BaseDTO;
 
 /**
  * API定义DTO
@@ -26,7 +31,11 @@ import lombok.Data;
  * @author ivan
  */
 @Data
-public class ApiDefinitionDTO {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class ApiDefinitionDTO extends BaseDTO<Long> {
     
     /**
      * API ID

@@ -18,14 +18,14 @@
  */
 package org.apaas.report.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.report.entity.Report;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface ReportRepository extends ReactiveBaseRepository<Report, Long> {
+public interface ReportRepository extends BaseRepository<Report, Long> {
     
     Mono<Report> findByName(String name);
     

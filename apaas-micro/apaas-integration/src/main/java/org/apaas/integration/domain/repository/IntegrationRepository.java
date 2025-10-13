@@ -19,12 +19,12 @@
 package org.apaas.integration.repository;
 
 import org.apaas.integration.entity.IntegrationEntity;
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
 @Repository
-public interface IntegrationRepository extends ReactiveBaseRepository<IntegrationEntity, Long> {
+public interface IntegrationRepository extends BaseRepository<IntegrationEntity, Long> {
     
     /**
      * 根据类型查询集成

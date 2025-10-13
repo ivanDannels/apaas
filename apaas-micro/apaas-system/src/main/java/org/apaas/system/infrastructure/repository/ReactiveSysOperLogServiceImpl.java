@@ -19,7 +19,7 @@
 package org.apaas.system.infrastructure.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.system.domain.model.SysOperLog;
 import org.apaas.system.domain.repository.SysOperLogRepository;
 import org.apaas.system.application.service.ReactiveSysOperLogService;
@@ -27,7 +27,7 @@ import org.apaas.system.application.dto.SysOperLogDTO;
 import org.apaas.system.application.assembler.SysOperLogAssembler;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.infrastructure.convert.PageConverter;
+import org.apaas.infrastructure.convert.PageConverter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

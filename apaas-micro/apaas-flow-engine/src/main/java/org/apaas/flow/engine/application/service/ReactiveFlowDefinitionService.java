@@ -19,9 +19,7 @@
 package org.apaas.flow.engine.application.service;
 
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.application.service.ApplicationService;
 import org.apaas.flow.engine.application.dto.FlowDefinitionDTO;
-import org.apaas.flow.engine.domain.model.FlowDefinition;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,7 +27,7 @@ import reactor.core.publisher.Mono;
 /**
  * 响应式流程定义服务接口
  */
-public interface ReactiveFlowDefinitionService extends ApplicationService<FlowDefinitionDTO, Long> {
+public interface ReactiveFlowDefinitionService {
     
     /**
      * 根据流程定义键获取流程定义

@@ -19,12 +19,10 @@
 package org.apaas.system.infrastructure.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.system.domain.model.Files;
 import org.apaas.system.domain.repository.FilesRepository;
 import org.apaas.system.application.service.ReactiveFileService;
-import org.apaas.system.application.dto.FilesDTO;
-import org.apaas.system.application.assembler.FilesAssembler;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.codec.multipart.FilePart;

@@ -18,7 +18,7 @@
  */
 package org.apaas.flow.execution.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.flow.execution.application.dto.Result;
 import org.apaas.flow.execution.domain.model.WorkflowTask;
 import reactor.core.publisher.Flux;

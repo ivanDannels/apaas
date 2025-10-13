@@ -19,7 +19,7 @@
 package org.apaas.auth.domain.specification;
 
 import org.apaas.auth.domain.entity.User;
-import org.apaas.domain.domain.specification.Specification;
+import org.apaas.domain.specification.Specification;
 
 /**
  * 用户规范类

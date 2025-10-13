@@ -18,12 +18,11 @@
  */
 package org.apaas.system.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.system.domain.model.DataDictionaryItem;
 import org.apaas.system.application.dto.DataDictionaryItemDTO;
 import org.apaas.core.query.Query;
 import org.apaas.core.query.PageResult;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

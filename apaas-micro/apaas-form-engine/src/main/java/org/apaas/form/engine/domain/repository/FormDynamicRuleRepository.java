@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.form.engine.domain.model.FormDynamicRule;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
  * 表单动态规则响应式仓库接口
  */
 @Repository
-public interface FormDynamicRuleRepository extends ReactiveBaseRepository<FormDynamicRule, Long> {
+public interface FormDynamicRuleRepository extends BaseRepository<FormDynamicRule, Long> {
     
     /**
      * 根据表单ID查询动态规则列表

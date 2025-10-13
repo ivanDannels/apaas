@@ -18,7 +18,7 @@
  */
 package org.apaas.design.platform.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.design.platform.domain.model.Metadata;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +26,6 @@ import org.springframework.stereotype.Repository;
  * @author ivan
  */
 @Repository
-public interface MetadataRepository extends ReactiveBaseRepository<Metadata, Long> {
+public interface MetadataRepository extends BaseRepository<Metadata, Long> {
     
 }

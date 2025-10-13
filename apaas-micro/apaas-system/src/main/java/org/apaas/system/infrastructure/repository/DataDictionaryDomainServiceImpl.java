@@ -19,8 +19,8 @@
 package org.apaas.system.infrastructure.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.domain.service.AbstractDomainService;
-import org.apaas.domain.domain.specification.Specification;
+import org.apaas.domain.service.AbstractDomainService;
+import org.apaas.domain.specification.Specification;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import org.apaas.system.domain.repository.DataDictionaryAggregateRepository;
 import org.apaas.system.application.service.DataDictionaryDomainService;

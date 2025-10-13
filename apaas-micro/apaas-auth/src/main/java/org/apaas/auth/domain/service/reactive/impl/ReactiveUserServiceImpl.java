@@ -20,12 +20,12 @@ package org.apaas.auth.domain.service.reactive.impl;
 
 import org.apaas.auth.domain.aggregate.UserAggregate;
 import org.apaas.auth.domain.entity.User;
-import org.apaas.auth.domain.repository.reactive.ReactiveUserRepository;
+import org.apaas.auth.domain.repository.reactive.UserRepository;
 import org.apaas.auth.domain.service.UserApplicationService;
 import org.apaas.auth.domain.service.reactive.ReactiveUserService;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -36,11 +36,11 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 @Service
-public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Long, ReactiveUserRepository> implements ReactiveUserService {
+public class ReactiveUserServiceImpl extends AbstractApplicationService<User, Long, UserRepository> implements ReactiveUserService {
     
     private final UserApplicationService userApplicationService;
     
-    public ReactiveUserServiceImpl(ReactiveUserRepository repository, UserApplicationService userApplicationService) {
+    public ReactiveUserServiceImpl(UserRepository repository, UserApplicationService userApplicationService) {
         super(repository);
         this.userApplicationService = userApplicationService;
     }

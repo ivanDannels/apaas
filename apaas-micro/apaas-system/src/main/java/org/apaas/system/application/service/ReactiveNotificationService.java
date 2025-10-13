@@ -1,6 +1,6 @@
 package org.apaas.system.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.system.domain.model.Notification;
 import org.apaas.system.application.dto.NotificationDTO;
 import org.springframework.web.server.ServerWebExchange;

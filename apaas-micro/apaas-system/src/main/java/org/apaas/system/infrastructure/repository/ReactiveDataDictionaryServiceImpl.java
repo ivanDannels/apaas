@@ -84,6 +84,6 @@ public class ReactiveDataDictionaryServiceImpl extends AbstractApplicationServic
     
     @Override
     public Mono<DataDictionaryDTO> findById(Long id) {
-        return dataDictionaryApplicationService.findById(id);
+        return repository.findById(id).map(DataDictionaryAssembler.INSTANCE::convertEntityToDto);
     }
 }

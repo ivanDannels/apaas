@@ -21,9 +21,8 @@ package org.apaas.form.engine.interfaces.rest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apaas.domain.interfaces.rest.ReactiveBaseController;
-import org.apaas.form.engine.entity.FormData;
 import org.apaas.form.engine.application.service.ReactiveFormDataService;
+import org.apaas.form.engine.entity.FormData;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -35,10 +34,12 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/form-data")
 @Tag(name = "响应式表单数据管理", description = "响应式表单数据相关操作")
-public class ReactiveFormDataController extends ReactiveBaseController<FormData, Long, ReactiveFormDataService> {
+public class ReactiveFormDataController {
+    
+    protected final ReactiveFormDataService service;
     
     public ReactiveFormDataController(ReactiveFormDataService service) {
-        super(service);
+        this.service = service;
     }
     
     /**

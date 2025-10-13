@@ -18,7 +18,7 @@
  */
 package org.apaas.system.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.system.domain.model.DataDictionaryItem;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Flux;
  * @author ivan
  */
 @Repository
-public interface DataDictionaryItemRepository extends ReactiveBaseRepository<DataDictionaryItem, Long> {
+public interface DataDictionaryItemRepository extends BaseRepository<DataDictionaryItem, Long> {
     
     /**
      * 根据字典ID查询字典项列表

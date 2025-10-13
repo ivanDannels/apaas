@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.form.engine.domain.model.FormDefinition;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  * 表单定义响应式仓库接口
  */
 @Repository
-public interface FormDefinitionRepository extends ReactiveBaseRepository<FormDefinition, Long> {
+public interface FormDefinitionRepository extends BaseRepository<FormDefinition, Long> {
     
     /**
      * 根据表单编码查询表单定义列表

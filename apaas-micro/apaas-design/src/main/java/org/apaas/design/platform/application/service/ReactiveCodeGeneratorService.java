@@ -18,7 +18,7 @@
  */
 package org.apaas.design.platform.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.design.platform.domain.model.CodeGenerator;
 import org.apaas.design.platform.application.dto.CodeGeneratorDTO;
 

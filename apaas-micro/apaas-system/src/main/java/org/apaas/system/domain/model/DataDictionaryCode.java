@@ -19,7 +19,7 @@
 package org.apaas.system.domain.model;
 
 import lombok.Data;
-import org.apaas.domain.domain.vo.BaseValueObject;
+import org.apaas.domain.vo.BaseValueObject;
 
 /**
  * 数据字典编码值对象

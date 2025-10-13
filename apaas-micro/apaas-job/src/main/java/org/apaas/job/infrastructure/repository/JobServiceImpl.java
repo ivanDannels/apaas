@@ -18,7 +18,7 @@
  */
 package org.apaas.job.infrastructure.repository;
 
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.job.application.assembler.JobAssembler;
 import org.apaas.job.application.dto.JobDTO;
 import org.apaas.job.domain.model.JobEntity;

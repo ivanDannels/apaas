@@ -18,7 +18,7 @@
  */
 package org.apaas.job.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.job.application.dto.JobDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

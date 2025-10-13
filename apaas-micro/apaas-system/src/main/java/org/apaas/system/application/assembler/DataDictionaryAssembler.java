@@ -19,17 +19,12 @@
 package org.apaas.system.application.assembler;
 
 import org.apaas.system.application.dto.DataDictionaryDTO;
-import org.apaas.system.domain.model.DataDictionary;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 /**
- * 数据字典装配器
- * 负责DTO与领域对象之间的转换
- *
+ * 数据字典转换器
  * @author ivan
  */
 @Mapper
@@ -38,32 +33,18 @@ public interface DataDictionaryAssembler {
     DataDictionaryAssembler INSTANCE = Mappers.getMapper(DataDictionaryAssembler.class);
     
     /**
-     * 将数据字典DTO转换为数据字典实体
+     * 将实体转换为DTO
+     *
+     * @param entity 实体对象
+     * @return DTO对象
      */
-    DataDictionary convertDtoToEntity(DataDictionaryDTO dataDictionaryDTO);
+    DataDictionaryDTO convertEntityToDto(DataDictionaryAggregate entity);
     
     /**
-     * 将数据字典实体转换为数据字典DTO
+     * 将DTO转换为实体
+     *
+     * @param dto DTO对象
+     * @return 实体对象
      */
-    DataDictionaryDTO convertEntityToDto(DataDictionary dataDictionary);
-    
-    /**
-     * 将数据字典聚合根转换为数据字典DTO
-     */
-    DataDictionaryDTO convertAggregateToDto(DataDictionaryAggregate dataDictionaryAggregate);
-    
-    /**
-     * 将数据字典DTO转换为数据字典聚合根
-     */
-    DataDictionaryAggregate convertDtoToAggregate(DataDictionaryDTO dataDictionaryDTO);
-    
-    /**
-     * 将数据字典实体列表转换为数据字典DTO列表
-     */
-    List<DataDictionaryDTO> convertEntityListToDtoList(List<DataDictionary> dataDictionaryList);
-    
-    /**
-     * 将数据字典聚合根列表转换为数据字典DTO列表
-     */
-    List<DataDictionaryDTO> convertAggregateListToDtoList(List<DataDictionaryAggregate> dataDictionaryAggregateList);
+    DataDictionaryAggregate convertDtoToEntity(DataDictionaryDTO dto);
 }

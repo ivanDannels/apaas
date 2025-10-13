@@ -18,14 +18,13 @@
  */
 package org.apaas.design.platform.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.design.platform.domain.model.Metadata;
 import org.apaas.design.platform.application.dto.MetadataDTO;
 
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Flux;
 
 /**
  * 响应式元数据服务接口

@@ -11,6 +11,7 @@ APaaS 平台核心模块（apaas-core）是整个平台的基础模块，包含�
 - 安全配置（Spring Security）
 - Web 配置
 - OpenAPI 配置
+- DTO基类和Assembler基类
 
 ## 响应式重构说明
 
@@ -35,6 +36,8 @@ APaaS 平台核心模块（apaas-core）是整个平台的基础模块，包含�
 
 4. **应用层**:
    - 提供了响应式控制器示例
+   - 新增了DTO基类和Assembler基类，用于实体与DTO之间的转换
+   - ApplicationService接口和AbstractApplicationService实现类不再限定实体类型，提高了灵活性
 
 ## 新增依赖项
 
@@ -62,6 +65,10 @@ APaaS 平台核心模块（apaas-core）是整个平台的基础模块，包含�
 
 3. **事件处理**:
    - 使用 RedisDomainEventPublisher 发布领域事件
+
+4. **DTO和Assembler使用**:
+   - 继承 BaseDTO 创建应用层数据传输对象
+   - 实现 BaseAssembler 或继承 AbstractAssembler 进行实体与DTO之间的转换
 
 ## 依赖说明
 

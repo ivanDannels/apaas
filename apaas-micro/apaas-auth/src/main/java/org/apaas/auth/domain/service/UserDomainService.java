@@ -19,7 +19,7 @@
 package org.apaas.auth.domain.service;
 
 import org.apaas.auth.domain.entity.User;
-import org.apaas.domain.domain.service.DomainService;
+import org.apaas.domain.service.DomainService;
 import reactor.core.publisher.Mono;
 
 /**

@@ -19,17 +19,16 @@
 package org.apaas.auth.domain.repository;
 
 import org.apaas.auth.domain.entity.Resource;
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * @author ivan
  */
 @Repository
-public interface ResourceRepository extends ReactiveBaseRepository<Resource, Long> {
+public interface ResourceRepository extends BaseRepository<Resource, Long> {
     
     /**
      * 根据角色ID查询资源列表

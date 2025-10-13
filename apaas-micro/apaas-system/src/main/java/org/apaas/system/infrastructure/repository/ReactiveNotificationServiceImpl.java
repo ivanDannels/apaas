@@ -29,6 +29,8 @@ import java.util.List;
 @Service
 public class ReactiveNotificationServiceImpl extends AbstractApplicationService<Notification, Long, NotificationRepository> implements ReactiveNotificationService {
     
+
+    
     public ReactiveNotificationServiceImpl(NotificationRepository repository) {
         super(repository);
     }
@@ -221,14 +223,16 @@ public class ReactiveNotificationServiceImpl extends AbstractApplicationService<
     @Override
     public Flux<NotificationDTO> saveBatch(Flux<NotificationDTO> notificationDtos) {
         Flux<Notification> notifications = notificationDtos.map(NotificationAssembler.INSTANCE::convertDtoToEntity);
-        return saveBatch(notifications)
+        return super.saveBatch(notifications)
                 .map(NotificationAssembler.INSTANCE::convertEntityToDto);
     }
     
     @Override
     public Flux<NotificationDTO> updateBatch(Flux<NotificationDTO> notificationDtos) {
         Flux<Notification> notifications = notificationDtos.map(NotificationAssembler.INSTANCE::convertDtoToEntity);
-        return updateBatch(notifications)
+        return super.updateBatch(notifications)
                 .map(NotificationAssembler.INSTANCE::convertEntityToDto);
     }
+    
+
 }

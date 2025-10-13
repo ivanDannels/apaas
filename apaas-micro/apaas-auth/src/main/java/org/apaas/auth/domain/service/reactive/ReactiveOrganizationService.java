@@ -19,7 +19,7 @@
 package org.apaas.auth.domain.service.reactive;
 
 import org.apaas.auth.domain.entity.Organization;
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

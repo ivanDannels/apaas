@@ -21,7 +21,7 @@ package org.apaas.auth.domain.service;
 import org.apaas.auth.domain.entity.User;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

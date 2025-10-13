@@ -18,7 +18,7 @@
  */
 package org.apaas.system.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.system.domain.model.SysOperLog;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +26,6 @@ import org.springframework.stereotype.Repository;
  * @author ivan
  */
 @Repository
-public interface SysOperLogRepository extends ReactiveBaseRepository<SysOperLog, Long> {
+public interface SysOperLogRepository extends BaseRepository<SysOperLog, Long> {
     
 }

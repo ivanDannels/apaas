@@ -18,12 +18,8 @@
  */
 package org.apaas.design.platform.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.design.platform.domain.model.APIEntity;
-
-import org.apaas.core.query.PageResult;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.Flux;
 
 /**
  * 响应式API实体服务接口

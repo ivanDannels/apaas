@@ -16,9 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.form.engine.service.reactive;
+package org.apaas.form.engine.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.form.engine.domain.model.FormField;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;

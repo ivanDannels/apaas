@@ -18,10 +18,10 @@
  */
 package org.apaas.flow.execution.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.flow.execution.domain.entity.FlowInstance;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FlowInstanceRepository extends ReactiveBaseRepository<FlowInstance, Long> {
+public interface FlowInstanceRepository extends BaseRepository<FlowInstance, Long> {
 }

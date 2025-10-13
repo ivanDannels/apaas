@@ -21,9 +21,8 @@ package org.apaas.auth.domain.service.reactive.impl;
 import org.apaas.auth.domain.entity.Resource;
 import org.apaas.auth.domain.repository.ResourceRepository;
 import org.apaas.auth.domain.service.reactive.ReactiveResourceService;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 
 /**

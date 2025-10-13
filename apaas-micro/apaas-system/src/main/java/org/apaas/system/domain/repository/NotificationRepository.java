@@ -19,7 +19,7 @@
 package org.apaas.system.domain.repository;
 
 import org.apaas.system.domain.model.Notification;
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  * 通知Repository接口
  */
 @Repository
-public interface NotificationRepository extends ReactiveBaseRepository<Notification, Long> {
+public interface NotificationRepository extends BaseRepository<Notification, Long> {
     
     /**
      * 根据用户ID查询通知列表

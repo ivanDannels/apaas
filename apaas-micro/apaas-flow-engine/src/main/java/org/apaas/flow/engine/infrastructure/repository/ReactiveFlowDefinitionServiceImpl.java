@@ -22,9 +22,8 @@ import org.apaas.core.query.PageResult;
 import org.apaas.flow.engine.application.assembler.FlowDefinitionAssembler;
 import org.apaas.flow.engine.application.dto.FlowDefinitionDTO;
 import org.apaas.flow.engine.domain.model.FlowDefinition;
-import org.apaas.flow.engine.domain.repository.ReactiveFlowDefinitionRepository;
+import org.apaas.flow.engine.domain.repository.FlowDefinitionRepository;
 import org.apaas.flow.engine.application.service.ReactiveFlowDefinitionService;
-import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -36,12 +35,10 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveFlowDefinitionServiceImpl implements ReactiveFlowDefinitionService {
     
-    private final ReactiveFlowDefinitionRepository repository;
+    private final FlowDefinitionRepository repository;
     private final FlowDefinitionAssembler flowDefinitionAssembler = FlowDefinitionAssembler.INSTANCE;
     
-    private final FlowDefinitionAssembler flowDefinitionAssembler = FlowDefinitionAssembler.INSTANCE;
-    
-    public ReactiveFlowDefinitionServiceImpl(ReactiveFlowDefinitionRepository repository) {
+    public ReactiveFlowDefinitionServiceImpl(FlowDefinitionRepository repository) {
         this.repository = repository;
     }
     

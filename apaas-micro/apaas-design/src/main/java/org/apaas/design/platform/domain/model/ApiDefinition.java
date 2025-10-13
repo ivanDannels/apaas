@@ -18,8 +18,10 @@
  */
 package org.apaas.design.platform.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.domain.entity.BaseEntity;
+import org.apaas.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.relational.core.mapping.Table;
@@ -30,8 +32,10 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Table("api_definition")
+@EqualsAndHashCode(callSuper = true)
 public class ApiDefinition extends BaseEntity<Long> {
     
     /**

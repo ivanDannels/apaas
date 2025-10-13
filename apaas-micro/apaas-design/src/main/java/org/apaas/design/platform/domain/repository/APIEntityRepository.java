@@ -18,7 +18,7 @@
  */
 package org.apaas.design.platform.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.design.platform.domain.model.APIEntity;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 @Repository
-public interface APIEntityRepository extends ReactiveBaseRepository<APIEntity, Long> {
+public interface APIEntityRepository extends BaseRepository<APIEntity, Long> {
     
     Mono<APIEntity> findByNameAndTenantId(String name, Long tenantId);
     Flux<APIEntity> findByPathAndTenantId(String path, Long tenantId);

@@ -28,7 +28,7 @@ import org.apaas.auth.feign.reactive.ReactiveSystemFeignClient;
 import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
-import org.apaas.domain.infrastructure.utils.IpUtils;
+import org.apaas.infrastructure.utils.IpUtils;
 import org.apaas.utils.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -41,8 +41,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
 
 /**
  * 响应式认证控制器

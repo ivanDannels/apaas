@@ -24,7 +24,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apaas.core.annotation.Log;
 import org.apaas.core.enums.BusinessType;
 import org.apaas.core.enums.OperatorType;
-import org.apaas.domain.interfaces.rest.ReactiveBaseController;
 import org.apaas.flow.engine.application.dto.StartInstanceDTO;
 import org.apaas.flow.engine.application.dto.FlowInstanceDTO;
 import org.apaas.flow.engine.application.service.ReactiveFlowInstanceService;
@@ -39,10 +38,12 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/flow/instance")
 @Tag(name = "响应式流程实例管理", description = "响应式流程实例生命周期管理")
-public class ReactiveFlowInstanceController extends ReactiveBaseController<FlowInstanceDTO, Long, ReactiveFlowInstanceService> {
+public class ReactiveFlowInstanceController {
+    
+    protected final ReactiveFlowInstanceService service;
     
     public ReactiveFlowInstanceController(ReactiveFlowInstanceService service) {
-        super(service);
+        this.service = service;
     }
     
     /**

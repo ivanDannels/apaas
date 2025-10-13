@@ -22,26 +22,25 @@ import org.apaas.flow.engine.application.assembler.FlowInstanceAssembler;
 import org.apaas.flow.engine.application.dto.StartInstanceDTO;
 import org.apaas.flow.engine.application.dto.FlowInstanceDTO;
 import org.apaas.flow.engine.domain.model.FlowInstance;
-import org.apaas.flow.engine.domain.repository.ReactiveFlowInstanceRepository;
+import org.apaas.flow.engine.domain.repository.FlowInstanceRepository;
 import org.apaas.flow.engine.application.service.ReactiveFlowInstanceService;
-import org.apaas.domain.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 响应式流程实例服务实现类
  */
 @Service
-public class ReactiveFlowInstanceServiceImpl extends AbstractApplicationService<FlowInstanceDTO, Long, ReactiveFlowInstanceRepository> implements ReactiveFlowInstanceService {
+public class ReactiveFlowInstanceServiceImpl implements ReactiveFlowInstanceService {
     
+    private final FlowInstanceRepository repository;
     private final FlowInstanceAssembler flowInstanceAssembler = FlowInstanceAssembler.INSTANCE;
     
-    public ReactiveFlowInstanceServiceImpl(ReactiveFlowInstanceRepository repository) {
-        super(repository);
+    public ReactiveFlowInstanceServiceImpl(FlowInstanceRepository repository) {
+        this.repository = repository;
     }
     
     @Override

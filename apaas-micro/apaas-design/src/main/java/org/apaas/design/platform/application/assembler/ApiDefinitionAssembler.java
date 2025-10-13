@@ -18,6 +18,7 @@
  */
 package org.apaas.design.platform.application.assembler;
 
+import org.apaas.application.assembler.BaseAssembler;
 import org.apaas.design.platform.application.dto.ApiDefinitionDTO;
 import org.apaas.design.platform.domain.model.ApiDefinition;
 import org.mapstruct.Mapper;
@@ -32,7 +33,7 @@ import java.util.List;
  * @author ivan
  */
 @Mapper
-public interface ApiDefinitionAssembler {
+public interface ApiDefinitionAssembler extends BaseAssembler<ApiDefinition, ApiDefinitionDTO, Long> {
     
     ApiDefinitionAssembler INSTANCE = Mappers.getMapper(ApiDefinitionAssembler.class);
     

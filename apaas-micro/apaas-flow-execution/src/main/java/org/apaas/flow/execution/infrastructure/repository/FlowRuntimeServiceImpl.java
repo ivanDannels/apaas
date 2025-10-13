@@ -19,10 +19,9 @@
 package org.apaas.flow.execution.infrastructure.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.flow.execution.application.assembler.FlowExecutionAssembler;
 import org.apaas.flow.execution.application.dto.Result;
-import org.apaas.flow.execution.application.dto.StartProcessDTO;
 import org.apaas.flow.execution.domain.model.FlowInstance;
 import org.apaas.flow.execution.domain.repository.FlowInstanceRepository;
 import org.apaas.flow.execution.application.service.FlowRuntimeService;

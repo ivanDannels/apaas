@@ -18,7 +18,7 @@
  */
 package org.apaas.report.service.impl;
 
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.report.entity.TaskAnalysis;
 import org.apaas.report.repository.TaskAnalysisRepository;
 import org.apaas.report.service.TaskAnalysisService;

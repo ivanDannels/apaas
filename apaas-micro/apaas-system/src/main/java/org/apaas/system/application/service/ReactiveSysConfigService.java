@@ -1,6 +1,6 @@
 package org.apaas.system.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.system.domain.model.SysConfig;
 import org.apaas.system.application.dto.SysConfigDTO;
 import org.springframework.data.domain.Pageable;

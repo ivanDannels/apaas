@@ -18,7 +18,7 @@
  */
 package org.apaas.integration.infrastructure.repository;
 
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.integration.application.assembler.IntegrationAssembler;
 import org.apaas.integration.application.dto.IntegrationDTO;
 import org.apaas.integration.domain.model.IntegrationEntity;

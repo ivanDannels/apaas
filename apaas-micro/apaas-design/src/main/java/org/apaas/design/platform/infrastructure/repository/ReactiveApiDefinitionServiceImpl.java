@@ -20,7 +20,7 @@ package org.apaas.design.platform.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.design.platform.domain.model.ApiDefinition;
 import org.apaas.design.platform.domain.repository.ApiDefinitionRepository;
 import org.apaas.design.platform.application.dto.ApiDefinitionDTO;
@@ -28,7 +28,7 @@ import org.apaas.design.platform.application.assembler.ApiDefinitionAssembler;
 import org.apaas.design.platform.application.service.ReactiveApiDefinitionService;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.infrastructure.convert.PageConverter;
+import org.apaas.infrastructure.convert.PageConverter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

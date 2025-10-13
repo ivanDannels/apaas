@@ -18,7 +18,7 @@
  */
 package org.apaas.system.application.service;
 
-import org.apaas.domain.domain.service.DomainService;
+import org.apaas.domain.service.DomainService;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import reactor.core.publisher.Mono;
 

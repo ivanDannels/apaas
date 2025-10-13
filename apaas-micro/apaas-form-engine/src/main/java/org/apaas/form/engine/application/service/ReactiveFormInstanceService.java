@@ -16,14 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.form.engine.service.reactive;
+package org.apaas.form.engine.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.form.engine.entity.FormInstance;
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式表单实例服务接��?
+ * 响应式表单实例服务接口
  * @author ivan
  */
 public interface ReactiveFormInstanceService extends ApplicationService<FormInstance, Long> {

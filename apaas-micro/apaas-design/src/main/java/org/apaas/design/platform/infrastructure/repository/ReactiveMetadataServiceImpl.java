@@ -20,7 +20,7 @@ package org.apaas.design.platform.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.design.platform.domain.model.Metadata;
 import org.apaas.design.platform.domain.repository.MetadataRepository;
 import org.apaas.design.platform.application.dto.MetadataDTO;
@@ -28,7 +28,7 @@ import org.apaas.design.platform.application.assembler.MetadataAssembler;
 import org.apaas.design.platform.application.service.ReactiveMetadataService;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
-import org.apaas.domain.infrastructure.convert.PageConverter;
+import org.apaas.infrastructure.convert.PageConverter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

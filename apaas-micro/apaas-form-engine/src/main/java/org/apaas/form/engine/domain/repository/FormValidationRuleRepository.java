@@ -18,7 +18,7 @@
  */
 package org.apaas.form.engine.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.form.engine.entity.FormValidationRule;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -31,7 +31,7 @@ import java.util.List;
  * 表单验证规则响应式仓库接口
  */
 @Repository
-public interface FormValidationRuleRepository extends ReactiveBaseRepository<FormValidationRule, Long> {
+public interface FormValidationRuleRepository extends BaseRepository<FormValidationRule, Long> {
     
     /**
      * 根据字段ID查询验证规则列表

@@ -19,7 +19,7 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.form.engine.domain.model.FormFieldPermission;
 import org.apaas.form.engine.repository.FormFieldPermissionRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormFieldPermissionService;

@@ -16,11 +16,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.form.engine.repository;
+package org.apaas.form.engine.domain.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
-import org.apaas.form.engine.entity.FormData;
+import org.apaas.domain.repository.BaseRepository;
 import org.springframework.stereotype.Repository;
+import org.apaas.form.engine.entity.FormData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
  * @author ivan
  */
 @Repository
-public interface FormDataRepository extends ReactiveBaseRepository<FormData, Long> {
+public interface FormDataRepository extends BaseRepository<FormData, Long> {
     
     /**
      * 根据表单定义ID查询表单数据列表

@@ -18,7 +18,7 @@
  */
 package org.apaas.report.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.report.entity.Report;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

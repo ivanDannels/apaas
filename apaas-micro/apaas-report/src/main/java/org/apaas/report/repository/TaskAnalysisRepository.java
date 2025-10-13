@@ -18,14 +18,14 @@
  */
 package org.apaas.report.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.report.entity.TaskAnalysis;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface TaskAnalysisRepository extends ReactiveBaseRepository<TaskAnalysis, Long> {
+public interface TaskAnalysisRepository extends BaseRepository<TaskAnalysis, Long> {
     
     Mono<TaskAnalysis> findByTaskName(String taskName);
     

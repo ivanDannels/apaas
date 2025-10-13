@@ -19,7 +19,6 @@
 package org.apaas.auth.domain.repository.reactive;
 
 import org.apaas.auth.domain.entity.ApplicationTenant;
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

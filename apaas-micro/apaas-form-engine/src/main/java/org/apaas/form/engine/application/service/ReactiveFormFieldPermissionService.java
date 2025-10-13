@@ -16,17 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.form.engine.service.reactive;
+package org.apaas.form.engine.application.service;
 
-import org.apaas.domain.application.service.ApplicationService;
+import org.apaas.application.service.ApplicationService;
 import org.apaas.form.engine.domain.model.FormFieldPermission;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式表单字段权限服务接�?
+ * 响应式表单字段权限服务接口
+ * @author ivan
  */
 public interface ReactiveFormFieldPermissionService extends ApplicationService<FormFieldPermission, Long> {
     

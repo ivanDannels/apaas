@@ -20,8 +20,7 @@ package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.query.PageResult;
-import org.apaas.domain.application.service.AbstractApplicationService;
-import org.apaas.form.engine.domain.model.FormValidationRule;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormValidationRule;
 import org.apaas.form.engine.repository.FormValidationRuleRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormValidationRuleService;

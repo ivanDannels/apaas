@@ -18,14 +18,14 @@
  */
 package org.apaas.report.repository;
 
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.apaas.report.entity.UserAnalysis;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface UserAnalysisRepository extends ReactiveBaseRepository<UserAnalysis, Long> {
+public interface UserAnalysisRepository extends BaseRepository<UserAnalysis, Long> {
     
     Mono<UserAnalysis> findByUserId(Long userId);
     

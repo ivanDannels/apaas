@@ -19,7 +19,7 @@
 package org.apaas.system.domain.repository;
 
 import org.apaas.system.domain.model.SysConfig;
-import org.apaas.domain.domain.repository.ReactiveBaseRepository;
+import org.apaas.domain.repository.BaseRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
  * 参数配置Repository接口
  */
 @Repository
-public interface SysConfigRepository extends ReactiveBaseRepository<SysConfig, Long> {
+public interface SysConfigRepository extends BaseRepository<SysConfig, Long> {
     
     /**
      * 根据参数编码查询参数配置

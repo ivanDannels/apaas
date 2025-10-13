@@ -19,7 +19,7 @@
 package org.apaas.design.platform.domain.model;
 
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.domain.entity.BaseEntity;
+import org.apaas.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.relational.core.mapping.Table;

@@ -19,12 +19,12 @@
 package org.apaas.system.infrastructure.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
-import org.apaas.domain.domain.event.DataDictionaryEvent;
-import org.apaas.domain.domain.event.EventPublisherService;
-import org.apaas.domain.domain.exception.LockAcquisitionException;
-import org.apaas.domain.infrastructure.lock.DistributedLockService;
-import org.apaas.domain.infrastructure.log.LogUtil;
+import org.apaas.application.service.AbstractApplicationService;
+import org.apaas.domain.event.DataDictionaryEvent;
+import org.apaas.domain.event.EventPublisherService;
+import org.apaas.domain.exception.LockAcquisitionException;
+import org.apaas.infrastructure.lock.DistributedLockService;
+import org.apaas.infrastructure.log.LogUtil;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import org.apaas.system.domain.repository.DataDictionaryAggregateRepository;
 import org.apaas.system.application.service.DataDictionaryApplicationService;

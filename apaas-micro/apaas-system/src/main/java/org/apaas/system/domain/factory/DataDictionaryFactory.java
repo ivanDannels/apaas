@@ -18,7 +18,7 @@
  */
 package org.apaas.system.domain.factory;
 
-import org.apaas.domain.domain.factory.EntityFactory;
+import org.apaas.domain.factory.EntityFactory;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import org.apaas.system.domain.model.DataDictionaryCode;
 import org.apaas.system.domain.model.DataDictionaryItem;

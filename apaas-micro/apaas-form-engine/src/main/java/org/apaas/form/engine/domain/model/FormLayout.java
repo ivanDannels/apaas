@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.form.engine.entity;
+package org.apaas.form.engine.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;

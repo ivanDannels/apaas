@@ -19,7 +19,7 @@
 package org.apaas.form.engine.service.reactive.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.apaas.form.engine.entity.FormInstance;
 import org.apaas.form.engine.repository.FormInstanceRepository;
 import org.apaas.form.engine.service.reactive.ReactiveFormInstanceService;

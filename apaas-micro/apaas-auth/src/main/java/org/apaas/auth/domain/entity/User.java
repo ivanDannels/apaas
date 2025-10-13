@@ -19,8 +19,7 @@
 package org.apaas.auth.domain.entity;
 
 import lombok.experimental.SuperBuilder;
-import org.apaas.domain.domain.entity.BaseEntity;
-import org.springframework.data.relational.core.mapping.Column;
+import org.apaas.domain.entity.BaseEntity;
 import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -21,7 +21,7 @@ package org.apaas.design.platform.infrastructure.repository;
 import org.apaas.design.platform.domain.model.APIEntity;
 import org.apaas.design.platform.domain.repository.APIEntityRepository;
 import org.apaas.design.platform.application.service.ReactiveAPIEntityService;
-import org.apaas.domain.application.service.AbstractApplicationService;
+import org.apaas.application.service.AbstractApplicationService;
 import org.springframework.stereotype.Service;
 
 /**
