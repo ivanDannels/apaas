@@ -18,21 +18,22 @@
  */
 package org.apaas.auth.domain.service.reactive;
 
+import org.apaas.auth.application.dto.RoleDTO;
 import org.apaas.auth.domain.entity.Role;
 import org.apaas.application.service.ApplicationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 响应式角色服务接��?
+ * 响应式角色服务接口
  * @author ivan
  */
-public interface ReactiveRoleService extends ApplicationService<Role, Long> {
+public interface ReactiveRoleService extends ApplicationService<RoleDTO, Long> {
     
     /**
-     * 根据角色名获取角��?
+     * 根据角色名获取角色信息
      *
-     * @param roleName 角色��?
+     * @param roleName 角色名称
      * @return 角色信息
      */
     Mono<Role> getRoleByRoleName(String roleName);

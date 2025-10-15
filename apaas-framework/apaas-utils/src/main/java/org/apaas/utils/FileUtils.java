@@ -23,7 +23,6 @@ public class FileUtils {
      */
     private static final Path TEMP_PATH = Paths.get(TEMP_DIR);
 
-
     /**
      * 临时目录路径
      * @return 临时目录路径

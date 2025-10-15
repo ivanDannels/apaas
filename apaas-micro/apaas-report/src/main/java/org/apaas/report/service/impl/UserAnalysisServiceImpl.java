@@ -35,11 +35,11 @@ public class UserAnalysisServiceImpl extends AbstractApplicationService<UserAnal
     
     @Override
     public Mono<UserAnalysis> findByUserId(Long userId) {
-        return repository.findByUserId(userId);
+        return domainService.findByUserId(userId);
     }
     
     @Override
     public Flux<UserAnalysis> findByUserName(String userName) {
-        return repository.findByUserName(userName);
+        return domainService.findByUserName(userName);
     }
 }

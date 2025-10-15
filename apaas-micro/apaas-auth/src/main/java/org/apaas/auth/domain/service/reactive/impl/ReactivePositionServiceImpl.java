@@ -39,7 +39,7 @@ public class ReactivePositionServiceImpl extends AbstractApplicationService<Posi
     @Override
     public Flux<Position> getPositionsByUserId(Long userId) {
         // 实现根据用户ID获取岗位列表的逻辑
-        return repository.findByIdAndDeletedFalse(userId).flux();
+        return repository.findByUserIdAndDeletedFalse(userId);
     }
     
     @Override

@@ -18,14 +18,23 @@
  */
 package org.apaas.auth.application.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.apaas.application.dto.BaseDTO;
 
 /**
  * 角色查询DTO
  * @author ivan
  */
 @Data
-public class RoleDTO {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class RoleDTO extends BaseDTO<Long> {
     
     /**
      * 角色名称

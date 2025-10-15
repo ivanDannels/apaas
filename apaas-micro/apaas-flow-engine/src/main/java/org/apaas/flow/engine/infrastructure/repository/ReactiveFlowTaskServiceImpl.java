@@ -44,7 +44,7 @@ public class ReactiveFlowTaskServiceImpl extends AbstractApplicationService<Flow
      */
     @Override
     public Flux<FlowTask> getFlowTasksByFlowInstanceId(Long flowInstanceId) {
-        return repository.findByFlowInstanceId(flowInstanceId);
+        return domainService.findByFlowInstanceId(flowInstanceId);
     }
     
     /**
@@ -55,7 +55,7 @@ public class ReactiveFlowTaskServiceImpl extends AbstractApplicationService<Flow
      */
     @Override
     public Flux<FlowTask> getFlowTasksByTaskDefinitionKey(String taskDefinitionKey) {
-        return repository.findByTaskDefinitionKey(taskDefinitionKey);
+        return domainService.findByTaskDefinitionKey(taskDefinitionKey);
     }
     
     /**

@@ -19,20 +19,21 @@
 package org.apaas.application.service;
 
 import cn.idev.excel.FastExcel;
-import cn.idev.excel.event.AnalysisEventListener;
-import cn.idev.excel.event.SyncReadListener;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.application.assembler.BaseAssembler;
 import org.apaas.application.dto.BaseDTO;
 import org.apaas.core.context.TenantContext;
 import org.apaas.domain.entity.BaseEntity;
 import org.apaas.domain.exception.BusinessException;
-import org.apaas.domain.repository.BaseRepository;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
+import org.apaas.domain.service.DomainService;
 import org.apaas.infrastructure.convert.QueryConverter;
 import org.apaas.interfaces.event.listener.ExcelListener;
+import org.apaas.utils.ClassUtils;
 import org.apaas.utils.FileUtils;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.Repository;
@@ -41,6 +42,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,102 +56,88 @@ import java.util.List;
  * @param <T> 实体类型
  * @param <D> DTO类型
  * @param <ID> 实体标识类型
- * @param <R> 仓库类型
+ * @param <S> 仓库类型
  */
 @Slf4j
-public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D extends BaseDTO<ID>, ID extends Serializable, R extends BaseRepository<T, ID>> implements ApplicationService<D, ID> {
+@RequiredArgsConstructor
+public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D extends BaseDTO<ID>, ID extends Serializable, A extends BaseAssembler<T, D, ID>, S extends DomainService<T, ID>> implements ApplicationService<D, ID> {
     
-    protected final R repository;
-    protected final BaseAssembler<T, D, ID> assembler;
+    protected final S domainService;
 
-
-    private static final Path UPLOAD_DIR = Paths.get("uploads");
-
-    static {
-        // 确保上传目录存在
-        try {
-            Files.createDirectories(UPLOAD_DIR);
-        } catch (Exception e) {
-            throw new BusinessException("无法创建上传目录", e);
-        }
+    protected S getDomainService() {
+        return domainService;
     }
 
-    
-    protected AbstractApplicationService(R repository, BaseAssembler<T, D, ID> assembler) {
-        this.repository = repository;
-        this.assembler = assembler;
+    protected A getAssemblerInstance() {
+        Class<A> assemblerClass = ClassUtils.getGenericType(getClass(), 3);
+        return Mappers.getMapper(assemblerClass);
     }
-    
+
     @Override
     public Mono<D> save(D dto) {
-        T entity = assembler.toEntity(dto);
-        return repository.save(entity)
-                .map(assembler::toDTO);
+        T entity = getAssemblerInstance().toEntity(dto);
+        return domainService.save(entity).map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Mono<D> findById(ID id) {
-        return repository.findById(id)
-                .map(assembler::toDTO);
+        return domainService.findById(id).map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Flux<D> findAll() {
-        return repository.findAll()
-                .map(assembler::toDTO);
+        return domainService.findAll().map(getAssemblerInstance()::toDTO);
     }
 
     @Override
     public Flux<D> findAll(Query query) {
-        Example<T> example = QueryConverter.convertToExample(query, repository.getEntityClass());
-        Sort sort = QueryConverter.convertToSort(query, repository.getEntityClass());
-        return repository.findAll(example, sort).map(assembler::toDTO);
+        return domainService.findAll(query).map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Mono<Void> deleteById(ID id) {
-        return repository.deleteById(id);
+        return domainService.deleteById(id);
     }
     
     @Override
     public Flux<D> saveAll(Iterable<D> dtoList) {
         return Flux.fromIterable(dtoList)
-                .map(assembler::toEntity)
+                .map(getAssemblerInstance()::toEntity)
                 .collectList()
-                .flatMapMany(repository::saveAll)
-                .map(assembler::toDTO);
+                .flatMapMany(domainService::saveAll)
+                .map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Flux<D> saveBatch(Flux<D> dtoList) {
         return dtoList
-                .map(assembler::toEntity)
+                .map(getAssemblerInstance()::toEntity)
                 .collectList()
-                .flatMapMany(repository::saveAll)
-                .map(assembler::toDTO);
+                .flatMapMany(domainService::saveAll)
+                .map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Flux<D> updateBatch(Flux<D> dtoList) {
         return dtoList
-                .map(assembler::toEntity)
+                .map(getAssemblerInstance()::toEntity)
                 .collectList()
-                .flatMapMany(repository::saveAll)
-                .map(assembler::toDTO);
+                .flatMapMany(domainService::saveAll)
+                .map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Mono<Void> deleteAllById(Iterable<ID> ids) {
-        return repository.deleteAllById(ids);
+        return domainService.deleteAllById(ids);
     }
     
     @Override
     public Mono<PageResult<D>> selectPage(Query query) {
-        return repository.selectPage(TenantContext.getTenantId(), query).map(pageResult -> {
+        return domainService.selectPage(TenantContext.getTenantId(), query).map(pageResult -> {
             long total = pageResult.getTotal();
             long current = pageResult.getCurrent();
             long size = pageResult.getSize();
-            List<D> records = pageResult.getRecords().stream().map(assembler::toDTO).toList();
+            List<D> records = pageResult.getRecords().stream().map(getAssemblerInstance()::toDTO).toList();
             return PageResult.of(current, size, total, records);
         });
     }
@@ -171,10 +159,5 @@ public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D ext
             log.error("导入数据失败", e);
             return Mono.error(new BusinessException("导入数据失败"));
         }
-    }
-    
-    @Override
-    public Repository<?, ID> getRepository() {
-        return repository;
     }
 }

@@ -39,27 +39,27 @@ public class ReactiveApplicationServiceImpl extends AbstractApplicationService<A
     @Override
     public Mono<Application> getApplicationByName(String name) {
         // 实现根据应用名称获取应用的逻辑
-        return repository.findByName(name);
+        return domainService.findByName(name);
     }
     
     @Override
     public Mono<Application> getApplicationByCode(String code) {
         // 实现根据应用编码获取应用的逻辑
-        return repository.findByCode(code);
+        return domainService.findByCode(code);
     }
     
     @Override
     public Flux<Application> getAllApplications() {
         // 实现获取所有应用列表的逻辑
-        return repository.findAll();
+        return domainService.findAll();
     }
     
     @Override
     public Mono<Boolean> updateApplicationStatus(Long id, Integer status) {
         // 实现更新应用状态的逻辑
-        return repository.findById(id).flatMap(application -> {
+        return domainService.findById(id).flatMap(application -> {
             application.setStatus(status);
-            return repository.save(application);
+            return domainService.save(application);
         }).thenReturn(true).onErrorReturn(false);
     }
 }

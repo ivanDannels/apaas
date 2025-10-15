@@ -45,7 +45,7 @@ public class ReactiveResourceServiceImpl extends AbstractApplicationService<Reso
     @Override
     public Flux<Resource> getResourceByName(String name) {
         // 实现根据资源名称查询资源的逻辑
-        return repository.findByName(name);
+        return domainService.findByName(name);
     }
     
     /**
@@ -57,7 +57,7 @@ public class ReactiveResourceServiceImpl extends AbstractApplicationService<Reso
     @Override
     public Flux<Resource> getResourcesByType(Integer type) {
         // 实现根据资源类型查询资源列表的逻辑
-        return repository.findByType(type);
+        return domainService.findByType(type);
     }
     
     /**
@@ -69,7 +69,7 @@ public class ReactiveResourceServiceImpl extends AbstractApplicationService<Reso
     @Override
     public Flux<Resource> getResourcesByRoleId(Long roleId) {
         // 实现根据角色ID查询资源列表的逻辑
-        return repository.findByRoleId(roleId);
+        return domainService.findByRoleId(roleId);
     }
     
     /**
@@ -81,7 +81,7 @@ public class ReactiveResourceServiceImpl extends AbstractApplicationService<Reso
     @Override
     public Flux<Resource> getResourcesByUserId(Long userId) {
         // 实现根据用户ID查询资源列表的逻辑
-        return repository.findByUserId(userId);
+        return domainService.findByUserId(userId);
     }
     
     /**

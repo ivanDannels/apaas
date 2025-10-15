@@ -38,7 +38,7 @@ public class ReactiveSysConfigServiceImpl extends AbstractApplicationService<Sys
         // 实现分页查询逻辑
         if (query != null) {
             // 根据查询条件过滤数据
-            return repository.findAll()
+            return domainService.findAll()
                 .filter(config -> {
                     boolean match = true;
                     if (query.getName() != null && !query.getName().isEmpty()) {
@@ -63,7 +63,7 @@ public class ReactiveSysConfigServiceImpl extends AbstractApplicationService<Sys
                 .map(SysConfigAssembler.INSTANCE::convertEntityToDto);
         } else {
             // 无查询条件时分页查询
-            return repository.findAll()
+            return domainService.findAll()
                 .skip(pageable.getOffset())
                 .take(pageable.getPageSize())
                 .map(SysConfigAssembler.INSTANCE::convertEntityToDto);
@@ -73,37 +73,37 @@ public class ReactiveSysConfigServiceImpl extends AbstractApplicationService<Sys
     @Override
     public Mono<Boolean> addConfig(SysConfigDTO configDto) {
         SysConfig config = SysConfigAssembler.INSTANCE.convertDtoToEntity(configDto);
-        return repository.save(config).map(savedConfig -> true).onErrorReturn(false);
+        return domainService.save(config).map(savedConfig -> true).onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> updateConfig(SysConfigDTO configDto) {
         SysConfig config = SysConfigAssembler.INSTANCE.convertDtoToEntity(configDto);
-        return repository.save(config).map(updatedConfig -> true).onErrorReturn(false);
+        return domainService.save(config).map(updatedConfig -> true).onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> deleteConfig(Long id) {
-        return repository.deleteById(id).then(Mono.just(true)).onErrorReturn(false);
+        return domainService.deleteById(id).then(Mono.just(true)).onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> batchDeleteConfig(List<Long> ids) {
-        return Flux.fromIterable(ids).flatMap(id -> repository.deleteById(id)).then(Mono.just(true)).onErrorReturn(false);
+        return Flux.fromIterable(ids).flatMap(id -> domainService.deleteById(id)).then(Mono.just(true)).onErrorReturn(false);
     }
 
     @Override
     public Mono<Boolean> changeStatus(Long id, Integer status) {
-        return repository.findById(id).flatMap(config -> {
+        return domainService.findById(id).flatMap(config -> {
             config.setStatus(status);
             config.setUpdatedTime(LocalDateTime.now());
-            return repository.save(config);
+            return domainService.save(config);
         }).map(updatedConfig -> true).onErrorReturn(false);
     }
     
     @Override
     public Mono<SysConfigDTO> getConfigByCode(String code) {
-        return repository.findByCode(code)
+        return domainService.findByCode(code)
                 .map(SysConfigAssembler.INSTANCE::convertEntityToDto);
     }
     
@@ -117,7 +117,7 @@ public class ReactiveSysConfigServiceImpl extends AbstractApplicationService<Sys
         Flux<SysConfig> configFlux;
         if (query != null) {
             // 根据查询条件过滤数据
-            configFlux = repository.findAll()
+            configFlux = domainService.findAll()
                 .filter(config -> {
                     boolean match = true;
                     if (query.getName() != null && !query.getName().isEmpty()) {
@@ -139,7 +139,7 @@ public class ReactiveSysConfigServiceImpl extends AbstractApplicationService<Sys
                 });
         } else {
             // 无查询条件时导出所有数据
-            configFlux = repository.findAll();
+            configFlux = domainService.findAll();
         }
         
         // 这里需要实现Excel导出逻辑

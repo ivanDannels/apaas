@@ -35,11 +35,11 @@ public class TaskAnalysisServiceImpl extends AbstractApplicationService<TaskAnal
     
     @Override
     public Mono<TaskAnalysis> findByTaskName(String taskName) {
-        return repository.findByTaskName(taskName);
+        return domainService.findByTaskName(taskName);
     }
     
     @Override
     public Flux<TaskAnalysis> findByTaskId(Long taskId) {
-        return repository.findByTaskId(taskId);
+        return domainService.findByTaskId(taskId);
     }
 }

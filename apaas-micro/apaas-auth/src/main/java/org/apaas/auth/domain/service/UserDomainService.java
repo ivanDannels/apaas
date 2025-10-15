@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  *
  * @author ivan
  */
-public interface UserDomainService extends DomainService<User> {
+public interface UserDomainService extends DomainService<User, Long> {
     
     /**
      * 创建用户

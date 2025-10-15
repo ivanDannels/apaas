@@ -42,32 +42,32 @@ public class ReactiveFormFieldPermissionServiceImpl extends AbstractApplicationS
     
     @Override
     public Flux<FormFieldPermission> selectPage(Long formId, Pageable pageable) {
-        return repository.findByFormId(formId).skip((long) pageable.getPageNumber() * pageable.getPageSize()).take(pageable.getPageSize());
+        return domainService.findByFormId(formId).skip((long) pageable.getPageNumber() * pageable.getPageSize()).take(pageable.getPageSize());
     }
     
     @Override
     public Flux<FormFieldPermission> selectByFormId(Long formId) {
-        return repository.findByFormId(formId);
+        return domainService.findByFormId(formId);
     }
     
     @Override
     public Flux<FormFieldPermission> selectByFieldId(Long fieldId) {
-        return repository.findByFieldId(fieldId);
+        return domainService.findByFieldId(fieldId);
     }
     
     @Override
     public Flux<FormFieldPermission> selectByRoleId(Long roleId) {
-        return repository.findByRoleId(roleId);
+        return domainService.findByRoleId(roleId);
     }
     
     @Override
     public Flux<FormFieldPermission> selectByFormIdAndRoleId(Long formId, Long roleId) {
-        return repository.findByFormIdAndRoleId(formId, roleId);
+        return domainService.findByFormIdAndRoleId(formId, roleId);
     }
     
     @Override
     public Mono<FormFieldPermission> selectByFieldIdAndRoleId(Long fieldId, Long roleId) {
-        return repository.findByFieldIdAndRoleId(fieldId, roleId);
+        return domainService.findByFieldIdAndRoleId(fieldId, roleId);
     }
     
     @Override

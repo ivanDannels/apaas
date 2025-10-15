@@ -19,9 +19,9 @@ public class ClassUtils {
      * @param index 泛型参数位置索引（从0开始）
      * @return 指定位置的泛型参数类型，如果无法获取则返回null
      */
-    public Class<?> getGenericType(Class<?> clazz, int index) {
+    public <T> Class<T> getGenericType(Class<?> clazz, int index) {
         Class<?>[] genericTypes = getAllGenericTypes(clazz);
-        return index >= 0 && index < genericTypes.length ? genericTypes[index] : null;
+        return index >= 0 && index < genericTypes.length ? (Class<T>) genericTypes[index] : null;
     }
 
 

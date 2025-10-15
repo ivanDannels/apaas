@@ -90,7 +90,7 @@ public class ReactiveFormDefinitionServiceImpl extends AbstractApplicationServic
             // 如果设为默认版本，则更新其他版本为非默认
             Mono<FormDefinition> updateMono = Mono.just(formDefinition);
             if (formDefinition.getIsDefault()) {
-                updateMono = repository.updateIsDefaultByCode(formDefinition.getCode(), false).then(Mono.just(formDefinition));
+                updateMono = domainService.updateIsDefaultByCode(formDefinition.getCode(), false).then(Mono.just(formDefinition));
             }
             
             return updateMono.flatMap(this::save).map(saved -> true);
@@ -110,7 +110,7 @@ public class ReactiveFormDefinitionServiceImpl extends AbstractApplicationServic
     
     @Override
     public Flux<FormDefinitionDTO> getVersionsByCode(String code) {
-        return repository.findByCode(code).sort((f1, f2) -> f2.getVersion().compareTo(f1.getVersion())).map(formDefinitionAssembler::toDTO);
+        return domainService.findByCode(code).sort((f1, f2) -> f2.getVersion().compareTo(f1.getVersion())).map(formDefinitionAssembler::toDTO);
     }
     
     @Override
@@ -157,7 +157,7 @@ public class ReactiveFormDefinitionServiceImpl extends AbstractApplicationServic
      * @return 处理后的表单定义
      */
     private Mono<FormDefinition> handleVersion(FormDefinition formDefinition) {
-        return repository.findByCode(formDefinition.getCode()).collectList().map(list -> {
+        return domainService.findByCode(formDefinition.getCode()).collectList().map(list -> {
             if (list.isEmpty()) {
                 // 新表单，版本号为1
                 formDefinition.setVersion(1);

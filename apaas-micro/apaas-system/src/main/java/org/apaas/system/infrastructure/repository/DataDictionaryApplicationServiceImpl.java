@@ -79,7 +79,7 @@ public class DataDictionaryApplicationServiceImpl extends AbstractApplicationSer
     public Flux<DataDictionaryDTO> selectPage(Pageable pageable, DataDictionaryDTO query) {
         LogUtil.info(DataDictionaryApplicationServiceImpl.class, "分页查询数据字典: name={}, type={}, status={}", query.getName(), query.getType(), query.getStatus());
         // 根据查询条件构建查询
-        return repository.findByNameContainingAndTypeAndStatus(query.getName() != null ? query.getName() : "", query.getType(), query.getStatus(), pageable)
+        return domainService.findByNameContainingAndTypeAndStatus(query.getName() != null ? query.getName() : "", query.getType(), query.getStatus(), pageable)
                 .map(DataDictionaryAssembler.INSTANCE::convertAggregateToDto);
     }
     
@@ -193,7 +193,7 @@ public class DataDictionaryApplicationServiceImpl extends AbstractApplicationSer
         response.getHeaders().set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dataDictionary.xlsx");
         
         // 查询数据
-        return repository.findByNameContainingAndTypeAndStatus(query.getName() != null ? query.getName() : "", query.getType(), query.getStatus()).collectList().flatMap(dataList -> {
+        return domainService.findByNameContainingAndTypeAndStatus(query.getName() != null ? query.getName() : "", query.getType(), query.getStatus()).collectList().flatMap(dataList -> {
             try {
                 // 创建Excel工作簿
                 Workbook workbook = new XSSFWorkbook();
@@ -288,13 +288,13 @@ public class DataDictionaryApplicationServiceImpl extends AbstractApplicationSer
     @Cacheable(value = "dataDictionaries", key = "#id")
     public Mono<DataDictionaryDTO> findById(Long id) {
         LogUtil.info(DataDictionaryApplicationServiceImpl.class, "根据ID查询数据字典: id={}", id);
-        return repository.findById(id)
+        return domainService.findById(id)
                 .map(DataDictionaryAssembler.INSTANCE::convertAggregateToDto);
     }
     
     @Override
     public Mono<DataDictionaryAggregate> findById(Long id) {
-        return repository.findById(id);
+        return domainService.findById(id);
     }
     
     /**

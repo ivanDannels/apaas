@@ -46,22 +46,22 @@ public class ReactiveFormValidationRuleServiceImpl extends AbstractApplicationSe
     
     @Override
     public Mono<PageResult<FormValidationRule>> selectPage(Long fieldId, Integer pageNum, Integer pageSize) {
-        return repository.findByFieldIdAndDeletedFalse(fieldId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort"))).collectList().zipWith(repository.countByFieldIdAndDeletedFalse(fieldId)).map(tuple -> new PageResult<>(pageNum, pageSize, tuple.getT2(), tuple.getT1()));
+        return domainService.findByFieldIdAndDeletedFalse(fieldId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort"))).collectList().zipWith(domainService.countByFieldIdAndDeletedFalse(fieldId)).map(tuple -> new PageResult<>(pageNum, pageSize, tuple.getT2(), tuple.getT1()));
     }
     
     @Override
     public Flux<FormValidationRule> selectByFieldId(Long fieldId) {
-        return repository.findByFieldId(fieldId).sort((r1, r2) -> r1.getSort() != null && r2.getSort() != null ? r1.getSort().compareTo(r2.getSort()) : 0);
+        return domainService.findByFieldId(fieldId).sort((r1, r2) -> r1.getSort() != null && r2.getSort() != null ? r1.getSort().compareTo(r2.getSort()) : 0);
     }
     
     @Override
     public Flux<FormValidationRule> selectByFieldIdAndType(Long fieldId, Integer type) {
-        return repository.findByFieldIdAndType(fieldId, type);
+        return domainService.findByFieldIdAndType(fieldId, type);
     }
     
     @Override
     public Flux<FormValidationRule> selectByFieldIds(List<Long> fieldIds) {
-        return repository.findByFieldIdIn(fieldIds);
+        return domainService.findByFieldIdIn(fieldIds);
     }
     
     @Override

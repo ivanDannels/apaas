@@ -40,102 +40,76 @@ import reactor.core.publisher.Mono;
 @Service
 public class ReactiveUserServiceImpl extends AbstractApplicationService<User, UserDTO, Long, UserRepository> implements ReactiveUserService {
     
-    private final UserApplicationService userApplicationService;
+    private final UserRepository repository;
 
     private final UserAssembler assembler;
     
-    public ReactiveUserServiceImpl(UserApplicationService userApplicationService, UserAssembler assembler, UserRepository repository) {
-        super(userApplicationService,  assembler);
+    public ReactiveUserServiceImpl(UserRepository repository, UserAssembler assembler) {
+        super(repository,  assembler);
+        this.repository = repository;
         this.assembler = assembler;
-        this.userApplicationService = userApplicationService;
     }
     
     @Override
     public Mono<User> getUserByUsername(String username) {
-        return userApplicationService.getUserByUsername(username);
+        return repository.getUserByUsername(username);
     }
     
     @Override
     public Mono<User> addUser(User user) {
-        return userApplicationService.addUser(user);
+        return repository.addUser(user);
     }
     
     @Override
     public Mono<User> updateUser(User user) {
-        return userApplicationService.updateUser(user);
+        return repository.updateUser(user);
     }
     
     @Override
     public Mono<Void> deleteUser(Long id) {
-        return userApplicationService.deleteUser(id).then();
+        return repository.deleteUser(id).then();
     }
     
     @Override
     public Mono<Void> resetPassword(Long id, String newPassword) {
-        return userApplicationService.resetPassword(id, newPassword).then();
+        return repository.resetPassword(id, newPassword).then();
     }
     
     @Override
     public Mono<Void> changeStatus(Long id, Integer status) {
-        return userApplicationService.changeStatus(id, status).then();
+        return repository.changeStatus(id, status).then();
     }
     
     @Override
     public Flux<String> getUserPermissions(Long userId) {
-        return userApplicationService.getUserPermissions(userId);
+        return repository.getUserPermissions(userId);
     }
     
     @Override
     public Mono<Void> recordLoginInfo(Long userId, String loginIp) {
-        return userApplicationService.recordLoginInfo(userId, loginIp);
+        return repository.recordLoginInfo(userId, loginIp);
     }
     
     @Override
     public Mono<User> login(String username, String password) {
-        return userApplicationService.login(username, password);
+        return repository.login(username, password);
     }
     
     @Override
     public Mono<Boolean> updatePassword(String oldPassword, String newPassword) {
-        return userApplicationService.updatePassword(oldPassword, newPassword);
+        return repository.updatePassword(oldPassword, newPassword);
     }
     
     @Override
     public Mono<User> getCurrentUser() {
-        return userApplicationService.getCurrentUser();
+        return repository.getCurrentUser();
     }
     
     @Override
     public Mono<Void> logout(Long userId) {
-        return userApplicationService.logout(userId).then();
+        return repository.logout(userId).then();
     }
-    
-    /**
-     * 将UserAggregate转换为User
-     */
-    private User convertToUser(UserAggregate userAggregate) {
-        if (userAggregate == null) {
-            return null;
-        }
-        
-        return User.builder().id(userAggregate.getId()).username(userAggregate.getUsername()).password(userAggregate.getPassword()).nickname(userAggregate.getNickname()).phone(userAggregate.getPhone()).email(userAggregate.getEmail()).avatar(userAggregate.getAvatar()).gender(userAggregate.getGender()).status(userAggregate.getStatus()).loginIp(userAggregate.getLoginIp()).loginDate(userAggregate.getLoginDate()).logoutDate(userAggregate.getLogoutDate()).deleted(userAggregate.getDeleted()).createdTime(userAggregate.getCreatedTime()).updatedTime(userAggregate.getUpdatedTime())
-                .creator(userAggregate.getCreator()).updater(userAggregate.getUpdater()).tenantId(userAggregate.getTenantId()).build();
-    }
-    
 
-    
-    @Override
-    public Mono<PageResult<User>> selectPage(Query query) {
-        return userApplicationService.selectPage(query).map(pageResult -> {
-            PageResult<User> userPageResult = new PageResult<>();
-            userPageResult.setRecords(pageResult.getRecords().stream().map(this::convertToUser).toList());
-            userPageResult.setTotal(pageResult.getTotal());
-            userPageResult.setCurrent(pageResult.getCurrent());
-            userPageResult.setSize(pageResult.getSize());
-            return userPageResult;
-        });
-    }
-    
     /**
      * 将UserAggregate转换为User
      */

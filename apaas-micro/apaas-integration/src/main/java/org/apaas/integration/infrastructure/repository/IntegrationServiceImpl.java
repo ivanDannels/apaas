@@ -41,41 +41,41 @@ public class IntegrationServiceImpl extends AbstractApplicationService<Integrati
     
     @Override
     public Flux<IntegrationDTO> findAll() {
-        return repository.findAll().map(integrationAssembler::toDTO);
+        return domainService.findAll().map(integrationAssembler::toDTO);
     }
     
     @Override
     public Mono<IntegrationDTO> findById(Long id) {
-        return repository.findById(id).map(integrationAssembler::toDTO);
+        return domainService.findById(id).map(integrationAssembler::toDTO);
     }
     
     @Override
     public Mono<IntegrationDTO> save(IntegrationDTO integrationDTO) {
         IntegrationEntity entity = integrationAssembler.toEntity(integrationDTO);
         entity.setUpdatedTime(LocalDateTime.now());
-        return repository.save(entity).map(integrationAssembler::toDTO);
+        return domainService.save(entity).map(integrationAssembler::toDTO);
     }
     
     @Override
     public Mono<Void> deleteById(Long id) {
-        return repository.deleteById(id);
+        return domainService.deleteById(id);
     }
     
     @Override
     public Mono<Void> enableIntegration(Long id) {
-        return repository.findById(id).flatMap(entity -> {
+        return domainService.findById(id).flatMap(entity -> {
             entity.setStatus(0); // 0-启用
             entity.setUpdatedTime(LocalDateTime.now());
-            return repository.save(entity);
+            return domainService.save(entity);
         }).then();
     }
     
     @Override
     public Mono<Void> disableIntegration(Long id) {
-        return repository.findById(id).flatMap(entity -> {
+        return domainService.findById(id).flatMap(entity -> {
             entity.setStatus(1); // 1-禁用
             entity.setUpdatedTime(LocalDateTime.now());
-            return repository.save(entity);
+            return domainService.save(entity);
         }).then();
     }
     
@@ -83,7 +83,7 @@ public class IntegrationServiceImpl extends AbstractApplicationService<Integrati
     public Mono<Boolean> testConnection(Long id) {
         // 这里应该实现具体的连接测试逻辑
         // 根据集成类型进行不同的连接测试
-        return repository.findById(id).flatMap(entity -> {
+        return domainService.findById(id).flatMap(entity -> {
             // 模拟连接测试过程
             String type = entity.getType();
             String config = entity.getConfig();
@@ -107,7 +107,7 @@ public class IntegrationServiceImpl extends AbstractApplicationService<Integrati
     
     @Override
     public Flux<IntegrationDTO> findByType(String type) {
-        return repository.findByType(type).map(integrationAssembler::toDTO);
+        return domainService.findByType(type).map(integrationAssembler::toDTO);
     }
     
     /**

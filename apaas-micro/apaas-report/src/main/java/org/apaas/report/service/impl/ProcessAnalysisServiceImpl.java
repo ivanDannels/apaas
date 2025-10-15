@@ -38,11 +38,11 @@ public class ProcessAnalysisServiceImpl extends AbstractApplicationService<Proce
     
     @Override
     public Mono<ProcessAnalysis> findByProcessName(String processName) {
-        return repository.findByProcessName(processName);
+        return domainService.findByProcessName(processName);
     }
     
     @Override
     public Flux<ProcessAnalysis> findByProcessId(Long processId) {
-        return repository.findByProcessId(processId);
+        return domainService.findByProcessId(processId);
     }
 }

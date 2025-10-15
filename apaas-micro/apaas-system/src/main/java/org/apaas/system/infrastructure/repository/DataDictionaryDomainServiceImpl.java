@@ -21,9 +21,11 @@ package org.apaas.system.infrastructure.repository;
 import lombok.extern.slf4j.Slf4j;
 import org.apaas.domain.service.AbstractDomainService;
 import org.apaas.domain.specification.Specification;
+import org.apaas.system.domain.model.DataDictionary;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import org.apaas.system.domain.repository.DataDictionaryAggregateRepository;
 import org.apaas.system.application.service.DataDictionaryDomainService;
+import org.apaas.system.domain.repository.DataDictionaryRepository;
 import org.apaas.system.domain.specification.DataDictionarySpecification;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -36,9 +38,9 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Service
-public class DataDictionaryDomainServiceImpl extends AbstractDomainService<DataDictionaryAggregate, Long, DataDictionaryAggregateRepository> implements DataDictionaryDomainService {
+public class DataDictionaryDomainServiceImpl extends AbstractDomainService<DataDictionary, Long, DataDictionaryRepository> implements DataDictionaryDomainService {
     
-    public DataDictionaryDomainServiceImpl(DataDictionaryAggregateRepository repository) {
+    public DataDictionaryDomainServiceImpl(DataDictionaryRepository repository) {
         super(repository);
     }
     
@@ -51,10 +53,8 @@ public class DataDictionaryDomainServiceImpl extends AbstractDomainService<DataD
     @Override
     public Mono<DataDictionaryAggregate> createDictionary(DataDictionaryAggregate dictionary) {
         log.info("创建数据字典: name={}", dictionary.getName());
-        
         // 定义创建数据字典的业务规范
         Specification<DataDictionaryAggregate> createSpec = DataDictionarySpecification.nonEmptyName().and(DataDictionarySpecification.validCodeFormat()).and(DataDictionarySpecification.validType());
-        
         // 验证并保存
         return validateAndSave(dictionary, createSpec).doOnSuccess(saved -> log.info("数据字典创建成功: id={}, name={}", saved.getId(), saved.getName())).doOnError(error -> log.error("数据字典创建失败: name={}, error={}", dictionary.getName(), error.getMessage()));
     }
@@ -116,16 +116,5 @@ public class DataDictionaryDomainServiceImpl extends AbstractDomainService<DataD
             log.info("数据字典状态修改成功: id={}, name={}, status={}", updated.getId(), updated.getName(), statusDesc);
         }).doOnError(error -> log.error("数据字典状态修改失败: id={}, error={}", dictionaryId, error.getMessage()));
     }
-    
-    /**
-     * 执行领域逻辑
-     *
-     * @param domainObject 领域对象
-     * @return 处理结果
-     */
-    @Override
-    public Mono<DataDictionaryAggregate> execute(DataDictionaryAggregate domainObject) {
-        // 默认实现，保存数据字典
-        return repository.save(domainObject);
-    }
+
 }

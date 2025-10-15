@@ -39,13 +39,13 @@ public class ReactiveOrganizationServiceImpl extends AbstractApplicationService<
     @Override
     public Flux<Organization> getOrganizationTree(Long parentId) {
         // 实现获取组织机构树的逻辑
-        return repository.findById(parentId).flux();
+        return domainService.findById(parentId).flux();
     }
     
     @Override
     public Flux<Organization> getOrganizationsByUserId(Long userId) {
         // 实现根据用户ID获取组织机构列表的逻辑
-        return repository.findById(userId).flux();
+        return domainService.findById(userId).flux();
     }
     
     @Override

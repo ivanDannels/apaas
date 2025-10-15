@@ -18,19 +18,43 @@
  */
 package org.apaas.domain.service;
 
+import io.lettuce.core.Value;
+import org.apaas.core.query.PageResult;
+import org.apaas.core.query.Query;
+import org.apaas.domain.entity.BaseEntity;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 领域服务接口
  * @author ivan
  * @param <T> 领域对象类型
+ * @param <ID> 领域对象标识类型
  */
-public interface DomainService<T> {
+public interface DomainService<T extends BaseEntity<ID>, ID extends Serializable> {
     
     /**
-     * 执行领域逻辑
-     * @param domainObject 领域对象
+     * 保存
+     * @param entity 领域对象
      * @return 处理结果
      */
-    Mono<T> execute(T domainObject);
+    Mono<T> save(T entity);
+
+    Mono<T> findById(ID id);
+
+    Flux<T> findAll();
+
+    Flux<T> findAll(Query query);
+
+    Mono<Void> deleteById(ID id);
+
+    Flux<T> saveAll(List<T> ts);
+
+    Mono<Void> deleteAllById(Iterable<ID> ids);
+
+    Mono<PageResult<T>> selectPage(Query query);
 }

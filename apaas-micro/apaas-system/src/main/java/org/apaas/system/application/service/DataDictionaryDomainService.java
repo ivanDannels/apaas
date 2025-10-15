@@ -19,6 +19,7 @@
 package org.apaas.system.application.service;
 
 import org.apaas.domain.service.DomainService;
+import org.apaas.system.domain.model.DataDictionary;
 import org.apaas.system.domain.model.DataDictionaryAggregate;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +29,7 @@ import reactor.core.publisher.Mono;
  *
  * @author ivan
  */
-public interface DataDictionaryDomainService extends DomainService<DataDictionaryAggregate> {
+public interface DataDictionaryDomainService extends DomainService<DataDictionary, Long> {
     
     /**
      * 创建数据字典

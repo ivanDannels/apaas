@@ -44,27 +44,27 @@ public class ReactiveFormDynamicRuleServiceImpl extends AbstractApplicationServi
     
     @Override
     public Mono<PageResult<FormDynamicRule>> selectPage(Long formId, Integer pageNum, Integer pageSize) {
-        return repository.findByFormIdAndDeletedFalse(formId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort"))).collectList().zipWith(repository.countByFormIdAndDeletedFalse(formId)).map(tuple -> new PageResult<>(pageNum, pageSize, tuple.getT2(), tuple.getT1()));
+        return domainService.findByFormIdAndDeletedFalse(formId, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC, "sort"))).collectList().zipWith(domainService.countByFormIdAndDeletedFalse(formId)).map(tuple -> new PageResult<>(pageNum, pageSize, tuple.getT2(), tuple.getT1()));
     }
     
     @Override
     public Flux<FormDynamicRule> selectByFormId(Long formId) {
-        return repository.findByFormId(formId).sort((r1, r2) -> r1.getSort() != null && r2.getSort() != null ? r1.getSort().compareTo(r2.getSort()) : 0);
+        return domainService.findByFormId(formId).sort((r1, r2) -> r1.getSort() != null && r2.getSort() != null ? r1.getSort().compareTo(r2.getSort()) : 0);
     }
     
     @Override
     public Flux<FormDynamicRule> selectByFormIdAndType(Long formId, Integer type) {
-        return repository.findByFormIdAndType(formId, type);
+        return domainService.findByFormIdAndType(formId, type);
     }
     
     @Override
     public Flux<FormDynamicRule> selectByTargetFieldId(Long targetFieldId) {
-        return repository.findByTargetFieldId(targetFieldId);
+        return domainService.findByTargetFieldId(targetFieldId);
     }
     
     @Override
     public Flux<FormDynamicRule> selectByTargetFieldIdAndType(Long targetFieldId, Integer type) {
-        return repository.findByTargetFieldIdAndType(targetFieldId, type);
+        return domainService.findByTargetFieldIdAndType(targetFieldId, type);
     }
     
     @Override

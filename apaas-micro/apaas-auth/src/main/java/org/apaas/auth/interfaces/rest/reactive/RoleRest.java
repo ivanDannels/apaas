@@ -21,6 +21,7 @@ package org.apaas.auth.interfaces.rest.reactive;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apaas.auth.application.dto.RoleDTO;
 import org.apaas.auth.domain.entity.Role;
 import org.apaas.auth.domain.service.reactive.ReactiveRoleService;
 import org.apaas.core.query.Query;
@@ -37,7 +38,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1/reactive/roles")
 @Tag(name = "响应式角色管理", description = "响应式角色相关操作")
-public class RoleRest extends BaseRest<Role, Long, ReactiveRoleService> {
+public class RoleRest extends BaseRest<RoleDTO, Long, ReactiveRoleService> {
     
     public RoleRest(ReactiveRoleService service) {
         super(service);

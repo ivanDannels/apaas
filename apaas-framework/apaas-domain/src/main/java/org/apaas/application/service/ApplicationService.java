@@ -21,6 +21,7 @@ package org.apaas.application.service;
 import org.apaas.application.dto.BaseDTO;
 import org.apaas.core.query.PageResult;
 import org.apaas.core.query.Query;
+import org.apaas.domain.service.DomainService;
 import org.apaas.utils.ClassUtils;
 import org.springframework.data.repository.Repository;
 import org.springframework.http.codec.multipart.FilePart;
@@ -133,15 +134,8 @@ public interface ApplicationService<D extends BaseDTO<ID>, ID extends Serializab
      * @return 导入结果
      */
     Mono<Void> importData(FilePart file);
-    
-    /**
-     * 获取Repository
-     *
-     * @return Repository对象
-     */
-    Repository<?, ID> getRepository();
 
     default Class<D> getDtoClass() {
-        return (Class<D>) ClassUtils.getGenericType(getClass(), 0);
+        return ClassUtils.getGenericType(getClass(), 0);
     }
 }

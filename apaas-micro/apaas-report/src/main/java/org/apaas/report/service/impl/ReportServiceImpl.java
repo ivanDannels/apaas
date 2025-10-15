@@ -35,11 +35,11 @@ public class ReportServiceImpl extends AbstractApplicationService<Report, Long, 
     
     @Override
     public Mono<Report> findByName(String name) {
-        return repository.findByName(name);
+        return domainService.findByName(name);
     }
     
     @Override
     public Flux<Report> findByType(String type) {
-        return repository.findByType(type);
+        return domainService.findByType(type);
     }
 }

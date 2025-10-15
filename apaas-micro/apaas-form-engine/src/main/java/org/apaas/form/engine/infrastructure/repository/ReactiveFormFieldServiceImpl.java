@@ -42,22 +42,22 @@ public class ReactiveFormFieldServiceImpl extends AbstractApplicationService<For
     
     @Override
     public Flux<FormField> selectPage(Long formId, Pageable pageable) {
-        return repository.findByFormId(formId).sort((f1, f2) -> f1.getSort() != null && f2.getSort() != null ? f1.getSort().compareTo(f2.getSort()) : 0).skip((long) pageable.getPageNumber() * pageable.getPageSize()).take(pageable.getPageSize());
+        return domainService.findByFormId(formId).sort((f1, f2) -> f1.getSort() != null && f2.getSort() != null ? f1.getSort().compareTo(f2.getSort()) : 0).skip((long) pageable.getPageNumber() * pageable.getPageSize()).take(pageable.getPageSize());
     }
     
     @Override
     public Flux<FormField> selectByFormId(Long formId) {
-        return repository.findByFormId(formId).sort((f1, f2) -> f1.getSort() != null && f2.getSort() != null ? f1.getSort().compareTo(f2.getSort()) : 0);
+        return domainService.findByFormId(formId).sort((f1, f2) -> f1.getSort() != null && f2.getSort() != null ? f1.getSort().compareTo(f2.getSort()) : 0);
     }
     
     @Override
     public Flux<FormField> selectByFormIdAndType(Long formId, Integer type) {
-        return repository.findByFormIdAndType(formId, type);
+        return domainService.findByFormIdAndType(formId, type);
     }
     
     @Override
     public Flux<FormField> selectByFormIdAndGroupName(Long formId, String groupName) {
-        return repository.findByFormIdAndGroupName(formId, groupName);
+        return domainService.findByFormIdAndGroupName(formId, groupName);
     }
     
     public Mono<FormField> create(FormField formField) {
