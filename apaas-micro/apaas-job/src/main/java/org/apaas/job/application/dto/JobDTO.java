@@ -1,11 +1,15 @@
 package org.apaas.job.application.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apaas.application.dto.BaseDTO;
 import java.time.LocalDateTime;
 
+/**
+ * @author ivan
+ */
+@EqualsAndHashCode(callSuper = true)
 @Data
-// 修改类声明，继承BaseDTO
 public class JobDTO extends BaseDTO<Long> {
     private String name;
     private String description;
@@ -13,10 +17,4 @@ public class JobDTO extends BaseDTO<Long> {
     private Integer status;
     private String parameters;
     private LocalDateTime lastTriggerTime;
-    // 移除已经在BaseDTO中定义的字段
-    // private Long id;
-    // private String createdBy;
-    // private LocalDateTime createdTime;
-    // private String updatedBy;
-    // private LocalDateTime updatedTime;
 }

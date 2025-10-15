@@ -34,21 +34,5 @@ import java.util.List;
  */
 @Mapper
 public interface ApiDefinitionAssembler extends BaseAssembler<ApiDefinition, ApiDefinitionDTO, Long> {
-    
-    ApiDefinitionAssembler INSTANCE = Mappers.getMapper(ApiDefinitionAssembler.class);
-    
-    /**
-     * 将API定义DTO转换为API定义实体
-     */
-    ApiDefinition convertDtoToEntity(ApiDefinitionDTO apiDefinitionDTO);
-    
-    /**
-     * 将API定义实体转换为API定义DTO
-     */
-    ApiDefinitionDTO convertEntityToDto(ApiDefinition apiDefinition);
-    
-    /**
-     * 将API定义实体列表转换为API定义DTO列表
-     */
-    List<ApiDefinitionDTO> convertEntityListToDtoList(List<ApiDefinition> apiDefinitionList);
+
 }
