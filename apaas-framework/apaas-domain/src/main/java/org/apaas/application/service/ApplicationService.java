@@ -63,7 +63,7 @@ public interface ApplicationService<D extends BaseDTO<ID>, ID extends Serializab
      * @return DTO对象列表
      */
     Flux<D> findAll();
-
+    
     /**
      * 分页查询
      *
@@ -134,7 +134,7 @@ public interface ApplicationService<D extends BaseDTO<ID>, ID extends Serializab
      * @return 导入结果
      */
     Mono<Void> importData(FilePart file);
-
+    
     default Class<D> getDtoClass() {
         return ClassUtils.getGenericType(getClass(), 0);
     }

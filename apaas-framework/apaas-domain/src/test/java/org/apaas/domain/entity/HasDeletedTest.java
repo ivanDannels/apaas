@@ -16,38 +16,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.event;
+package org.apaas.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * 用户事件类
+ * HasDeleted接口测试类
  * @author ivan
  */
-@Data
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class UserEvent extends BaseEvent {
+class HasDeletedTest {
+    
+    @Test
+    void testHasDeletedInterface() {
+        // 创建一个实现HasDeleted接口的测试类
+        TestHasDeletedEntity entity = new TestHasDeletedEntity();
+        
+        // 测试默认值
+        assertNull(entity.getDeleted());
+        
+        // 设置值并验证
+        Integer deletedValue = 1;
+        entity.setDeleted(deletedValue);
+        assertEquals(deletedValue, entity.getDeleted());
+    }
     
     /**
-     * 用户ID
+     * 测试用的实现类
      */
-    private Long userId;
-    
-    /**
-     * 用户名
-     */
-    private String username;
-    
-    /**
-     * 操作类型
-     */
-    private String operationType;
-    
+    static class TestHasDeletedEntity implements HasDeleted {
+        
+        private Integer deleted;
+        
+        public Integer getDeleted() {
+            return deleted;
+        }
+        
+        public void setDeleted(Integer deleted) {
+            this.deleted = deleted;
+        }
+    }
 }

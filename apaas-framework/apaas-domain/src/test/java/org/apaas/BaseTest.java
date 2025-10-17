@@ -16,39 +16,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.exception;
+package org.apaas;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * 业务异常类
+ * 测试基类
  * @author ivan
  */
-@Setter
-@Getter
-public class BusinessException extends RuntimeException {
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
+@SpringBootTest
+public abstract class BaseTest {
     
-    private int code;
-    
-    public BusinessException(String message) {
-        super(message);
-        this.code = 500;
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
-    
-    public BusinessException(int code, String message) {
-        super(message);
-        this.code = code;
-    }
-    
-    public BusinessException(String message, Throwable cause) {
-        super(message, cause);
-        this.code = 500;
-    }
-    
-    public BusinessException(int code, String message, Throwable cause) {
-        super(message, cause);
-        this.code = code;
-    }
-    
 }

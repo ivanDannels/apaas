@@ -79,12 +79,12 @@ public class QueryConverter {
     public static <T> Example<T> convertToExample(Query query, Class<T> entityClass) {
         return Example.of(convertToEntity(query, entityClass));
     }
-
+    
     public static <T> Sort convertToSort(Query query, Class<T> entityClass) {
         List<Sort.Order> orders = Arrays.stream(query.getSorts()).map(order -> Sort.Order.by(getColumnByFieldName(entityClass, order.getField())).with(order.getDirection() == Direction.ASC ? Sort.Direction.ASC : Sort.Direction.DESC)).toList();
         return Sort.by(orders);
     }
-
+    
     public static <T> Criteria convertToCriteria(Query query, Class<T> entityClass) {
         Criteria criteria = Criteria.empty();
         
@@ -120,7 +120,7 @@ public class QueryConverter {
         String columnName = getColumnByFieldName(entityClass, condition.getField());
         Object value = condition.getValue();
         Operator.Comparison comparison = condition.getComparison();
-
+        
         return switch (comparison) {
             case NEQ -> Criteria.where(columnName).not(value);
             case GT -> Criteria.where(columnName).greaterThan(value);

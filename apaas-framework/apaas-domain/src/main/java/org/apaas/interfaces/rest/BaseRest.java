@@ -22,6 +22,7 @@ import cn.idev.excel.FastExcel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apaas.core.annotation.Log;
 import org.apaas.application.dto.BaseDTO;
 import org.apaas.application.service.ApplicationService;
@@ -37,6 +38,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +50,7 @@ import java.util.Objects;
  * @param <ID> 主键类型
  * @param <S> 服务类型
  */
+@Slf4j
 @RequiredArgsConstructor
 public abstract class BaseRest<D extends BaseDTO<ID>, ID extends Serializable, S extends ApplicationService<D, ID>> {
     
@@ -167,11 +170,15 @@ public abstract class BaseRest<D extends BaseDTO<ID>, ID extends Serializable, S
         }
         return service.importData(file);
     }
-
+    
     private Resource exportToResource(List<D> data) {
         // 5. 转换为字节数组
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        FastExcel.write(outputStream, service.getDtoClass()).sheet().doWrite(data);
-        return new ByteArrayResource(outputStream.toByteArray());
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            FastExcel.write(outputStream, service.getDtoClass()).sheet().doWrite(data);
+            return new ByteArrayResource(outputStream.toByteArray());
+        } catch (IOException e) {
+            log.error("导出数据失败", e);
+            throw new BusinessException("导出数据失败", e);
+        }
     }
 }

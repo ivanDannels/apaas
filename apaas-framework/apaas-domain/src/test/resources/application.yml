@@ -1,5 +1,7 @@
 spring:
   cloud:
+    discovery:
+      enabled: false
     config:
       enabled: false
   main:
@@ -15,10 +17,10 @@ spring:
     init:
       mode: always
   datasource:
-    url: jdbc:postgresql://10.100.20.61:5432/apaas
-    username: postgres
-    password: Postgresql@9527$
-    driver-class-name: org.postgresql.Driver
+    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
     hikari:
       connection-timeout: 20000
       maximum-pool-size: 20

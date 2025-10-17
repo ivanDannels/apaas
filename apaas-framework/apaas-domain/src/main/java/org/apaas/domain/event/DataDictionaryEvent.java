@@ -18,8 +18,10 @@
  */
 package org.apaas.domain.event;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -28,6 +30,8 @@ import lombok.experimental.SuperBuilder;
  */
 @Data
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class DataDictionaryEvent extends BaseEvent {
     
@@ -45,15 +49,4 @@ public class DataDictionaryEvent extends BaseEvent {
      * 操作类型
      */
     private String operationType;
-    
-    public DataDictionaryEvent() {
-        super();
-    }
-    
-    public DataDictionaryEvent(String eventType, Long dataDictionaryId, String dataDictionaryName, String operationType, String description) {
-        super(eventType, "data-dictionary-service", description);
-        this.dataDictionaryId = dataDictionaryId;
-        this.dataDictionaryName = dataDictionaryName;
-        this.operationType = operationType;
-    }
 }

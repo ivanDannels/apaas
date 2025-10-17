@@ -16,39 +16,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.exception;
+package org.apaas.domain.event;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-/**
- * 业务异常类
- * @author ivan
- */
-@Setter
-@Getter
-public class BusinessException extends RuntimeException {
+@Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class TestBaseEvent extends BaseEvent {
     
-    private int code;
-    
-    public BusinessException(String message) {
-        super(message);
-        this.code = 500;
-    }
-    
-    public BusinessException(int code, String message) {
-        super(message);
-        this.code = code;
-    }
-    
-    public BusinessException(String message, Throwable cause) {
-        super(message, cause);
-        this.code = 500;
-    }
-    
-    public BusinessException(int code, String message, Throwable cause) {
-        super(message, cause);
-        this.code = code;
-    }
+    private String testField;
+    private Integer testField2;
     
 }

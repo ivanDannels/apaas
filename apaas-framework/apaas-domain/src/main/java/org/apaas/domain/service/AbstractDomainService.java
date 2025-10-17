@@ -52,7 +52,7 @@ public abstract class AbstractDomainService<T extends BaseEntity<ID>, ID extends
     
     protected final R repository;
     protected final R2dbcEntityTemplate r2dbcEntityTemplate;
-
+    
     /**
      * 根据规范检查聚合根是否满足业务规则
      *
@@ -79,7 +79,7 @@ public abstract class AbstractDomainService<T extends BaseEntity<ID>, ID extends
             return repository.save(aggregate);
         });
     }
-
+    
     /**
      * 保存
      *
@@ -90,12 +90,12 @@ public abstract class AbstractDomainService<T extends BaseEntity<ID>, ID extends
     public Mono<T> save(T entity) {
         return repository.save(entity);
     }
-
+    
     @Override
     public Mono<T> findById(ID id) {
         return repository.findById(id);
     }
-
+    
     /**
      * @return 查询结果
      */
@@ -103,7 +103,7 @@ public abstract class AbstractDomainService<T extends BaseEntity<ID>, ID extends
     public Flux<T> findAll() {
         return repository.findAll();
     }
-
+    
     /**
      * @param query 查询条件
      * @return 查询结果
@@ -114,7 +114,7 @@ public abstract class AbstractDomainService<T extends BaseEntity<ID>, ID extends
         Sort sort = org.apaas.infrastructure.convert.QueryConverter.convertToSort(query, repository.getEntityClass());
         return repository.findAll(example, sort);
     }
-
+    
     /**
      * @param id 主键ID
      * @return 删除结果
@@ -123,7 +123,7 @@ public abstract class AbstractDomainService<T extends BaseEntity<ID>, ID extends
     public Mono<Void> deleteById(ID id) {
         return repository.deleteById(id);
     }
-
+    
     /**
      * @param ts 领域对象列表
      * @return 查询结果
@@ -140,7 +140,7 @@ public abstract class AbstractDomainService<T extends BaseEntity<ID>, ID extends
     public Mono<Void> deleteAllById(Iterable<ID> ids) {
         return repository.deleteAllById(ids);
     }
-
+    
     /**
      * @param query 查询条件
      * @return 查询结果

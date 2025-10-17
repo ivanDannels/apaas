@@ -16,45 +16,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.service;
+package org.apaas.domain.repository;
 
-import io.lettuce.core.Value;
-import org.apaas.core.query.PageResult;
-import org.apaas.core.query.Query;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.apaas.domain.entity.BaseEntity;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.junit.jupiter.api.Test;
+import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * 领域服务接口
+ * BaseRepository接口测试类
  * @author ivan
- * @param <T> 领域对象类型
- * @param <ID> 领域对象标识类型
  */
-public interface DomainService<T extends BaseEntity<ID>, ID extends Serializable> {
+class BaseRepositoryTest {
+    
+    @Test
+    void testBaseRepositoryInterfaceExists() {
+        assertNotNull(BaseRepository.class);
+    }
     
     /**
-     * 保存
-     * @param entity 领域对象
-     * @return 处理结果
+     * 测试用的实体类
      */
-    Mono<T> save(T entity);
+    @Data
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode(callSuper = true)
+    static class TestEntity extends BaseEntity<Long> {
+        
+        private String name;
+    }
     
-    Mono<T> findById(ID id);
-    
-    Flux<T> findAll();
-    
-    Flux<T> findAll(Query query);
-    
-    Mono<Void> deleteById(ID id);
-    
-    Flux<T> saveAll(List<T> ts);
-    
-    Mono<Void> deleteAllById(Iterable<ID> ids);
-    
-    Mono<PageResult<T>> selectPage(Query query);
+    /**
+     * 测试用的BaseRepository实现类（空实现，仅用于验证接口定义）
+     */
+    @Repository
+    interface TestBaseRepository extends BaseRepository<TestEntity, Long> {
+        
+    }
 }

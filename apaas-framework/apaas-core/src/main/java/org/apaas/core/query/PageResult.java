@@ -77,7 +77,7 @@ public class PageResult<T> implements Serializable {
         this.size = size;
         this.total = total;
         this.records = records;
-        if (size != 0) {
+        if (size > 0) {
             pages = total % size == 0 ? total / size : total / size + 1;
         }
     }

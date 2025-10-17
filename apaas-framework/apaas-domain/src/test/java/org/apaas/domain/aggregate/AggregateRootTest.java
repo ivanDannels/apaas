@@ -16,39 +16,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apaas.domain.exception;
+package org.apaas.domain.aggregate;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * 业务异常类
+ * AggregateRoot接口测试类
  * @author ivan
  */
-@Setter
-@Getter
-public class BusinessException extends RuntimeException {
+class AggregateRootTest {
     
-    private int code;
-    
-    public BusinessException(String message) {
-        super(message);
-        this.code = 500;
+    @Test
+    void testAggregateRootInterfaceExists() {
+        assertNotNull(AggregateRoot.class);
     }
     
-    public BusinessException(int code, String message) {
-        super(message);
-        this.code = code;
+    /**
+     * 测试用的聚合根实现类
+     */
+    static class TestAggregateRoot implements AggregateRoot<Long> {
+        
+        private Long id;
+        
+        @Override
+        public Long getId() {
+            return id;
+        }
+        
+        @Override
+        public void setId(Long id) {
+            this.id = id;
+        }
     }
     
-    public BusinessException(String message, Throwable cause) {
-        super(message, cause);
-        this.code = 500;
+    @Test
+    void testAggregateRootGettersAndSetters() {
+        // Given
+        TestAggregateRoot aggregateRoot = new TestAggregateRoot();
+        Long id = 1L;
+        
+        // When
+        aggregateRoot.setId(id);
+        
+        // Then
+        assertEquals(id, aggregateRoot.getId());
     }
-    
-    public BusinessException(int code, String message, Throwable cause) {
-        super(message, cause);
-        this.code = code;
-    }
-    
 }

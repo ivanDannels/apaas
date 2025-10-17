@@ -18,8 +18,10 @@
  */
 package org.apaas.domain.event;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -31,6 +33,8 @@ import java.time.LocalDateTime;
 @Data
 @SuperBuilder
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseEvent {
     
     /**
@@ -52,15 +56,4 @@ public abstract class BaseEvent {
      * 事件描述
      */
     private String description;
-    
-    public BaseEvent() {
-        this.eventTime = LocalDateTime.now();
-    }
-    
-    public BaseEvent(String eventType, String source, String description) {
-        this();
-        this.eventType = eventType;
-        this.source = source;
-        this.description = description;
-    }
 }

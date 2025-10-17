@@ -63,16 +63,16 @@ import java.util.List;
 public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D extends BaseDTO<ID>, ID extends Serializable, A extends BaseAssembler<T, D, ID>, S extends DomainService<T, ID>> implements ApplicationService<D, ID> {
     
     protected final S domainService;
-
+    
     protected S getDomainService() {
         return domainService;
     }
-
+    
     protected A getAssemblerInstance() {
         Class<A> assemblerClass = ClassUtils.getGenericType(getClass(), 3);
         return Mappers.getMapper(assemblerClass);
     }
-
+    
     @Override
     public Mono<D> save(D dto) {
         T entity = getAssemblerInstance().toEntity(dto);
@@ -88,7 +88,7 @@ public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D ext
     public Flux<D> findAll() {
         return domainService.findAll().map(getAssemblerInstance()::toDTO);
     }
-
+    
     @Override
     public Flux<D> findAll(Query query) {
         return domainService.findAll(query).map(getAssemblerInstance()::toDTO);
@@ -101,29 +101,17 @@ public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D ext
     
     @Override
     public Flux<D> saveAll(Iterable<D> dtoList) {
-        return Flux.fromIterable(dtoList)
-                .map(getAssemblerInstance()::toEntity)
-                .collectList()
-                .flatMapMany(domainService::saveAll)
-                .map(getAssemblerInstance()::toDTO);
+        return Flux.fromIterable(dtoList).map(getAssemblerInstance()::toEntity).collectList().flatMapMany(domainService::saveAll).map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Flux<D> saveBatch(Flux<D> dtoList) {
-        return dtoList
-                .map(getAssemblerInstance()::toEntity)
-                .collectList()
-                .flatMapMany(domainService::saveAll)
-                .map(getAssemblerInstance()::toDTO);
+        return dtoList.map(getAssemblerInstance()::toEntity).collectList().flatMapMany(domainService::saveAll).map(getAssemblerInstance()::toDTO);
     }
     
     @Override
     public Flux<D> updateBatch(Flux<D> dtoList) {
-        return dtoList
-                .map(getAssemblerInstance()::toEntity)
-                .collectList()
-                .flatMapMany(domainService::saveAll)
-                .map(getAssemblerInstance()::toDTO);
+        return dtoList.map(getAssemblerInstance()::toEntity).collectList().flatMapMany(domainService::saveAll).map(getAssemblerInstance()::toDTO);
     }
     
     @Override
@@ -133,7 +121,7 @@ public abstract class AbstractApplicationService<T extends BaseEntity<ID>, D ext
     
     @Override
     public Mono<PageResult<D>> selectPage(Query query) {
-        return domainService.selectPage(TenantContext.getTenantId(), query).map(pageResult -> {
+        return domainService.selectPage(query).map(pageResult -> {
             long total = pageResult.getTotal();
             long current = pageResult.getCurrent();
             long size = pageResult.getSize();

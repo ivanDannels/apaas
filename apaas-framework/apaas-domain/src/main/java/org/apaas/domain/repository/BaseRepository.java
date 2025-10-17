@@ -72,7 +72,7 @@ public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializabl
      * @return 分页实体对象流
      */
     Flux<Page<T>> findByTenantIdAndDeletedFalse(Long tenantId, Pageable pageable);
-
+    
     /**
      * 根据租户ID查找所有未删除的实体
      * @param tenantId 租户ID
@@ -117,7 +117,7 @@ public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializabl
      * @return 响应式实体对象流
      */
     Mono<Boolean> existsByIdAndTenantIdAndDeletedFalse(ID id, Long tenantId);
-
+    
     /**
      * 获取实体类型
      * @return 实体类型
@@ -125,5 +125,5 @@ public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializabl
     default Class<T> getEntityClass() {
         return ClassUtils.getGenericType(getClass(), 0);
     }
-
+    
 }
